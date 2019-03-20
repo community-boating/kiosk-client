@@ -1,0 +1,56 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+    <style name="button_background_large" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">50sp</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:background">@drawable/button_background_large</item>
+        <item name="android:textColor">@color/shadowGray</item>
+    </style>
+    <style name="text_title_primary" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="text_title_primary_regular" parent="text_title_primary">
+        <item name="android:textSize">64sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+    <style name="text_title_primary_medium" parent="text_title_primary">
+        <item name="android:textSize">64sp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+    <style name="text_title_secondary" parent="text_title_primary">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/roboto_thin</item>
+    </style>
+    <style name="text_user_input" parent="@android:style/Widget.EditText">
+        <item name="android:fontFamily">@font/roboto_thin</item>
+        <item name="android:textSize">72sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/text_user_input</item>
+    </style>
+    <style name="text_user_input_small" parent="text_user_input">
+        <item name="android:textSize">48sp</item>
+    </style>
+    <style name="button_nav" parent="@android:style/Widget.Button">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/button_nav</item>
+    </style>
+    <style name="custom_keypad">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:keyTextColor">@color/colorPrimaryDark</item>
+        <item name="android:keyBackground">@drawable/custom_keypad_button</item>
+        <item name="android:shadowColor">@android:color/transparent</item>
+    </style>
+
+</resources>

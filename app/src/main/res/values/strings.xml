@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">CBIAPP</string>
+    <string name="act1_title">Welcome To Community Boating</string>
+    <string name="act1_subtitle">Sailing Here for All</string>
+    <string name="act1_help">Touch To Begin</string>
+    <string name="act1_desc">Guest Registration</string>
+    <string name="act3_name_first">First Name</string>
+    <string name="act3_name_last">Last Name</string>
+    <string name="act3_desc">Tell us about yourself</string>
+    <string name="act4_birthday">Birthday</string>
+    <string name="act5_phonenumber">Phone Number</string>
+    <string name="act6_email">We\'ll send you an email with your registration for future use.</string>
+    <string name="act6_checkbox_desc">Check here to receive news from CBI about upcoming events and more!</string>
+    <string name="act9_waiver_desc">Participation Waiver</string>
+    <string name="act9_waiver_agree">I have read and understand the above statement.</string>
+    <string name="some">Derp</string>
+    <string name="cbi_dpc_add_button">Finish creating profile</string>
+
+    <string name="cbi_admin_label">CBI_ADMIN</string>
+    <string name="cbi_admin_description">Allows the CBI kiosk app to perform COSU functions.</string>
+    <string name="cbi_admin_add_admin_extra_text">Allow CBI kiosk app to administrate this device. Required to allow the COSU policies for this kiosk to be established.</string>
+    <string name="cbi_kiosk_profile_name">CBI Kiosk Profile</string>
+</resources>
