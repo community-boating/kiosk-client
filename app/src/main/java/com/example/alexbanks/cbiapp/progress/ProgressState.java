@@ -43,6 +43,34 @@ public class ProgressState implements Parcelable {
         }
     };
 
+    public Character getCharacter(String key){
+        if(contains(key))
+            return get(key).charAt(0);
+        else
+            return null;
+    }
+
+    public Float getFloat(String key){
+        if(contains(key))
+            return Float.parseFloat(get(key));
+        else
+            return null;
+    }
+
+    public Double getDouble(String key){
+        if(contains(key))
+            return Double.parseDouble(get(key));
+        else
+            return null;
+    }
+
+    public Integer getInteger(String key){
+        if(contains(key))
+            return Integer.parseInt(get(key));
+        else
+            return null;
+    }
+
     public String get(String key){
         return this.valueMap.get(key);
     }
@@ -51,11 +79,49 @@ public class ProgressState implements Parcelable {
         return this.valueMap.put(key, value);
     }
 
+    public String putCharacter(String key, Character value){
+        if(value == null) {
+            if (contains(key)) remove(key);
+        }else {
+            return put(key, value.toString());
+        }
+        return null;
+    }
+
+    public String putFloat(String key, Float value){
+        if(value == null) {
+            if (contains(key)) remove(key);
+        }else {
+            return put(key, value.toString());
+        }
+        return null;
+    }
+
+    public String putDouble(String key, Double value){
+        if(value == null) {
+            if (contains(key)) remove(key);
+        }else {
+            return put(key, value.toString());
+        }
+        return null;
+    }
+
+    public String putInteger(String key, Integer value){
+        if(value == null) {
+            if (contains(key)) remove(key);
+        }else {
+            return put(key, value.toString());
+        }
+        return null;
+    }
+
     public String remove(String key){
         return this.valueMap.remove(key);
     }
 
-
+    public boolean contains(String key){
+        return this.valueMap.containsKey(key);
+    }
 
     //Should be overwritten by child class
     public Class<? extends Activity> getActivityClass(){

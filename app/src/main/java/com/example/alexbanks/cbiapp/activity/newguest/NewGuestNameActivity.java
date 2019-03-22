@@ -13,12 +13,12 @@ import android.widget.TextView;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.activity.TextWatcherDelegate;
+import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
 
-public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName> implements View.OnClickListener {
+public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName> {
 
-    Button continueButton;
     EditText firstNameText;
     EditText lastNameText;
 
@@ -30,8 +30,6 @@ public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName
         super.onCreate(bundle);
         setContentView(R.layout.layout_newguest_name);
         ProgressStateNewGuestName progressState = getProgressState();
-        continueButton = findViewById(R.id.tempcontinue);
-        continueButton.setOnClickListener(this);
         firstNameText = findViewById(R.id.new_guest_name_first);
         firstNameTextWatch = new TextWatcher(){
             @Override
@@ -60,15 +58,42 @@ public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName
         };
         lastNameText.addTextChangedListener(lastNameTextWatch);
         lastNameText.setText(progressState.getLastName());
+        CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_SIMPLE, R.id.custom_keyboard_view_name);
+        customKeyboard.showCustomKeyboard();
+        customKeyboard.addTextView(firstNameText);
+        customKeyboard.addTextView(lastNameText);
+        customKeyboard.setTextViewFocuses();
     }
 
     @Override
-    public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.tempcontinue:
-                this.nextProgress();
-                break;
-        }
+    public boolean nextProgress(){
+        boolean r = super.nextProgress();
+        removeListeners();
+        return r;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        removeListeners();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        removeListeners();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        removeListeners();
+    }
+
+    public void removeListeners(){
+        Log.d("listeners", "removing them");
+        firstNameText.removeTextChangedListener(firstNameTextWatch);
+        lastNameText.removeTextChangedListener(lastNameTextWatch);
     }
 
 }

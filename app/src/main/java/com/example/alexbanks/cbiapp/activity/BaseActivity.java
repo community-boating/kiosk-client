@@ -11,6 +11,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +26,7 @@ import com.example.alexbanks.cbiapp.progress.ProgressState;
 import java.io.IOException;
 
 /* This class contains general methods shared by most activities in this app */
-public class BaseActivity<ps extends ProgressState> extends AppCompatActivity {
+public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     public static final String PROGRESS_EXTRA_KEY = "progress_extra";
 
@@ -105,6 +107,7 @@ public class BaseActivity<ps extends ProgressState> extends AppCompatActivity {
         eventConfiguration();
         //hideStatusNavBar();
         this.checkProgress();
+        Log.d("nullupdate", "has nav fragment " + this.hasNavFragment());
         //this.cbiAdminDeviceSample = CBIDeviceAdmin.getComponentName(this);
         //Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
         //enableAdmin();
@@ -135,6 +138,8 @@ public class BaseActivity<ps extends ProgressState> extends AppCompatActivity {
         }else{
             Log.d("bad", "we have an issue here, no dpm");
         }
+        if(this.hasNavFragment())
+            this.startNavFragment();
         //dpm.setStatusBarDisabled(cbiAdminDeviceSample, true);
         //IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MAIN);
         //intentFilter.addCategory(Intent.CATEGORY_HOME);
@@ -213,8 +218,19 @@ public class BaseActivity<ps extends ProgressState> extends AppCompatActivity {
         intent.putExtra(BaseActivity.PROGRESS_EXTRA_KEY, progress);
         activity.startActivity(intent);
         if(baseActivity != null && !baseActivity.isActivityCorrect(progress)){
+            Log.d("finished", "finished a progress " + (activity.getClass().getName()));
             baseActivity.finish();
+            //baseActivity.removeNavbarFragment();
         }
+    }
+
+    private boolean hasNavFragment(){
+        return findViewById(R.id.layout_newguest) != null;
+    }
+
+    private void startNavFragment(){
+        NavButtonGroupFragment navFragment = new NavButtonGroupFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_newguest, navFragment).commit();
     }
 
     /* Setup some event callbacks here */
@@ -235,8 +251,24 @@ public class BaseActivity<ps extends ProgressState> extends AppCompatActivity {
         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
+    private void changeFragment(Fragment targetFragment){
+        //getSupportFragmentManager().beginTransaction().replace(R.id.layout_newguest_name
+    }
+
+    /*private void removeNavbarFragment(){
+        Fragment f = this.getSupportFragmentManager().findFragmentByTag("nav_fragment");
+        if(f != null){
+            Log.d("nullupdate", "f located, now removing");
+            this.getSupportFragmentManager().beginTransaction().remove(f).commitNowAllowingStateLoss();
+        }else{
+            Log.d("nullupdate", "f not located, removal failure (bad)");
+        }
+    }*/
+
     public ps getProgressState(){
+        Log.d("aaaa", "activityType " + this.getClass().getName());
         return (ps)this.progress.getCurrentProgressState();
+
     }
 
 }

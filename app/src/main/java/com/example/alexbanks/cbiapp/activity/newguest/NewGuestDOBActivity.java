@@ -6,6 +6,7 @@ import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,137 +14,85 @@ import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
+
+import org.w3c.dom.Text;
 
 //TODO move all this keyboard stuff into somewhere more general so I don't keep copying it like this
 
 public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> {
 
-    protected KeyboardView customKeyPadView;
+    EditText dobDayText;
+    EditText dobMonthText;
+    EditText dobYearText;
+
+    TextWatcher dobDayTextWatch;
+    TextWatcher dobMonthTextWatch;
+    TextWatcher dobYearTextWatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.layout_newguest_dob);
         setContentView(R.layout.layout_newguest_dob);
-        createKeyboards();
-        showCustomKeyboard(getWindow().getCurrentFocus());
-        initiateKeyboardListeners();
-    }
-
-    //Add some event listeners to trigger our keyboard
-    protected void initiateKeyboardListeners(){
-        ConstraintLayout layoutBase = (ConstraintLayout) this.findViewById(R.id.layout_base);
-        int count = layoutBase.getChildCount();
-        View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
-
+        ProgressStateNewGuestDOB progressState = getProgressState();
+        dobDayText=findViewById(R.id.new_guest_dob_day);
+        dobDayText.setText(progressState.getDOBDay()==null?null:progressState.getDOBDay().toString());
+        dobMonthText=findViewById(R.id.new_guest_dob_month);
+        dobMonthText.setText(progressState.getDOBMonth()==null?null:progressState.getDOBMonth().toString());
+        dobYearText=findViewById(R.id.new_guest_dob_year);
+        dobYearText.setText(progressState.getDOBYear()==null?null:progressState.getDOBYear().toString());
+        dobDayTextWatch = new TextWatcher() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d("not much", "focus has been changed");
-                if(hasFocus){
-                    NewGuestDOBActivity.this.showCustomKeyboard(v);
-                }else{
-                    NewGuestDOBActivity.this.hideCustomKeyPad();
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                ProgressStateNewGuestDOB progressState = getProgressState();
+                progressState.setDOBDay(Integer.parseInt(s.toString()));
             }
         };
-
-        for(int i = 0; i < count; i++){
-            View view = layoutBase.getChildAt(i);
-            if(view instanceof EditText){
-                //Do some hiding of the software keyboard
-                ((EditText) view).setShowSoftInputOnFocus(false);
-                //
-                view.setOnFocusChangeListener(focusChangeListener);
+        dobDayText.addTextChangedListener(dobDayTextWatch);
+        dobMonthTextWatch = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                ProgressStateNewGuestDOB progressState = getProgressState();
+                progressState.setDOBMonth(Integer.parseInt(s.toString()));
             }
-        }
-
+        };
+        dobMonthText.addTextChangedListener(dobMonthTextWatch);
+        dobYearTextWatch = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                ProgressStateNewGuestDOB progressState = getProgressState();
+                progressState.setDOBYear(Integer.parseInt(s.toString()));
+            }
+        };
+        dobYearText.addTextChangedListener(dobYearTextWatch);
+        CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_NUMBER_PAD, R.id.custom_keyboard_view_dob);
+        customKeyboard.showCustomKeyboard();
+        customKeyboard.addTextView(dobDayText);
+        customKeyboard.addTextView(dobMonthText);
+        customKeyboard.addTextView(dobYearText);
+        customKeyboard.setTextViewFocuses();
     }
 
-    public static final int KEY_CODE_DELETE = -5;
-    public static final int KEY_CODE_ENTER = -10;
-
-    //Do some things to make our fancy keypad work like it should
-    protected void createKeyboards(){
-        //TODO is this even the main activity?
-        Keyboard customKeyPad = new Keyboard(this, R.xml.custom_keypad);
-        customKeyPadView = (KeyboardView)findViewById(R.id.customKeyPadView);
-
-        customKeyPadView.setKeyboard(customKeyPad);
-        //todo don't handle this for now
-        customKeyPadView.setPreviewEnabled(false);
-
-        //set up a handler for the key events from our custom key-pad
-        customKeyPadView.setOnKeyboardActionListener(new KeyboardView.OnKeyboardActionListener() {
-            @Override
-            public void onPress(int primaryCode) {
-
-            }
-
-            @Override
-            public void onRelease(int primaryCode) {
-
-            }
-
-            @Override
-            public void onKey(int primaryCode, int[] keyCodes) {
-                View focusCurrent = NewGuestDOBActivity.this.getWindow().getCurrentFocus();
-                if(focusCurrent == null || !(focusCurrent instanceof EditText)) return;
-                EditText editText = (EditText) focusCurrent;
-                Editable editable = editText.getText();
-                int start = editText.getSelectionStart();
-                Log.d("not much", "key event fired " + ((char)(primaryCode + '0')) + ":" + (editable == null));
-                if(primaryCode==KEY_CODE_DELETE){
-                    if(editable!=null && start>0)
-                        editable.delete(start-1, start);
-                }else if(primaryCode==KEY_CODE_ENTER){
-                    //TODO handle some form of enter here
-                }else{
-                    if(editable!=null)
-                        editable.insert(start, Character.toString((char)(primaryCode + '0')));
-                }
-            }
-
-            @Override
-            public void onText(CharSequence text) {
-
-            }
-
-            @Override
-            public void swipeLeft() {
-
-            }
-
-            @Override
-            public void swipeRight() {
-
-            }
-
-            @Override
-            public void swipeDown() {
-
-            }
-
-            @Override
-            public void swipeUp() {
-
-            }
-        });
-
-        //Hide built in keyboard so its not in the way
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        dobDayText.removeTextChangedListener(dobDayTextWatch);
+        dobMonthText.removeTextChangedListener(dobMonthTextWatch);
+        dobYearText.removeTextChangedListener(dobMonthTextWatch);
     }
 
-    public void hideCustomKeyPad(){
-        customKeyPadView.setVisibility(View.GONE);
-        customKeyPadView.setEnabled(false);
-    }
-
-    public void showCustomKeyboard( View v ) {
-        customKeyPadView.setVisibility(View.VISIBLE);
-        customKeyPadView.setEnabled(true);
-        Log.d("not much", "something interesting " + (v == null));
-        if( v!=null ) ((InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
-    }
 }

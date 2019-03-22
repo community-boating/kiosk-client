@@ -56,9 +56,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.36" />
 
-    <fragment
-        android:id="@+id/layout_newguest_name"
-        android:name="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+    <FrameLayout
+        android:id="@+id/layout_newguest"
+        android:tag="nav_fragment"
+        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -83,11 +84,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-    <Button
-        android:id="@+id/tempcontinue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        tools:layout_editor_absoluteX="764dp"
-        tools:layout_editor_absoluteY="413dp" />
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/custom_keyboard_view_name"
+        style="@style/custom_keypad"
+        android:layout_width="900dp"
+        android:layout_height="500dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/layout_newguest_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_guest_name_last"></android.inputmethodservice.KeyboardView>
 </android.support.constraint.ConstraintLayout>

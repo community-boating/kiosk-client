@@ -2,12 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_base"
+    android:id="@+id/layout_newguest_phone_constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editText8"
+        android:id="@+id/new_guest_phone_3"
         style="@style/text_user_input_small"
         android:layout_width="145sp"
         android:layout_height="wrap_content"
@@ -16,10 +16,10 @@
         android:inputType="number"
         android:maxLength="4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText7" />
+        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_2" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/new_guest_phone_2"
         style="@style/text_user_input_small"
         android:layout_width="125sp"
         android:layout_height="wrap_content"
@@ -27,8 +27,8 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="3"
-        app:layout_constraintEnd_toStartOf="@+id/editText8"
-        app:layout_constraintTop_toTopOf="@+id/editText3" />
+        app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_3"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_1" />
 
     <TextView
         android:id="@+id/textView11"
@@ -40,7 +40,7 @@
         android:layout_marginEnd="8dp"
         android:text="@string/act5_phonenumber"
         android:textSize="76sp"
-        app:layout_constraintEnd_toStartOf="@+id/editText3"
+        app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/new_guest_phone_1"
         style="@style/text_user_input_small"
         android:layout_width="125sp"
         android:layout_height="wrap_content"
@@ -68,29 +68,36 @@
         android:hint="(     )"
         android:inputType="number"
         android:maxLength="3"
-        app:layout_constraintEnd_toStartOf="@+id/editText7"
+        app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_2"
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
-    <fragment
-        android:id="@+id/layout_newguest_name"
-        android:name="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+    <FrameLayout
+        android:id="@+id/layout_newguest"
+        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:tag="nav_fragment"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.inputmethodservice.KeyboardView
-        android:id="@+id/customKeyPadView"
+        android:id="@+id/custom_keyboard_view_phone"
         style="@style/custom_keypad"
         android:layout_width="300sp"
         android:layout_height="300sp"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="960dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="959dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.958" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

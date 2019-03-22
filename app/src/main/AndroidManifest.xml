@@ -34,6 +34,8 @@
         </activity>
         <activity android:name=".activity.newguest.NewGuestNameActivity" android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".activity.newguest.NewGuestEmailActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
         <activity android:name=".activity.newguest.NewGuestWaiverActivity" android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".activity.newguest.NewGuestDOBActivity" android:windowSoftInputMode="adjustResize|stateHidden">

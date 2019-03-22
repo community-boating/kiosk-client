@@ -2,8 +2,10 @@ package com.example.alexbanks.cbiapp.progress;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone;
 
 import java.util.ArrayList;
