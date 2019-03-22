@@ -2,6 +2,7 @@ package com.example.alexbanks.cbiapp.activity.newguest;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.example.alexbanks.cbiapp.R;
@@ -29,6 +30,10 @@ public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWa
         //TODO offload to non-main thread probably
         WebView webView = (WebView)findViewById(R.id.waiver_web_view);
         webView.loadUrl("file:///android_asset/waiver.html");
+    }
+
+    public void handleButtonPressed(View v){
+        this.nextProgress();
     }
 
 }

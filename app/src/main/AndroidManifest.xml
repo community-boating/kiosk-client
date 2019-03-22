@@ -38,8 +38,12 @@
         </activity>
         <activity android:name=".activity.newguest.NewGuestWaiverActivity" android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".activity.newguest.NewGuestFinishActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
         <activity android:name=".activity.newguest.NewGuestDOBActivity" android:windowSoftInputMode="adjustResize|stateHidden">
 
+        </activity>
+        <activity android:name=".activity.newguest.NewGuestBeginSignatureActivity" android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
         <activity android:name=".admin.EnableDPCProfileActivity">
         </activity>

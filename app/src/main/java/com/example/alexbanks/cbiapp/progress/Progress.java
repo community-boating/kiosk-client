@@ -7,6 +7,8 @@ import android.util.Log;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestSignature;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestWaiver;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -100,7 +102,7 @@ public class Progress implements Parcelable {
 
     public static Progress createNewGuestProgress(){
         //return new Progress(new ProgressStateNewGuestBegin());
-        return new Progress(new ProgressStateNewGuestEmail());
+        return new Progress(new ProgressStateNewGuestBegin());
     }
 
     @Override
