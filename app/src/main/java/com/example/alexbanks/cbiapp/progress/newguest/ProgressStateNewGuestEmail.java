@@ -16,4 +16,9 @@ public class ProgressStateNewGuestEmail extends ProgressState {
     public ProgressState createNextProgressState() {
         return new ProgressStateNewGuestWaiver();
     }
+
+    @Override
+    public boolean isProgressStateComplete(){
+        return true;
+    }
 }

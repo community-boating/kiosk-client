@@ -10,6 +10,8 @@ import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestWaive
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWaiver> {
 
@@ -17,6 +19,7 @@ public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newguest_waiver);
+        Log.d("nullupdate", "created");
         Log.d("not much", "created");
         loadWaiver();
     }
@@ -25,17 +28,7 @@ public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWa
     protected void loadWaiver(){
         //TODO offload to non-main thread probably
         WebView webView = (WebView)findViewById(R.id.waiver_web_view);
-        try{
-            InputStream fin = getAssets().open("waiver.html");
-            byte[] buff = new byte[fin.available()];
-            fin.read(buff);
-            fin.close();
-
-            webView.loadData(new String(buff), "text/html", "UTF-8");
-        }catch(IOException e){
-            Log.d("not much", "failed");
-            e.printStackTrace();
-        }
+        webView.loadUrl("file:///android_asset/waiver.html");
     }
 
 }
