@@ -6,11 +6,12 @@ import android.webkit.WebView;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestWaiver;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class NewGuestWaiverActivity extends BaseActivity {
+public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWaiver> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

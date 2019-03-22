@@ -49,12 +49,23 @@ public class Progress implements Parcelable {
 
     public void nextState(){
         ProgressState currentState = this.getCurrentProgressState();
-        ProgressState nextState = currentState.createNextProgressState();
-        if(nextState != null){
-            this.currentState = states.size();
-            this.states.add(nextState);
+        if(this.currentState == this.states.size() - 1) {
+            ProgressState nextState = currentState.createNextProgressState();
+
+            if (nextState != null) {
+                this.currentState = states.size();
+                this.states.add(nextState);
+            }
+            //TODO not handled currently, end of progress
+        }else{
+            this.currentState++;
         }
-        //TODO not handling this right now, just do nothing
+    }
+
+    public void previousState(){
+        if(this.currentState > 0){
+            this.currentState--;
+        }
     }
 
     public void setCurrentProgressState(int currentState){

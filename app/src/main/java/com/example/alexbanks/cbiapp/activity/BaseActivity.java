@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothClass;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,24 +17,26 @@ import android.view.View;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.admin.CBIDeviceAdmin;
+import com.example.alexbanks.cbiapp.admin.CBIKioskLauncherActivity;
 import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
+import java.io.IOException;
+
 /* This class contains general methods shared by most activities in this app */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity<ps extends ProgressState> extends AppCompatActivity {
 
     public static final String PROGRESS_EXTRA_KEY = "progress_extra";
 
     public Progress progress;
 
-    public DevicePolicyManager dpm;
-    public ComponentName cbiAdminDeviceSample;
+    //public DevicePolicyManager dpm;
+    //public ComponentName cbiAdminDeviceSample;
 
-    public static final int REQUEST_CODE_ENABLE_ADMIN = 1;
-    public static final int REQUEST_CODE_ENABLE_DPC = 2;
+    //public static final int REQUEST_CODE_ENABLE_ADMIN = 1;
+    //public static final int REQUEST_CODE_ENABLE_DPC = 2;
 
-    //TODO temp method
-    private void enableAdmin(){
+    /*private void enableAdmin(){
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, this.cbiAdminDeviceSample);
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, this.getString(R.string.cbi_admin_add_admin_extra_text));
@@ -77,6 +80,19 @@ public class BaseActivity extends AppCompatActivity {
         else{
             super.onActivityResult(requestCode, responseCode, data);
         }
+    }*/
+
+    public void handleNavButtonClickHelp(){
+        Log.d("ffff", "help clicked");
+    }
+
+    public void handleNavButtonClickBack(){
+        this.progress.previousState();
+        this.runActivityFromProgress(this.progress);
+    }
+
+    public void handleNavButtonClickCancel(){
+        Log.d("ffff", "cancel clicked");
     }
 
     @Override
@@ -84,40 +100,47 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         PackageManager pm = getPackageManager();
         Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
-        this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
-        Log.d("bbbb", ""  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
+        //this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+        //Log.d("bbbb", ""  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
         eventConfiguration();
         //hideStatusNavBar();
         this.checkProgress();
-        this.cbiAdminDeviceSample = CBIDeviceAdmin.getComponentName(this);
-        Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
-        enableAdmin();
-        if(!isDPCEnabled()) {
+        //this.cbiAdminDeviceSample = CBIDeviceAdmin.getComponentName(this);
+        //Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
+        //enableAdmin();
+        //dpm.setStatusBarDisabled(cbiAdminDeviceSample, false);
+        //if(!isDPCEnabled()) {
             //enableDPC();
-            Log.d("h", "xxxx: what now???");
-        }else {
-            Log.d("h", "xxxx: dpc now done");
-        }
-        Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
+        //    Log.d("h", "xxxx: what now???");
+        //}else {
+        //    Log.d("h", "xxxx: dpc now done");
+        //}
+        //Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("bbbb", "a"  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
+        //Log.d("bbbb", "a"  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
         /* Re-hide the status/nav bar after being away for a while */
         //Log.d("derp", "dd: " + dpm.isLockTaskPermitted("com.example.alexbanks.cbiapp"));
-        dpm.setLockTaskPackages(cbiAdminDeviceSample, new String[]{"com.example.alexbanks.cbiapp"});
-        Log.d("bbbb", "aff" + dpm.isDeviceOwnerApp(getApplicationContext().getPackageName()));
-        //hideStatusNavBar();
+        //dpm.setLockTaskPackages(cbiAdminDeviceSample, new String[]{"com.example.alexbanks.cbiapp"});
+        //Log.d("bbbb", "aff" + dpm.isDeviceOwnerApp(getApplicationContext().getPackageName()));
+        hideStatusNavBar();
+        //dpm.setLockTaskFeatures(cbiAdminDeviceSample, DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD);
         this.checkProgress();
-        if(dpm.isLockTaskPermitted(getApplicationContext().getPackageName())){
+        if(CBIKioskLauncherActivity.getDPM(this).isLockTaskPermitted(getApplicationContext().getPackageName())){
             this.startLockTask();
             Log.d("bad", "no issues here");
         }else{
             Log.d("bad", "we have an issue here, no dpm");
         }
-        Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
+        //dpm.setStatusBarDisabled(cbiAdminDeviceSample, true);
+        //IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MAIN);
+        //intentFilter.addCategory(Intent.CATEGORY_HOME);
+        //intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        //dpm.addPersistentPreferredActivity(cbiAdminDeviceSample, intentFilter, new ComponentName(getPackageName(), BaseActivity.class.getName()));
+        //Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
     }
 
     private static final String MESSAGE_PROGRESS = "cbiapp.progress.current";
@@ -129,6 +152,7 @@ public class BaseActivity extends AppCompatActivity {
         if(this.progress.checkProgressStates() == -1){
             this.progress.nextState();
             this.runActivityFromProgress(this.progress);
+            Log.d("something", "good happened");
             return true;
         }
         else{
@@ -168,20 +192,28 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void runActivityFromProgress(Progress progress){
+        runActivityFromProgress(progress, this);
+    }
+
+    //Run activity from progress context, and optionally a supplied base activity (null if no previous base activity exists)
+    public static void runActivityFromProgress(Progress progress, Activity activity){
         ProgressState currentState = progress.getCurrentProgressState();
         Intent intent;
-        if(this.isActivityCorrect(progress)){
+        BaseActivity baseActivity = null;
+        if(activity instanceof BaseActivity)baseActivity=(BaseActivity)activity;
+
+        if(baseActivity != null && baseActivity.isActivityCorrect(progress)){
             //Currently running activity matches current progress state, so just save and continue
-            intent = this.getIntent();
+            intent = baseActivity.getIntent();
         }
         else {
             //Create new intent for the correct activity
-            intent = new Intent(this.getBaseContext(), currentState.getActivityClass());
+            intent = new Intent(activity, currentState.getActivityClass());
         }
         intent.putExtra(BaseActivity.PROGRESS_EXTRA_KEY, progress);
-        startActivity(intent);
-        if(this.isActivityCorrect(progress)){
-            //this.finish();
+        activity.startActivity(intent);
+        if(baseActivity != null && !baseActivity.isActivityCorrect(progress)){
+            baseActivity.finish();
         }
     }
 
@@ -198,12 +230,13 @@ public class BaseActivity extends AppCompatActivity {
 
     /* Hides the status and nav bar, must be called whenever UI options change */
     private void hideStatusNavBar(){
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-        decorView.setSystemUiVisibility(uiOptions);
-
-        ActionBar actionBar = getActionBar();
-        if(actionBar != null)
-            actionBar.hide();
+        View v = this.getWindow().getDecorView();
+        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN |
+        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
+
+    public ps getProgressState(){
+        return (ps)this.progress.getCurrentProgressState();
+    }
+
 }

@@ -16,6 +16,7 @@
     <string name="some">Derp</string>
     <string name="cbi_dpc_add_button">Finish creating profile</string>
 
+    <string name="cbi_admin_provision_warning">CBIDeviceAdmin must be the device owner to enable COSU functionality for the CBI kiosk! Consult with an IT member if you are seeing this message.</string>
     <string name="cbi_admin_label">CBI_ADMIN</string>
     <string name="cbi_admin_description">Allows the CBI kiosk app to perform COSU functions.</string>
     <string name="cbi_admin_add_admin_extra_text">Allow CBI kiosk app to administrate this device. Required to allow the COSU policies for this kiosk to be established.</string>

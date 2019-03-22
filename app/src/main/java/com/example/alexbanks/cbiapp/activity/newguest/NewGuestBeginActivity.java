@@ -6,8 +6,9 @@ import android.view.View;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
 
-public class NewGuestBeginActivity extends BaseActivity {
+public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBegin> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

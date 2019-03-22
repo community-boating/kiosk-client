@@ -13,10 +13,11 @@ import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 
 //TODO move all this keyboard stuff into somewhere more general so I don't keep copying it like this
 
-public class NewGuestDOBActivity extends BaseActivity {
+public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> {
 
     protected KeyboardView customKeyPadView;
 

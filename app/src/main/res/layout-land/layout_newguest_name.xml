@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/new_guest_name_first"
         style="@style/text_user_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,12 +33,12 @@
         android:hint="@string/act3_name_first"
         android:inputType="textPersonName"
         android:textSize="32sp"
-        app:layout_constraintEnd_toStartOf="@+id/editText2"
+        app:layout_constraintEnd_toStartOf="@+id/new_guest_name_last"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText2" />
+        app:layout_constraintTop_toTopOf="@+id/new_guest_name_last" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/new_guest_name_last"
         style="@style/text_user_input"
         android:layout_width="wrap_content"
         android:layout_height="87dp"
@@ -52,7 +52,7 @@
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editText"
+        app:layout_constraintStart_toEndOf="@+id/new_guest_name_first"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.36" />
 
@@ -82,4 +82,12 @@
         app:layout_constraintHorizontal_bias="0.338"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/tempcontinue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        tools:layout_editor_absoluteX="764dp"
+        tools:layout_editor_absoluteY="413dp" />
 </android.support.constraint.ConstraintLayout>

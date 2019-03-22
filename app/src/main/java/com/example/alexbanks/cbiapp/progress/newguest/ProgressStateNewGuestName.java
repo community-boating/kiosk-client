@@ -6,6 +6,10 @@ import com.example.alexbanks.cbiapp.activity.newguest.NewGuestNameActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
 public class ProgressStateNewGuestName extends ProgressState {
+
+    private static final String KEY_FIRST_NAME="first_name";
+    private static final String KEY_LAST_NAME="last_name";
+
     public ProgressStateNewGuestName() {
     }
 
@@ -15,5 +19,33 @@ public class ProgressStateNewGuestName extends ProgressState {
     @Override
     public ProgressState createNextProgressState() {
         return new ProgressStateNewGuestDOB();
+    }
+
+    public String getFirstName(){
+        return this.get(KEY_FIRST_NAME);
+    }
+
+    public void setFirstName(String firstName){
+        this.put(KEY_FIRST_NAME, firstName);
+    }
+
+    public String getLastName(){
+        return this.get(KEY_LAST_NAME);
+    }
+
+    public void setLastName(String lastName){
+        this.put(KEY_LAST_NAME, lastName);
+    }
+
+    public boolean isFirstNameValid(){
+        return !"".equals(getFirstName());
+    }
+
+    public boolean isLastNameValid(){
+        return !"".equals(getLastName());
+    }
+
+    public boolean isProgressStateComplete(){
+        return isFirstNameValid() && isLastNameValid();
     }
 }
