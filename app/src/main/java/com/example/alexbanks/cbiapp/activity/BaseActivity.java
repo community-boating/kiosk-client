@@ -149,7 +149,7 @@ public class BaseActivity<ps extends ProgressState> extends AppCompatActivity {
     This one checks to see if this is the right activity for the given progress state
      */
     public boolean nextProgress(){
-        if(this.progress.checkProgressStates() == -1){
+        if(this.progress.checkPreviousProgressStates() == -1){
             this.progress.nextState();
             this.runActivityFromProgress(this.progress);
             Log.d("something", "good happened");

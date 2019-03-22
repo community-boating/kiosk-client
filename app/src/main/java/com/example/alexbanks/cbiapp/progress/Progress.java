@@ -72,7 +72,17 @@ public class Progress implements Parcelable {
         this.currentState = currentState;
     }
 
-    public int checkProgressStates(){
+    public int checkPreviousProgressStates(){
+        for(int i = 0; i <= this.currentState; i++){
+            ProgressState progressState = this.states.get(i);
+            if(!progressState.isProgressStateComplete()){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int checkAllProgressStates(){
         for(int i = 0; i < this.states.size(); i++){
             ProgressState progressState = this.states.get(i);
             if(!progressState.isProgressStateComplete()){
