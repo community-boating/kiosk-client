@@ -22,10 +22,6 @@ public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newguest_waiver);
-        Log.d("nullupdate", "created");
-        Log.d("not much", "created");
-        ProgressStateEmergencyContactName ec = (ProgressStateEmergencyContactName)this.progress.states.get(0);
-        Log.d("derp", "derpderp: " + ec.getECType());
         loadWaiver();
     }
 
