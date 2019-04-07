@@ -1,17 +1,31 @@
 package com.example.alexbanks.cbiapp.keyboard;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Rect;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.media.AudioAttributes;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputType;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.HapticFeedbackConstants;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.input.CustomInputManager;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,23 +40,37 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
     public static final int KEYBOARD_MODE_NUMBER_PAD = 2;
 
     private boolean shiftStatus=false;
+    private int mode;
 
     private Activity activity;
     private KeyboardView keyboardView;
     private List<View> textViews;
     public CustomKeyboard(Activity activity, int mode, int viewId){
-        super(activity, mode==KEYBOARD_MODE_FULL?R.xml.custom_keyboard:mode==KEYBOARD_MODE_SIMPLE?R.xml.custom_keyboard:R.xml.custom_keypad);
+        super(activity, mode==KEYBOARD_MODE_FULL?R.xml.custom_keyboard_full:mode==KEYBOARD_MODE_SIMPLE?R.xml.custom_keyboard:R.xml.custom_keypad);
         this.activity = activity;
+        this.mode=mode;
         keyboardView = activity.findViewById(viewId);
         keyboardView.setKeyboard(this);
         keyboardView.setOnKeyboardActionListener(this);
-        keyboardView.setPreviewEnabled(false);
+        keyboardView.setPreviewEnabled(true);
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         updateShiftStatus();
         textViews = new LinkedList<>();
         for(Key k : this.getKeys()){
+            //k.popupResId = R.xml.custom_keypad_popup;
+            if(k.codes == null)
+                continue;
             Log.d("keyval", "value: " + k.label + ":" + k.codes.length + ":" + k.codes[0]);
         }
         initializeKeys();
+    }
+    public static final Rect minimumKeyboardRes=new Rect(0,0,800,400);
+    private static DisplayMetrics displayMetrics = new DisplayMetrics();
+    public boolean displayCustomKeyboard(Activity a){
+        if(Build.VERSION.SDK_INT < 21)
+            return false;
+        a.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return !minimumKeyboardRes.contains(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
     private void updateShiftStatus(){
         keyboardView.setShifted(shiftStatus);
@@ -50,6 +78,8 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
     private void initializeKeys(){
         StringBuffer buffer = new StringBuffer(2);
         for(Key k : this.getKeys()){
+            if(k.codes == null)
+                continue;
             if(k.codes.length == 1 && k.codes[0] >= 'a' && k.codes[0] <= 'z') {
                 char c = (char) k.codes[0];
                 char C = Character.toUpperCase(c);
@@ -57,10 +87,23 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
                 buffer.append(c);
                 buffer.append(C);
                 k.popupCharacters = buffer.toString();
-                //k.popupResId = R.xml.custom_keypad_popup;
+                k.iconPreview=k.icon;
+                k.popupResId = R.xml.custom_keypad_popup;
+            }else {
+                if(k.codes.length == 1 && k.codes[0] == KEY_CODE_SHIFT) {
+                    k.iconPreview = null;
+                    //k.popupResId = R.xml.custom_keypad_popup;
+                    //k.popupCharacters="ab";
+                }
+                if(k.popupCharacters != null && k.popupCharacters.length() > 1)
+                    k.popupResId=R.xml.custom_keypad_popup;
             }
         }
     }
+    public void addTextViewsFromCustomInputManager(){
+       textViews.addAll(CustomInputManager.getCustomInputs());
+    }
+    public void addTextViews(Collection<View> views){ textViews.addAll(views); }
     public void addTextView(View v){
         textViews.add(v);
     }
@@ -84,7 +127,8 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             v.setOnFocusChangeListener(focusChangeListener);
             v.setOnClickListener(clickListener);
             if(v instanceof EditText){
-                ((EditText)v).setShowSoftInputOnFocus(false);
+                //((EditText) v).setInputType(InputType.TYPE_NULL);
+                //((EditText)v).setShowSoftInputOnFocus(false);
             }
         }
     }
@@ -100,18 +144,33 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         keyboardView.setEnabled(false);
     }
 
+    public boolean isCodePreview(int primaryCode){
+        return (primaryCode == KEY_CODE_NEXT || primaryCode == KEY_CODE_SHIFT || primaryCode == KEY_CODE_DELETE) && this.mode == KEYBOARD_MODE_FULL;
+    }
+
     @Override
     public void onPress(int primaryCode) {
-
+        keyboardView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
+        //Vibrator vibrator = (Vibrator)activity.getSystemService(Context.VIBRATOR_SERVICE);
+        //if(vibrator.hasVibrator()){
+        //    vibrator.vibrate(20);
+        //}
+        if(isCodePreview(primaryCode))
+            keyboardView.setPreviewEnabled(false);
     }
 
     @Override
     public void onRelease(int primaryCode) {
-
+        keyboardView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY_RELEASE, HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
+        if(isCodePreview(primaryCode))
+            keyboardView.setPreviewEnabled(true);
     }
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
+        InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        //KeyEvent event = new KeyEvent() {};
+        //manager.dispatchKeyEventFromInputMethod(this.keyboardView, event);
         if(primaryCode == KEY_CODE_NEXT) {
             if(activity instanceof BaseActivity){
                 BaseActivity baseActivity = (BaseActivity)activity;

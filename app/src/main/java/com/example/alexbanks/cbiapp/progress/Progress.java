@@ -4,8 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestSignature;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestWaiver;
@@ -102,7 +104,7 @@ public class Progress implements Parcelable {
 
     public static Progress createNewGuestProgress(){
         //return new Progress(new ProgressStateNewGuestBegin());
-        return new Progress(new ProgressStateNewGuestBegin());
+        return new Progress(new ProgressStateEmergencyContactName());
     }
 
     @Override

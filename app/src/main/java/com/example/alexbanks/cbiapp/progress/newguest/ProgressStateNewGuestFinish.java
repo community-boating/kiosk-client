@@ -2,7 +2,6 @@ package com.example.alexbanks.cbiapp.progress.newguest;
 
 import android.app.Activity;
 
-import com.example.alexbanks.cbiapp.activity.newguest.NewGuestBeginSignatureActivity;
 import com.example.alexbanks.cbiapp.activity.newguest.NewGuestFinishActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 

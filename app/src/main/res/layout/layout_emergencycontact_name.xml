@@ -8,55 +8,59 @@
     android:background="@color/backgroundWhite"
     android:fitsSystemWindows="false">
 
-    <TextView
-        android:id="@+id/textView7"
-        style="@style/text_title_primary_medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:includeFontPadding="false"
-        android:text="@string/act1_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
         style="@style/text_user_input"
-        android:imeOptions="flagNoExtractUi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/act3_name_first"
+        android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
         android:textSize="32sp"
-        app:layout_constraintEnd_toStartOf="@+id/new_guest_name_last"
+        app:layout_constraintEnd_toStartOf="@+id/customInputRadioGridLayout"
+        app:layout_constraintHorizontal_bias="0.611"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/new_guest_name_last" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:progressStateVariable="ec_name_first"
+        app:variableType="String" />
 
-    <EditText
+    <com.example.alexbanks.cbiapp.input.CustomInputRadioTableLayout
+        android:id="@+id/customInputRadioGridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="112dp"
+        app:preferredColumns="3"
+        app:layout_constraintBottom_toBottomOf="@+id/new_guest_name_last"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_name_first"
+        app:layout_constraintVertical_bias="0.0"
+        app:progressStateVariable="ec_type"
+        app:valueStringArrayResource="@array/act_ec_contact_options"></com.example.alexbanks.cbiapp.input.CustomInputRadioTableLayout>
+
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input"
-        android:imeOptions="flagNoExtractUi"
         android:layout_width="wrap_content"
         android:layout_height="87dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="@string/act3_name_last"
+        android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
         android:textSize="32sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/new_guest_name_first"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36" />
+        app:layout_constraintEnd_toEndOf="@+id/new_guest_name_first"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/new_guest_name_first"
+        app:layout_constraintTop_toBottomOf="@+id/new_guest_name_first"
+        app:layout_constraintVertical_bias="0.027"
+        app:progressStateVariable="ec_first_last"
+        app:variableType="String" />
 
     <FrameLayout
         android:id="@+id/layout_newguest"
@@ -71,34 +75,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView6"
-        style="@style/text_title_secondary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:includeFontPadding="false"
-        android:text="@string/act3_desc"
-        android:textSize="76sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.338"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
     <com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView
+        android:id="@+id/customKeyboardView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/layout_newguest"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
     </com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView>
     <android.inputmethodservice.KeyboardView
-        android:id="@+id/custom_keyboard_view_name"
+        android:id="@+id/custom_keyboard_view_ec_name"
         style="@style/custom_keypad"
         android:layout_width="900dp"
         android:layout_height="500dp"
@@ -115,4 +103,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.75"></android.inputmethodservice.KeyboardView>
+
+    <TextView
+        android:id="@+id/textView8"
+        style="@style/text_title_primary_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:includeFontPadding="false"
+        android:text="@string/act_title_ec"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

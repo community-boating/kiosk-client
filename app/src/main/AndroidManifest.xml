@@ -12,6 +12,8 @@
         "android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission android:name=
         "com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name=
+        "android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -32,20 +34,24 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.newguest.NewGuestNameActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name=".activity.newguest.NewGuestNameActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity android:name=".activity.newguest.NewGuestEmailActivity" android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".activity.newguest.EmergencyContactNameActivity" android:windowSoftInputMode="adjustNothing">
+        </activity>
         <activity android:name=".activity.newguest.NewGuestWaiverActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name=".activity.newguest.NewGuestSignatureActivity" android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".activity.newguest.NewGuestFinishActivity" android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".activity.newguest.NewGuestDOBActivity" android:windowSoftInputMode="adjustResize|stateHidden">
 
         </activity>
-        <activity android:name=".activity.newguest.NewGuestBeginSignatureActivity" android:windowSoftInputMode="adjustResize|stateHidden">
-        </activity>
         <activity android:name=".admin.EnableDPCProfileActivity">
+        </activity>
+        <activity android:name=".activity.newguest.EmergencyContactPhoneActivity" android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".activity.newguest.NewGuestPhoneActivity" android:windowSoftInputMode="adjustResize">
         </activity>
@@ -61,6 +67,17 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+
+        <service android:name=".keyboard.CustomSystemKeyboard"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+
+            <meta-data android:name="android.view.im"
+                android:resource="@xml/method" />
+
+        </service>
     </application>
 
 </manifest>

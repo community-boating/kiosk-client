@@ -16,10 +16,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.admin.CBIDeviceAdmin;
 import com.example.alexbanks.cbiapp.admin.CBIKioskLauncherActivity;
+import com.example.alexbanks.cbiapp.input.CustomInputManager;
 import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
@@ -107,6 +109,8 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         eventConfiguration();
         //hideStatusNavBar();
         this.checkProgress();
+        CustomInputManager.activeProgressState=progress.getCurrentProgressState();
+        CustomInputManager.clearCustomInputs();
         Log.d("nullupdate", "has nav fragment " + this.hasNavFragment());
         //this.cbiAdminDeviceSample = CBIDeviceAdmin.getComponentName(this);
         //Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
@@ -122,6 +126,11 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         //Log.d("bbbb", "a"  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
@@ -132,12 +141,12 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         hideStatusNavBar();
         //dpm.setLockTaskFeatures(cbiAdminDeviceSample, DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD);
         this.checkProgress();
-        if(CBIKioskLauncherActivity.getDPM(this).isLockTaskPermitted(getApplicationContext().getPackageName())){
+        /*if(CBIKioskLauncherActivity.getDPM(this).isLockTaskPermitted(getApplicationContext().getPackageName())){
             this.startLockTask();
             Log.d("bad", "no issues here");
         }else{
             Log.d("bad", "we have an issue here, no dpm");
-        }
+        }*/
         if(this.hasNavFragment())
             this.startNavFragment();
         //dpm.setStatusBarDisabled(cbiAdminDeviceSample, true);
@@ -154,7 +163,8 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     This one checks to see if this is the right activity for the given progress state
      */
     public boolean nextProgress(){
-        if(this.progress.checkPreviousProgressStates() == -1){
+        //TODO remove true
+        if(this.progress.checkPreviousProgressStates() == -1 || true){
             this.progress.nextState();
             this.runActivityFromProgress(this.progress);
             Log.d("something", "good happened");

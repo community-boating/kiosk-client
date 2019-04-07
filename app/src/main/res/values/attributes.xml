@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="progressStateVariable" format="string"/>
+    <declare-styleable name="EditTextCustomInput">
+        <attr name="variableType" format="enum">
+            <enum name="Integer" value="0" />
+            <enum name="Float" value="1" />
+            <enum name="Double" value="2" />
+            <enum name="Character" value="3" />
+            <enum name="String" value="4" />
+        </attr>
+        <attr name="progressStateVariable"/>
+        <attr name="validator" format="enum">
+            <enum name="email" value="0"/>
+            <enum name="name" value="1"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="CustomInputRadioGridLayout">
+        <attr name="valueStringArrayResource" format="reference"/>
+        <attr name="progressStateVariable"/>
+        <attr name="preferredColumns" format="integer"/>
+    </declare-styleable>
+</resources>

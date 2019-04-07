@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestWaiver;
 
 import java.io.IOException;
@@ -22,6 +24,8 @@ public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWa
         setContentView(R.layout.layout_newguest_waiver);
         Log.d("nullupdate", "created");
         Log.d("not much", "created");
+        ProgressStateEmergencyContactName ec = (ProgressStateEmergencyContactName)this.progress.states.get(0);
+        Log.d("derp", "derpderp: " + ec.getECType());
         loadWaiver();
     }
 

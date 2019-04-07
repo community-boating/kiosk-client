@@ -14,7 +14,7 @@ public class ProgressStateNewGuestWaiver extends ProgressState {
 
     @Override
     public ProgressState createNextProgressState() {
-        return new ProgressStateNewGuestFinish();
+        return new ProgressStateNewGuestSignature();
     }
 
     @Override

@@ -3,27 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundWhite"
+    android:fitsSystemWindows="false">
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/newguest_email_checkbox_label_text"
         style="@style/text_title_secondary"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="80dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="80dp"
         android:text="@string/act6_checkbox_desc"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/custom_keyboard_view_email" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/newguest_email_title_text"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="73dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="354dp"
         android:text="@string/act1_desc"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/newguest_email_desc_text"
         style="@style/text_title_secondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,48 +45,52 @@
         android:text="@string/act6_email"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/newguest_email_title_text" />
 
-    <EditText
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_email"
         style="@style/text_user_input_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="96dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="294dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
+        app:variableType="String"
+        app:progressStateVariable="email"
+        app:layout_constraintBottom_toTopOf="@+id/custom_keyboard_view_email"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+        app:layout_constraintTop_toBottomOf="@+id/newguest_email_desc_text" />
 
     <CheckBox
         android:id="@+id/new_guest_option_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="476dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="104dp"
-        android:layout_marginBottom="74dp"
-        app:layout_constraintBottom_toTopOf="@+id/layout_newguest"
+        app:layout_constraintBottom_toBottomOf="@+id/newguest_email_checkbox_label_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/newguest_email_checkbox_label_text"
+        app:layout_constraintTop_toTopOf="@+id/newguest_email_checkbox_label_text" />
 
     <FrameLayout
         android:id="@+id/layout_newguest"
         class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="16dp"
         android:tag="nav_fragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_email"
@@ -93,11 +101,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/textView14"
+        app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_guest_email"></android.inputmethodservice.KeyboardView>
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.42000002"></android.inputmethodservice.KeyboardView>
 </android.support.constraint.ConstraintLayout>

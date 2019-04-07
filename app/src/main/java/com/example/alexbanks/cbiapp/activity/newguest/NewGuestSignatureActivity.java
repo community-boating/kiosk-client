@@ -9,32 +9,29 @@ import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.progress.ProgressState;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
+import com.example.alexbanks.cbiapp.view.SignatureView;
 
-public class NewGuestBeginSignatureActivity extends BaseActivity{
+public class NewGuestSignatureActivity extends BaseActivity{
 
-    private Bitmap bitmap;
-
-    ImageView signatureView;
+    private SignatureView signatureView;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newguest_signature);
-        bitmap = Bitmap.createBitmap(800, 480, Bitmap.Config.ARGB_8888);
-        signatureView = findViewById(R.id.signature_image_view);
-        signatureView.setClickable(true);
+        signatureView = findViewById(R.id.new_guest_signature_box);
         //signatureView.setFocusable(View.FOCUSABLE);
         //signatureView.setOnClickListener(this);
         //signatureView.setOnDragListener(this);
-        Log.d("dragged", "derpa" + (signatureView==null));
     }
 
-    public void updateImageView(){
-        signatureView.setImageBitmap(bitmap);
-    }
+    public void handleContinueButtonPressed(View v){this.nextProgress();}
 
     /*@Override
     public boolean onClick(View v) {

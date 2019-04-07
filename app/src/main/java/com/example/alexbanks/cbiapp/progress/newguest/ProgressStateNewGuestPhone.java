@@ -2,7 +2,7 @@ package com.example.alexbanks.cbiapp.progress.newguest;
 
 import android.app.Activity;
 
-import com.example.alexbanks.cbiapp.activity.newguest.NewGuestPhoneActivity;
+import com.example.alexbanks.cbiapp.activity.newguest.GenericPhoneActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
 public class ProgressStateNewGuestPhone extends ProgressState {
@@ -51,7 +51,7 @@ public class ProgressStateNewGuestPhone extends ProgressState {
     }
 
     @Override
-    public Class<? extends Activity> getActivityClass(){ return NewGuestPhoneActivity.class; }
+    public Class<? extends Activity> getActivityClass(){ return GenericPhoneActivity.class; }
 
     @Override
     public ProgressState createNextProgressState() {

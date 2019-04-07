@@ -1,11 +1,17 @@
 package com.example.alexbanks.cbiapp.activity.newguest;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,9 +32,34 @@ public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName
     TextWatcher lastNameTextWatch;
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent event){
+        //if(event.getX() < 200)
+        //    return true;
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
         setContentView(R.layout.layout_newguest_name);
+        InputMethodManager methodManager=(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        //methodManager.showInputMethodPicker();
+        /*View derp = new View(this);
+        WindowManager.LayoutParams p = new WindowManager.LayoutParams();
+        p.gravity = Gravity.TOP;
+        p.type = WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
+        p.token = derp.getWindowToken();
+        derp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getX() < 200)
+                    return true;
+                return false;
+            }
+        });
+        WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        manager.addView(derp, p);*/
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         ProgressStateNewGuestName progressState = getProgressState();
         firstNameText = findViewById(R.id.new_guest_name_first);
         firstNameTextWatch = new TextWatcher(){
