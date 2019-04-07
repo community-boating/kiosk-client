@@ -5,7 +5,7 @@ import android.app.Activity;
 import com.example.alexbanks.cbiapp.activity.newguest.EmergencyContactPhoneActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
-public class ProgressStateEmergencyContactPhone extends ProgressState {
+public class ProgressStateEmergencyContactPhone extends ProgressStateGenericPhone {
 
     public ProgressStateEmergencyContactPhone(){
 
@@ -19,11 +19,6 @@ public class ProgressStateEmergencyContactPhone extends ProgressState {
     @Override
     public ProgressState createNextProgressState(){
         return new ProgressStateNewGuestWaiver();
-    }
-
-    @Override
-    public boolean isProgressStateComplete(){
-        return true;
     }
 
 }

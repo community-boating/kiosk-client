@@ -98,6 +98,7 @@ public class Progress implements Parcelable {
         return -1;
     }
 
+
     public ProgressState getCurrentProgressState(){
         return states.get(currentState);
     }
