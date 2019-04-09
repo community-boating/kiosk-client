@@ -14,8 +14,8 @@
     <string name="act9_waiver_desc">Participation Waiver</string>
     <string name="act9_waiver_agree">I have read and understand the above statement.</string>
     <string name="act_10_signature_desc">Signature</string>
-    <string name="act_11_finish_desc">Finish</string>
-    <string name="act_11_finish_detail">You are done, have fun on the water.</string>
+    <string name="act_11_finish_desc">Success!</string>
+    <string name="act_11_finish_detail">Your ticket will print below. Grab it and have a great time on the water!</string>
 
     <string name="act_title_ec">Emergency Contact</string>
     <string name="act_ec_name_desc">Emergency Contact Type:</string>

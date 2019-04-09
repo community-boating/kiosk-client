@@ -71,15 +71,17 @@
 
     <CheckBox
         android:id="@+id/new_guest_option_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="97dp"
+        android:layout_height="83dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="104dp"
+        android:layout_marginBottom="57dp"
         app:layout_constraintBottom_toBottomOf="@+id/newguest_email_checkbox_label_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/newguest_email_checkbox_label_text"
-        app:layout_constraintTop_toTopOf="@+id/newguest_email_checkbox_label_text" />
+        app:layout_constraintTop_toTopOf="@+id/newguest_email_checkbox_label_text"
+        app:layout_constraintVertical_bias="0.474" />
 
     <FrameLayout
         android:id="@+id/layout_newguest"
