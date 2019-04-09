@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestFinish;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestSignature;
@@ -98,6 +99,15 @@ public class Progress implements Parcelable {
         return -1;
     }
 
+    public <T extends ProgressState> T findByProgressStateType(Class<T> progressStateType){
+        for(int i = 0; i < this.states.size(); i++){
+            ProgressState progressState = this.states.get(i);
+            if(progressState.getClass().equals(progressStateType))
+                return (T)progressState;
+        }
+        return null;
+    }
+
 
     public ProgressState getCurrentProgressState(){
         return states.get(currentState);
@@ -105,7 +115,7 @@ public class Progress implements Parcelable {
 
     public static Progress createNewGuestProgress(){
         return new Progress(new ProgressStateNewGuestBegin());
-        //return new Progress(new ProgressStateEmergencyContactName());
+        //return new Progress(new ProgressStateNewGuestFinish());
     }
 
     @Override
