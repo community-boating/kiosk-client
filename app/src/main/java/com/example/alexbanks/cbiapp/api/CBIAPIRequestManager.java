@@ -2,6 +2,7 @@ package com.example.alexbanks.cbiapp.api;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.android.volley.Cache;
@@ -30,11 +31,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class CBIAPIRequestManager {
 
-    public static final String CBI_API_URL_CREATE_USER = "https://api.community-boating.org/fo-kiosk/create-person";
-    public static final String CBI_API_URL_CREATE_CARD = "https://api.community-boating.org/fo-kiosk/create-card";
+    public static final String CBI_API_URL_CREATE_USER = "https://db-dev.community-boating.org/api/fo-kiosk/create-person";
+    public static final String CBI_API_URL_CREATE_CARD = "https://db-dev.community-boating.org/api/fo-kiosk/create-card";
 
     private Context context;
     private RequestQueue requestQueue;
@@ -99,7 +102,7 @@ public class CBIAPIRequestManager {
                 try {
                     JSONObject cardRequestObject = new JSONObject();
                     cardRequestObject.put("personID", personID);
-                    JsonObjectRequest createCardJsonObjectRequest = new JsonObjectRequest(CBI_API_URL_CREATE_CARD, cardRequestObject, responseListener, cardCreateErrorListener);
+                    JsonObjectRequest createCardJsonObjectRequest = new CBIAPIJsonObjectRequest(CBI_API_URL_CREATE_CARD, cardRequestObject, responseListener, cardCreateErrorListener);
                     getRequestQueue().add(createCardJsonObjectRequest);
                 }catch(JSONException e){
                     Log.e("api error", "api error happened");
@@ -115,8 +118,32 @@ public class CBIAPIRequestManager {
                 Log.e("api error", "user creation failed");
             }
         };
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(CBI_API_URL_CREATE_USER, requestObject, userCreateListener, userCreateErrorListener);
+        JsonObjectRequest jsonObjectRequest = new CBIAPIJsonObjectRequest(CBI_API_URL_CREATE_USER, requestObject, userCreateListener, userCreateErrorListener);
         getRequestQueue().add(jsonObjectRequest);
+    }
+
+    public static final Map<String, String> cbiAPIRequestHeaders = new TreeMap<String, String>(){
+        {
+            put("Content-Type", "application/json");
+            put("Accept", "application/json");
+            put("Am-CBI-Kiosk", "true");
+        }
+    };
+
+    public class CBIAPIJsonObjectRequest extends JsonObjectRequest{
+
+        public CBIAPIJsonObjectRequest(int method, String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
+            super(method, url, jsonRequest, listener, errorListener);
+        }
+
+        public CBIAPIJsonObjectRequest(String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
+            super(url, jsonRequest, listener, errorListener);
+        }
+
+        @Override
+        public Map<String, String> getHeaders(){
+            return cbiAPIRequestHeaders;
+        }
     }
 
 }

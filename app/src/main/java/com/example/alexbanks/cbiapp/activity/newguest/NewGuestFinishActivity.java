@@ -1,6 +1,7 @@
 package com.example.alexbanks.cbiapp.activity.newguest;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,9 +14,14 @@ import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
+import com.starmicronics.stario.PortInfo;
+import com.starmicronics.stario.StarIOPort;
+import com.starmicronics.stario.StarIOPortException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class NewGuestFinishActivity extends BaseActivity {
 
@@ -29,7 +35,24 @@ public class NewGuestFinishActivity extends BaseActivity {
     }
 
     public void handleButtonClick(View v){
-        performAction();
+        //performAction();
+        performOtherAction();
+    }
+
+    public void performOtherAction(){
+        textViewLoading.setText("Starting the printing process...");
+        try {
+            List<PortInfo> portList = StarIOPort.searchPrinter("BT:", this.getApplicationContext());
+            Log.d("portinfo", "port count : " + portList.size());
+            textViewLoading.setText("Has found a printer : " + (!portList.isEmpty()));
+            for(PortInfo port : portList) {
+                Log.d("portinfo", "portStuff " + port.getPortName());
+                Log.d("portinfo", "portStuff " + port.getModelName());
+            }
+        }catch(StarIOPortException e){
+            Log.d("portinfo", "very bad error");
+            e.printStackTrace();
+        }
     }
 
     public void performAction(){
@@ -62,7 +85,7 @@ public class NewGuestFinishActivity extends BaseActivity {
         progressStateNewGuestEmail.setEmail("test_email@test.com");
         progress.states.add(progressStateNewGuestEmail);
         try {
-            CBIAPIRequestManager.getInstance(this).callCreateNewUserAndCard(this.progress, responseListener, responseErrorListener);
+            CBIAPIRequestManager.getInstance(this).callCreateNewUserAndCard(progress, responseListener, responseErrorListener);
         } catch (JSONException e) {
             e.printStackTrace();
         }
