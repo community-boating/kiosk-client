@@ -49,7 +49,7 @@ public class NewGuestFinishActivity extends BaseActivity {
         }catch(Throwable t){
             t.printStackTrace();
             Log.d("evanerror", t.getMessage());
-            textViewLoading.setText("Error doing the print job...");
+            textViewLoading.setText(t.getMessage());
         }
     }
 
