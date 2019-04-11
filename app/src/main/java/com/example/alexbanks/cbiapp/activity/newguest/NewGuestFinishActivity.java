@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.api.CBIAPIRequestManager;
+import com.example.alexbanks.cbiapp.print.PrinterManager;
 import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
@@ -41,17 +42,13 @@ public class NewGuestFinishActivity extends BaseActivity {
 
     public void performOtherAction(){
         textViewLoading.setText("Starting the printing process...");
+        PrinterManager manager = PrinterManager.getInstance(this);
         try {
-            List<PortInfo> portList = StarIOPort.searchPrinter("BT:", this.getApplicationContext());
-            Log.d("portinfo", "port count : " + portList.size());
-            textViewLoading.setText("Has found a printer : " + (!portList.isEmpty()));
-            for(PortInfo port : portList) {
-                Log.d("portinfo", "portStuff " + port.getPortName());
-                Log.d("portinfo", "portStuff " + port.getModelName());
-            }
-        }catch(StarIOPortException e){
-            Log.d("portinfo", "very bad error");
-            e.printStackTrace();
+            manager.findAndLoadPort();
+            manager.doPrintTest();
+        }catch(Throwable t){
+            t.printStackTrace();
+            textViewLoading.setText("Error doing the print job...");
         }
     }
 
