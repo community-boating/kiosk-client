@@ -51,25 +51,31 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Loading..."
-        android:textSize="40sp"
+        android:textAlignment="viewStart"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.006"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintTop_toBottomOf="@+id/textView16"
+        app:layout_constraintVertical_bias="0.844" />
 
     <Button
         android:id="@+id/button3"
-        android:onClick="handleButtonClick"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="1080dp"
+        android:onClick="handleButtonClick"
         android:text="Submit Data"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_loading" />
+        app:layout_constraintStart_toEndOf="@+id/textview_loading"
+        tools:layout_editor_absoluteY="705dp" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="255dp"
+        android:layout_height="206dp"
+        app:srcCompat="@drawable/chevron"
+        tools:layout_editor_absoluteX="513dp"
+        tools:layout_editor_absoluteY="499dp" />
 
 </android.support.constraint.ConstraintLayout>
