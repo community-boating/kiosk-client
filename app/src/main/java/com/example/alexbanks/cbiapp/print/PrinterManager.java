@@ -18,9 +18,9 @@ public class PrinterManager {
 
     private static PrinterSettings printerSettings = new PrinterSettings(
             9,
-                    "BT:00:15:0E:E6:BD:0D",
+                    "BT:00:12:F3:24:FA:F2",
                     "mini",
-                    "00:15:0E:E6:BD:0D",
+                    "00:12:F3:24:FA:F2",
                     "Star Micronics",
                     true,
                     384
