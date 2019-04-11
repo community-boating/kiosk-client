@@ -48,6 +48,7 @@ public class NewGuestFinishActivity extends BaseActivity {
             manager.doPrintTest();
         }catch(Throwable t){
             t.printStackTrace();
+            Log.d("evanerror", t.getMessage());
             textViewLoading.setText("Error doing the print job...");
         }
     }
