@@ -33,8 +33,12 @@ public class PrinterManager {
     public static void sendCommands(Context context, ICommandBuilder builder, Communication.SendCallback mCallback) throws Throwable{
         //StarIoExt.Emulation emulation = ModelCapability.getEmulation(printerSettings.getModelIndex());
         //int paperSize = printerSettings.getPaperSize();
+        List<PortInfo> portInfos = StarIOPort.searchPrinter("BT:", context);
+        if(portInfos.isEmpty())
+            throw new RuntimeException("No printer ports found");
+        PortInfo info = portInfos.get(0);
 
-        Communication.sendCommands(context, builder.getCommands(), printerSettings.getPortName(), printerSettings.getPortSettings(), 10000, context, mCallback);     // 10000mS!!!
+        Communication.sendCommands(context, builder.getCommands(), info.getPortName(), printerSettings.getPortSettings(), 10000, context, mCallback);     // 10000mS!!!
     }
 
 }
