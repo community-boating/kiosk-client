@@ -8,48 +8,33 @@ import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarPrinterStatus;
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt;
+import com.starmicronics.starprntsdk.Communication;
+import com.starmicronics.starprntsdk.ModelCapability;
+import com.starmicronics.starprntsdk.PrinterSettings;
 
 import java.util.List;
 
 public class PrinterManager {
 
-    private static PrinterManager instance;
+    private static PrinterSettings printerSettings = new PrinterSettings(
+            9,
+                    "BT:00:15:0E:E6:BD:0D",
+                    "mini",
+                    "00:15:0E:E6:BD:0D",
+                    "Star Micronics",
+                    true,
+                    384
+    );
 
-    private Context context;
-
-    private PortInfo portInfo;
-
-    private PrinterManager(Context context){
-        this.context = context;
+    public static ICommandBuilder getCommandBuilder(){
+        return StarIoExt.createCommandBuilder(ModelCapability.getEmulation(printerSettings.getModelIndex()));
     }
 
-    public static PrinterManager getInstance(Context context){
-        if(instance == null)
-            instance = new PrinterManager(context);
-        return instance;
-    }
+    public static void sendCommands(Context context, ICommandBuilder builder, Communication.SendCallback mCallback) throws Throwable{
+        //StarIoExt.Emulation emulation = ModelCapability.getEmulation(printerSettings.getModelIndex());
+        //int paperSize = printerSettings.getPaperSize();
 
-    public boolean findAndLoadPort() throws Throwable{
-        List<PortInfo> portInfoList = StarIOPort.searchPrinter("BT:", context);
-        if(portInfoList.isEmpty())
-            return false;
-        portInfo = portInfoList.get(0);
-        return true;
-    }
-
-    public boolean doPrintTest() throws Throwable{
-        StarIOPort port = StarIOPort.getPort(portInfo.getPortName(), "", 10000, context);
-        StarPrinterStatus status = port.beginCheckedBlock();
-        ICommandBuilder commandBuilder = StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
-        commandBuilder.beginDocument();
-        commandBuilder.append("Hello World.\n".getBytes());
-        commandBuilder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
-        commandBuilder.endDocument();
-        byte[] commands = commandBuilder.getCommands();
-        port.writePort(commands, 0, commands.length);
-        status = port.endCheckedBlock();
-        StarIOPort.releasePort(port);
-        return !status.offline;
+        Communication.sendCommands(context, builder.getCommands(), printerSettings.getPortName(), printerSettings.getPortSettings(), 10000, context, mCallback);     // 10000mS!!!
     }
 
 }

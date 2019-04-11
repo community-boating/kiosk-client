@@ -11,6 +11,7 @@ import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.api.CBIAPIRequestManager;
 import com.example.alexbanks.cbiapp.print.PrinterManager;
+import com.example.alexbanks.cbiapp.print.ReciptCommandGenerator;
 import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
@@ -18,6 +19,8 @@ import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
+import com.starmicronics.starioextension.ICommandBuilder;
+import com.starmicronics.starprntsdk.Communication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,10 +45,16 @@ public class NewGuestFinishActivity extends BaseActivity {
 
     public void performOtherAction(){
         textViewLoading.setText("Starting the printing process...");
-        PrinterManager manager = PrinterManager.getInstance(this);
+        //PrinterManager manager = PrinterManager.getInstance(this);
+        ICommandBuilder builder = PrinterManager.getCommandBuilder();
+        ReciptCommandGenerator.generatePrintReciptCommands(this, builder, "Alex", "123456");
         try {
-            manager.findAndLoadPort();
-            manager.doPrintTest();
+            PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
+                @Override
+                public void onStatus(boolean result, Communication.Result communicateResult) {
+                    textViewLoading.setText("Printing : " + result);
+                }
+            });
         }catch(Throwable t){
             t.printStackTrace();
             Log.d("evanerror", t.getMessage());
