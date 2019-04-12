@@ -19,7 +19,7 @@ public class PrinterManager {
     private static PrinterSettings printerSettings = new PrinterSettings(
             ModelCapability.TSP650II,
                     "BT:00:12:F3:24:FA:F2",
-                    "mini",
+                    "",
                     "00:12:F3:24:FA:F2",
                     "Star Micronics",
                     true,
