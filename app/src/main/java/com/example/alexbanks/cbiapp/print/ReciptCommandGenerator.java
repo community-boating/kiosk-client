@@ -28,7 +28,7 @@ public class ReciptCommandGenerator {
         builder.appendBarcodeWithAlignment(
                 cardNum.getBytes(),
                 ICommandBuilder.BarcodeSymbology.Code128,
-                ICommandBuilder.BarcodeWidth.Mode1,
+                ICommandBuilder.BarcodeWidth.Mode6,
                 40,
                 true,
                 ICommandBuilder.AlignmentPosition.Center
