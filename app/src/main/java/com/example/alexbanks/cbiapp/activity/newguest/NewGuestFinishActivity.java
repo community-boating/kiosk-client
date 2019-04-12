@@ -52,7 +52,7 @@ public class NewGuestFinishActivity extends BaseActivity {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
                 public void onStatus(boolean result, Communication.Result communicateResult) {
-                    textViewLoading.setText("Printing : " + result);
+                    textViewLoading.setText("Printing : " + result + " : " + communicateResult.name());
                 }
             });
         }catch(Throwable t){
