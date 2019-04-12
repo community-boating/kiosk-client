@@ -47,7 +47,7 @@ public class NewGuestFinishActivity extends BaseActivity {
         textViewLoading.setText("Starting the printing process...");
         //PrinterManager manager = PrinterManager.getInstance(this);
         ICommandBuilder builder = PrinterManager.getCommandBuilder();
-        ReciptCommandGenerator.generatePrintReciptCommands(this, builder, "Alex", "123456");
+        ReciptCommandGenerator.generatePrintReciptCommands(this, builder, "Alex Banks", "01401489");
         try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
