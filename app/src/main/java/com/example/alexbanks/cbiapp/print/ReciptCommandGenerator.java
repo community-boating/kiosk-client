@@ -27,7 +27,7 @@ public class ReciptCommandGenerator {
         //TODO: figure out why it's not respecting the alignment.  The demo app doesn't work either (although I swear it used to)
         builder.appendBarcodeWithAlignment(
                 cardNum.getBytes(),
-                ICommandBuilder.BarcodeSymbology.NW7,
+                ICommandBuilder.BarcodeSymbology.Code128,
                 ICommandBuilder.BarcodeWidth.Mode1,
                 40,
                 true,
