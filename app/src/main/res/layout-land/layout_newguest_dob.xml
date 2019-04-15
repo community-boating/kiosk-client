@@ -7,45 +7,56 @@
     android:background="@color/backgroundWhite"
     android:fitsSystemWindows="true">
 
-    <EditText
-        android:id="@+id/new_guest_dob_year"
-        style="@style/text_user_input_small"
-        android:layout_width="220dp"
+    <com.example.alexbanks.cbiapp.input.SpinnerCustomInput
+        android:id="@+id/new_guest_dob_day"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="120dp"
-        android:ems="10"
-        android:inputType="number"
-        android:maxLength="4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month" />
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="@+id/textView9"
+        app:progressStateVariable="dob_day"></com.example.alexbanks.cbiapp.input.SpinnerCustomInput>
 
-    <EditText
+    <com.example.alexbanks.cbiapp.input.SpinnerCustomInput
         android:id="@+id/new_guest_dob_month"
-        style="@style/text_user_input_small"
-        android:layout_width="110dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:ems="10"
-        android:inputType="number"
-        android:maxLength="2"
-        app:layout_constraintEnd_toStartOf="@+id/new_guest_dob_year"
-        app:layout_constraintTop_toTopOf="@+id/new_guest_dob_day" />
+        android:layout_marginStart="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/new_guest_dob_day"
+        app:layout_constraintStart_toEndOf="@+id/new_guest_dob_day"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_dob_day"
+        app:layout_constraintVertical_bias="0.0"
+        app:progressStateVariable="dob_month"></com.example.alexbanks.cbiapp.input.SpinnerCustomInput>
+
+    <com.example.alexbanks.cbiapp.input.SpinnerCustomInput
+        android:id="@+id/new_guest_dob_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/new_guest_dob_month"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
+        app:layout_constraintVertical_bias="0.0"
+        app:progressStateVariable="dob_year"></com.example.alexbanks.cbiapp.input.SpinnerCustomInput>
 
     <TextView
         android:id="@+id/textView9"
         style="@style/text_title_secondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:includeFontPadding="false"
         android:text="@string/act4_birthday"
         android:textSize="76sp"
-        app:layout_constraintEnd_toStartOf="@+id/new_guest_dob_day"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="0.154" />
 
     <TextView
         android:id="@+id/textView8"
@@ -57,18 +68,6 @@
         android:text="@string/act1_desc"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="28dp" />
-
-    <EditText
-        android:id="@+id/new_guest_dob_day"
-        style="@style/text_user_input_small"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:ems="10"
-        android:inputType="number"
-        android:maxLength="2"
-        app:layout_constraintEnd_toStartOf="@+id/new_guest_dob_month"
-        app:layout_constraintTop_toTopOf="@+id/textView9" />
 
     <FrameLayout
         android:id="@+id/layout_newguest"
@@ -98,4 +97,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.75" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        android:onClick="onContinueClick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 </android.support.constraint.ConstraintLayout>

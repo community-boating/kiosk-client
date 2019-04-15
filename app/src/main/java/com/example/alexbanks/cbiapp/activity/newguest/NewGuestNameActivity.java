@@ -28,8 +28,8 @@ public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName
     EditText firstNameText;
     EditText lastNameText;
 
-    TextWatcher firstNameTextWatch;
-    TextWatcher lastNameTextWatch;
+    //TextWatcher firstNameTextWatch;
+    //TextWatcher lastNameTextWatch;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event){
@@ -60,71 +60,41 @@ public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName
         WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         manager.addView(derp, p);*/
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        ProgressStateNewGuestName progressState = getProgressState();
-        firstNameText = findViewById(R.id.new_guest_name_first);
-        firstNameTextWatch = new TextWatcher(){
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void afterTextChanged(Editable s) {
-                ProgressStateNewGuestName progressState = getProgressState();
-                progressState.setFirstName(s.toString());
-            }
-        };
-        firstNameText.addTextChangedListener(firstNameTextWatch);
-        firstNameText.setText(progressState.getFirstName());
-        lastNameText = findViewById(R.id.new_guest_name_last);
-        lastNameTextWatch = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                ProgressStateNewGuestName progressState = getProgressState();
-                progressState.setLastName(s.toString());
-            }
-        };
-        lastNameText.addTextChangedListener(lastNameTextWatch);
-        lastNameText.setText(progressState.getLastName());
         CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_SIMPLE, R.id.custom_keyboard_view_name);
+        customKeyboard.addTextViewsFromCustomInputManager();
         customKeyboard.showCustomKeyboard();
-        customKeyboard.addTextView(firstNameText);
-        customKeyboard.addTextView(lastNameText);
         customKeyboard.setTextViewFocuses();
     }
 
     @Override
     public boolean nextProgress(){
         boolean r = super.nextProgress();
-        removeListeners();
+        //removeListeners();
         return r;
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        removeListeners();
+        //removeListeners();
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        removeListeners();
+        //removeListeners();
     }
 
     @Override
     public void onPause(){
         super.onPause();
-        removeListeners();
+        //removeListeners();
     }
 
-    public void removeListeners(){
+    /*public void removeListeners(){
         Log.d("listeners", "removing them");
         firstNameText.removeTextChangedListener(firstNameTextWatch);
         lastNameText.removeTextChangedListener(lastNameTextWatch);
-    }
+    }*/
 
 }

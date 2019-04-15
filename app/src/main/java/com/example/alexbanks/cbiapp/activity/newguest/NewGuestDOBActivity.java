@@ -1,6 +1,7 @@
 package com.example.alexbanks.cbiapp.activity.newguest;
 
 import android.app.Activity;
+import android.icu.util.Calendar;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
@@ -14,85 +15,66 @@ import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.input.SpinnerCustomInput;
 import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 
 import org.w3c.dom.Text;
 
-//TODO move all this keyboard stuff into somewhere more general so I don't keep copying it like this
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> {
 
-    EditText dobDayText;
-    EditText dobMonthText;
-    EditText dobYearText;
-
-    TextWatcher dobDayTextWatch;
-    TextWatcher dobMonthTextWatch;
-    TextWatcher dobYearTextWatch;
+    SpinnerCustomInput spinnerDobDay;
+    SpinnerCustomInput spinnerDobMonth;
+    SpinnerCustomInput spinnerDobYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.layout_newguest_dob);
         setContentView(R.layout.layout_newguest_dob);
-        ProgressStateNewGuestDOB progressState = getProgressState();
-        dobDayText=findViewById(R.id.new_guest_dob_day);
-        dobDayText.setText(progressState.getDOBDay()==null?null:progressState.getDOBDay().toString());
-        dobMonthText=findViewById(R.id.new_guest_dob_month);
-        dobMonthText.setText(progressState.getDOBMonth()==null?null:progressState.getDOBMonth().toString());
-        dobYearText=findViewById(R.id.new_guest_dob_year);
-        dobYearText.setText(progressState.getDOBYear()==null?null:progressState.getDOBYear().toString());
-        dobDayTextWatch = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                ProgressStateNewGuestDOB progressState = getProgressState();
-                progressState.setDOBDay(Integer.parseInt(s.toString()));
-            }
-        };
-        dobDayText.addTextChangedListener(dobDayTextWatch);
-        dobMonthTextWatch = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                ProgressStateNewGuestDOB progressState = getProgressState();
-                progressState.setDOBMonth(Integer.parseInt(s.toString()));
-            }
-        };
-        dobMonthText.addTextChangedListener(dobMonthTextWatch);
-        dobYearTextWatch = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                ProgressStateNewGuestDOB progressState = getProgressState();
-                progressState.setDOBYear(Integer.parseInt(s.toString()));
-            }
-        };
-        dobYearText.addTextChangedListener(dobYearTextWatch);
-        CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_NUMBER_PAD, R.id.custom_keyboard_view_dob);
-        customKeyboard.showCustomKeyboard();
-        customKeyboard.addTextView(dobDayText);
-        customKeyboard.addTextView(dobMonthText);
-        customKeyboard.addTextView(dobYearText);
-        customKeyboard.setTextViewFocuses();
+
+        spinnerDobDay = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_day);
+        spinnerDobMonth = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_month);
+        spinnerDobYear = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_year);
+
+        List<String> months = Arrays.asList(getResources().getStringArray(R.array.act_4_birthday_months));
+        Date date = new Date();
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        int yearEnd = c.get(Calendar.YEAR);
+
+        int yearStart = yearEnd-70;
+        List<String> years = new ArrayList<>(yearEnd-yearStart);
+        for(int i = yearStart; i <= yearEnd; i++){
+            years.add(Integer.toString(i, 10));
+        }
+        List<String> days = new ArrayList<>(31);
+        for(int i = 1; i <= 31; i++){
+            days.add(Integer.toString(i, 10));
+        }
+
+        spinnerDobDay.setAdapterFromList(days);
+        spinnerDobMonth.setAdapterFromList(months);
+        spinnerDobYear.setAdapterFromList(years);
+
+        //CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_NUMBER_PAD, R.id.custom_keyboard_view_dob);
+        //customKeyboard.addTextViewsFromCustomInputManager();
+        //customKeyboard.showCustomKeyboard();
+        //customKeyboard.setTextViewFocuses();
+    }
+
+    public void onContinueClick(View v){
+        this.nextProgress();
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        dobDayText.removeTextChangedListener(dobDayTextWatch);
-        dobMonthText.removeTextChangedListener(dobMonthTextWatch);
-        dobYearText.removeTextChangedListener(dobMonthTextWatch);
     }
 
 }

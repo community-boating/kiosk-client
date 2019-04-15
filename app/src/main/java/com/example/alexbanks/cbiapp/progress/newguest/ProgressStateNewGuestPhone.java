@@ -8,6 +8,10 @@ import com.example.alexbanks.cbiapp.progress.ProgressState;
 
 public class ProgressStateNewGuestPhone extends ProgressStateGenericPhone {
 
+    static{
+        ProgressStateGenericPhone.addPhoneValidators(ProgressStateNewGuestPhone.class);
+    }
+
     public ProgressStateNewGuestPhone(){
 
     }

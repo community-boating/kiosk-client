@@ -34,6 +34,21 @@
         <item>Other</item>
     </array>
 
+    <array name="act_4_birthday_months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+
     <string name="cbi_dpc_add_button">Finish creating profile</string>
 
     <string name="cbi_admin_provision_warning">CBIDeviceAdmin must be the device owner to enable COSU functionality for the CBI kiosk! Consult with an IT member if you are seeing this message.</string>

@@ -21,8 +21,6 @@ import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone
 
 import org.w3c.dom.Text;
 
-//TODO move all this keyboard stuff into somewhere more general so I don't keep copying it like this
-
 public class GenericPhoneActivity<T extends ProgressState> extends BaseActivity<T> {
 
     @Override
@@ -34,7 +32,6 @@ public class GenericPhoneActivity<T extends ProgressState> extends BaseActivity<
         customKeyboard.addTextViewsFromCustomInputManager();
         customKeyboard.showCustomKeyboard();
         customKeyboard.setTextViewFocuses();
-        Log.d("nullupdate", "hmm, phone running still");
     }
 
     @Override

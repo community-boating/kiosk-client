@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
         style="@style/text_user_input"
         android:imeOptions="flagNoExtractUi"
@@ -36,9 +36,11 @@
         android:textSize="32sp"
         app:layout_constraintEnd_toStartOf="@+id/new_guest_name_last"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/new_guest_name_last" />
+        app:layout_constraintTop_toTopOf="@+id/new_guest_name_last"
+        app:progressStateVariable="first_name"
+        app:variableType="String"/>
 
-    <EditText
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input"
         android:imeOptions="flagNoExtractUi"
@@ -56,7 +58,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/new_guest_name_first"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36" />
+        app:layout_constraintVertical_bias="0.36"
+        app:progressStateVariable="last_name"
+        app:variableType="String" />
 
     <FrameLayout
         android:id="@+id/layout_newguest"

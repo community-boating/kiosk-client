@@ -36,8 +36,8 @@ import java.util.TreeMap;
 
 public class CBIAPIRequestManager {
 
-    public static final String CBI_API_URL_CREATE_USER = "https://db-dev.community-boating.org/api/fo-kiosk/create-person";
-    public static final String CBI_API_URL_CREATE_CARD = "https://db-dev.community-boating.org/api/fo-kiosk/create-card";
+    public static final String CBI_API_URL_CREATE_USER = "https://api-dev.community-boating.org/api/fo-kiosk/create-person";
+    public static final String CBI_API_URL_CREATE_CARD = "https://api-dev.community-boating.org/api/fo-kiosk/create-card";
 
     private Context context;
     private RequestQueue requestQueue;
@@ -62,8 +62,11 @@ public class CBIAPIRequestManager {
     }
 
     public RequestQueue getRequestQueue(){
-        if(requestQueue == null)
+        if(requestQueue == null) {
+            //TODO remove this
+            NukeSSLCerts.nuke();
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
+        }
         return requestQueue;
     }
 
@@ -85,8 +88,10 @@ public class CBIAPIRequestManager {
         ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
         requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
-        String dobString = progressStateNewGuestDOB.getDOBMonth() + "/" + progressStateNewGuestDOB.getDOBDay() + "/" + progressStateNewGuestDOB.getDOBYear();
-        requestObject.put("Dob", dobString);
+        //String dobString = progressStateNewGuestDOB.getDOBMonth() + "/" + progressStateNewGuestDOB.getDOBDay() + "/" + progressStateNewGuestDOB.getDOBYear();
+        String dobString = "02/11/1983";
+        requestObject.put("dob", dobString);
+        Log.d("derpderpa", requestObject.toString());
         final Response.ErrorListener cardCreateErrorListener = new Response.ErrorListener(){
 
             @Override
@@ -98,8 +103,9 @@ public class CBIAPIRequestManager {
         final Response.Listener<JSONObject> userCreateListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Integer personID = null;
+                Long personID = null;
                 try {
+                    personID = response.getLong("personID");
                     JSONObject cardRequestObject = new JSONObject();
                     cardRequestObject.put("personID", personID);
                     JsonObjectRequest createCardJsonObjectRequest = new CBIAPIJsonObjectRequest(CBI_API_URL_CREATE_CARD, cardRequestObject, responseListener, cardCreateErrorListener);
@@ -125,8 +131,8 @@ public class CBIAPIRequestManager {
     public static final Map<String, String> cbiAPIRequestHeaders = new TreeMap<String, String>(){
         {
             put("Content-Type", "application/json");
-            put("Accept", "application/json");
-            put("Am-CBI-Kiosk", "true");
+            //put("Accept", "application/json");
+            put("Am-CBI-Kiosk", "kiosk-2019-04-10_Ez4XAfPwYUMNTauLHGM8zCP9");
         }
     };
 

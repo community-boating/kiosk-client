@@ -27,7 +27,7 @@ public class PrinterManager {
     );
 
     public static ICommandBuilder getCommandBuilder(){
-        return StarIoExt.createCommandBuilder(ModelCapability.getEmulation(printerSettings.getModelIndex()));
+        return StarIoExt.createCommandBuilder(StarIoExt.Emulation.EscPosMobile);
     }
 
     public static void sendCommands(Context context, ICommandBuilder builder, Communication.SendCallback mCallback) throws Throwable{

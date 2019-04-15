@@ -17,8 +17,4 @@ public class ProgressStateNewGuestWaiver extends ProgressState {
         return new ProgressStateNewGuestSignature();
     }
 
-    @Override
-    public boolean isProgressStateComplete(){
-        return true;
-    }
 }

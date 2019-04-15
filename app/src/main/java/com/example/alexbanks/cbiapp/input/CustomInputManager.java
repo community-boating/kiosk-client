@@ -1,7 +1,9 @@
 package com.example.alexbanks.cbiapp.input;
 
 import android.app.Activity;
+import android.util.Log;
 
+import com.example.alexbanks.cbiapp.input.listener.CustomInputProgressStateListener;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
 import java.util.LinkedList;
@@ -9,20 +11,37 @@ import java.util.List;
 
 public abstract class CustomInputManager {
 
-    private static List<EditTextCustomInput> customInputList = new LinkedList<>();
+    private static List<CustomInputProgressStateListener> customInputList = new LinkedList<>();
 
-    public static ProgressState activeProgressState = null;
+    private static ProgressState activeProgressState = null;
 
     public static void clearCustomInputs(){
         customInputList.clear();
     }
 
-    protected static void addCustomInput(EditTextCustomInput customInput){
+    protected static void addCustomInput(CustomInputProgressStateListener customInput){
         customInputList.add(customInput);
     }
 
-    public static List<EditTextCustomInput> getCustomInputs(){
+    public static void setActiveProgressState(ProgressState activeProgressState){
+        CustomInputManager.activeProgressState=activeProgressState;
+    }
+
+    public static ProgressState getActiveProgressState(){
+        if(activeProgressState == null)
+            Log.e("cbiapp error", "active progress was null, this should never happen");
+        return activeProgressState;
+    }
+
+    public static List<CustomInputProgressStateListener> getCustomInputs(){
         return customInputList;
+    }
+
+    public static void updateShowInputErrors(boolean hidden){
+        Log.d("errordatastuff", "derp : " + getCustomInputs().size());
+        for(CustomInputProgressStateListener customInput : getCustomInputs()){
+            customInput.updateProgressStateValidatorError(hidden);
+        }
     }
 
 }

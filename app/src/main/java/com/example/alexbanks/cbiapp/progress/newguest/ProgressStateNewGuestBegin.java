@@ -18,7 +18,4 @@ public class ProgressStateNewGuestBegin extends ProgressState {
         return new ProgressStateNewGuestName();
     }
 
-    @Override
-    public boolean isProgressStateComplete(){ return true;}
-
 }

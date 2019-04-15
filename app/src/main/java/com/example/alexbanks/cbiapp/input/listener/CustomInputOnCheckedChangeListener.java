@@ -15,6 +15,11 @@ public class CustomInputOnCheckedChangeListener extends CustomInputProgressState
     }
 
     @Override
+    public void updateProgressStateValidatorError(boolean hidden) {
+
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(buttonView instanceof ToggleButton){
             ToggleButton toggleButton = (ToggleButton)buttonView;

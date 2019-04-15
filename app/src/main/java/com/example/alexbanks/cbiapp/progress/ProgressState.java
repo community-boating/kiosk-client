@@ -25,7 +25,7 @@ public class ProgressState implements Parcelable {
         public ProgressState createFromParcel(Parcel source) {
             Class<? extends ProgressState> progressStateClass = (Class<? extends ProgressState>)source.readSerializable();
             int size = source.readInt();
-            Map<String, String> map = new TreeMap<String, String>();
+            Map<String, String> map = new TreeMap<>();
             for(int i = 0; i < size; i++){
                 String key = source.readString();
                 String value = source.readString();
@@ -132,7 +132,7 @@ public class ProgressState implements Parcelable {
         return null;
     }
 
-    public boolean isProgressStateComplete() {return false;}
+    //public boolean isProgressStateComplete() {return false;}
 
 
 

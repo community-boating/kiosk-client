@@ -24,6 +24,9 @@ import android.widget.EditText;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.input.CustomInputManager;
+import com.example.alexbanks.cbiapp.input.listener.CustomInputProgressStateListener;
+import com.example.alexbanks.cbiapp.input.listener.CustomInputTextWatcherListener;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValueValidator;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -101,7 +104,12 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         }
     }
     public void addTextViewsFromCustomInputManager(){
-       textViews.addAll(CustomInputManager.getCustomInputs());
+        for(CustomInputProgressStateListener valueValidator : CustomInputManager.getCustomInputs()){
+            if(valueValidator instanceof CustomInputTextWatcherListener){
+                CustomInputTextWatcherListener textValueValidator = (CustomInputTextWatcherListener)valueValidator;
+                textViews.add(textValueValidator.getInputRef());
+            }
+        }
     }
     public void addTextViews(Collection<View> views){ textViews.addAll(views); }
     public void addTextView(View v){
@@ -175,6 +183,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             if(activity instanceof BaseActivity){
                 BaseActivity baseActivity = (BaseActivity)activity;
                 baseActivity.nextProgress();
+                return;
             }
         }
         View focusCurrent = activity.getWindow().getCurrentFocus();
@@ -182,7 +191,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         EditText edittext = (EditText) focusCurrent;
         Editable editable = edittext.getText();
         int start = edittext.getSelectionStart();
-        if(primaryCode == KEY_CODE_DELETE){
+        if(primaryCode == KEY_CODE_DELETE && start > 0){
             editable.delete(start - 1, start);
         }else if(primaryCode == KEY_CODE_SHIFT){
             shiftStatus = !shiftStatus;

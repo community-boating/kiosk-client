@@ -18,9 +18,4 @@ public class ProgressStateNewGuestFinish extends ProgressState {
         return null;
     }
 
-    @Override
-    public boolean isProgressStateComplete(){
-        return true;
-    }
-
 }

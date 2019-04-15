@@ -10,9 +10,12 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
+import com.example.alexbanks.cbiapp.input.listener.CustomInputTextWatcherListener;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
-public class EditTextCustomInput extends AppCompatEditText implements TextWatcher {
+import java.lang.annotation.Retention;
+
+public class EditTextCustomInput extends AppCompatEditText{
 
     public static final int INPUT_TYPE_INTEGER=0;
     public static final int INPUT_TYPE_FLOAT=1;
@@ -23,29 +26,41 @@ public class EditTextCustomInput extends AppCompatEditText implements TextWatche
     public int inputType;
     public String progressStateVariableName;
 
+    CustomInputTextWatcherListener textWatcherListener;
+
     public EditTextCustomInput(Context context) {
         super(context);
-        this.addTextChangedListener(this);
-        CustomInputManager.addCustomInput(this);
+        textWatcherListener = new CustomInputTextWatcherListener(progressStateVariableName, this);
+        this.addTextChangedListener(textWatcherListener);
+        CustomInputManager.addCustomInput(textWatcherListener);
+        //CustomInputManager.addCustomInput(this);
     }
 
     public EditTextCustomInput(Context context, AttributeSet attrs) {
         super(context, attrs);
-        CustomInputManager.addCustomInput(this);
-        this.addTextChangedListener(this);
+        //CustomInputManager.addCustomInput(this);
+        //this.addTextChangedListener(this);
         loadAttributes(context, attrs);
-        initiateValueFromProgressState();
+        textWatcherListener = new CustomInputTextWatcherListener(progressStateVariableName, this);
+        this.addTextChangedListener(textWatcherListener);
+        CustomInputManager.addCustomInput(textWatcherListener);
     }
 
     public EditTextCustomInput(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        CustomInputManager.addCustomInput(this);
-        this.addTextChangedListener(this);
         loadAttributes(context, attrs);
-        initiateValueFromProgressState();
+        textWatcherListener = new CustomInputTextWatcherListener(progressStateVariableName, this);
+        this.addTextChangedListener(textWatcherListener);
+        CustomInputManager.addCustomInput(textWatcherListener);
     }
 
     @Override
+    public void onAttachedToWindow(){
+        super.onAttachedToWindow();
+        initiateValueFromProgressState();
+    }
+
+    /*@Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
     }
@@ -55,7 +70,7 @@ public class EditTextCustomInput extends AppCompatEditText implements TextWatche
 
     }
 
-    @Override
+    /*@Override
     public void afterTextChanged(Editable s) {
         String value = s.toString();
         ProgressState progressState = CustomInputManager.activeProgressState;
@@ -84,11 +99,10 @@ public class EditTextCustomInput extends AppCompatEditText implements TextWatche
             default:
                 progressState.put(progressStateVariableName, value);
         }
-    }
+    }*/
 
     private void initiateValueFromProgressState(){
-        ProgressState progressState = CustomInputManager.activeProgressState;
-        String value = progressState.get(progressStateVariableName);
+        String value = textWatcherListener.getProgressStateVariableValue();
         this.setText(value);
     }
 

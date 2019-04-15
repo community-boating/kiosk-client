@@ -86,6 +86,10 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         }
     }*/
 
+    public void showNotifyInputError(){
+
+    }
+
     public void handleNavButtonClickHelp(){
         Log.d("ffff", "help clicked");
     }
@@ -109,7 +113,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         eventConfiguration();
         //hideStatusNavBar();
         this.checkProgress();
-        CustomInputManager.activeProgressState=progress.getCurrentProgressState();
+        CustomInputManager.setActiveProgressState(progress.getCurrentProgressState());
         CustomInputManager.clearCustomInputs();
         Log.d("nullupdate", "has nav fragment " + this.hasNavFragment());
         //this.cbiAdminDeviceSample = CBIDeviceAdmin.getComponentName(this);
@@ -163,15 +167,13 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     This one checks to see if this is the right activity for the given progress state
      */
     public boolean nextProgress(){
-        //TODO remove true
-        if(this.progress.checkPreviousProgressStates() == -1 || true){
+        if(this.progress.checkPreviousProgressStates() == -1){
             this.progress.nextState();
             this.runActivityFromProgress(this.progress);
-            Log.d("something", "good happened");
             return true;
         }
         else{
-            Log.d("h", "well this is unfortunate");
+            CustomInputManager.updateShowInputErrors(false);
             return false;
         }
     }

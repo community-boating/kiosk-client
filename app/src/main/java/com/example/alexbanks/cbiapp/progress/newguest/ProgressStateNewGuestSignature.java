@@ -17,9 +17,4 @@ public class ProgressStateNewGuestSignature extends ProgressState {
     public ProgressState createNextProgressState() {
         return new ProgressStateNewGuestFinish();
     }
-
-    @Override
-    public boolean isProgressStateComplete(){
-        return true;
-    }
 }

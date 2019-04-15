@@ -2,7 +2,7 @@ package com.example.alexbanks.cbiapp.input.listener;
 
 import com.example.alexbanks.cbiapp.input.CustomInputManager;
 
-public class CustomInputProgressStateListener {
+public abstract class CustomInputProgressStateListener {
 
     String progressStateVariableName;
 
@@ -11,16 +11,16 @@ public class CustomInputProgressStateListener {
     }
 
     public void updateProgressStateVariableValue(String value){
-        if(CustomInputManager.activeProgressState!=null)
-            CustomInputManager.activeProgressState.put(progressStateVariableName, value);
+        if(value!=null)
+            CustomInputManager.getActiveProgressState().put(progressStateVariableName, value);
         else
-            CustomInputManager.activeProgressState.remove(value);
+            CustomInputManager.getActiveProgressState().remove(value);
     }
 
     public String getProgressStateVariableValue(){
-        if(CustomInputManager.activeProgressState!=null)
-            return CustomInputManager.activeProgressState.get(progressStateVariableName);
-        return null;
+        return CustomInputManager.getActiveProgressState().get(progressStateVariableName);
     }
+
+    public abstract void updateProgressStateValidatorError(boolean hidden);
 
 }
