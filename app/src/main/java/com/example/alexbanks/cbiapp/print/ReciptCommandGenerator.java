@@ -20,9 +20,9 @@ public class ReciptCommandGenerator {
         Date date = new Date();
         String dateString = dateFormat.format(date);
 
-        Bitmap logoImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.cbi_logo_horiz);
+        Bitmap logoImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.cbi_logo_guest);
         builder.beginDocument();
-        builder.append(("Community Boating Guest Ticket\n\n\n").getBytes());
+        //builder.append(("Community Boating Guest Ticket\n\n\n").getBytes());
         builder.appendBitmapWithAlignment(logoImage, true, 380, true, ICommandBuilder.AlignmentPosition.Center);
         builder.append(("\n").getBytes());
         builder.appendBarcodeWithAlignment(
@@ -33,9 +33,9 @@ public class ReciptCommandGenerator {
                 true,
                 ICommandBuilder.AlignmentPosition.Center
         );
-        builder.append(("\n\nGuest: " + name + "\n\n").getBytes());
+        builder.append(("\n\n" + name + "                   " + dateString + "\n\n").getBytes());
         //builder.append(("Take this ticket\nto the Dockhouse\nto complete your rental!\n\n\n").getBytes());
-        builder.append(("Printed: " + dateString + "\n\n").getBytes());
+        //builder.append(("Printed: " + dateString + "\n\n").getBytes());
         builder.appendUnitFeed(32);
 
 
