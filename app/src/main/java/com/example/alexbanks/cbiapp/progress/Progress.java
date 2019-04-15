@@ -117,7 +117,7 @@ public class Progress implements Parcelable {
 
     public static Progress createNewGuestProgress(){
         //return new Progress(new ProgressStateNewGuestBegin());
-        return new Progress(new ProgressStateNewGuestFinish());
+        return new Progress(new ProgressStateNewGuestEmail());
     }
 
     @Override
