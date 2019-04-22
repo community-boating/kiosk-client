@@ -96,7 +96,7 @@ public class CBIAPIRequestManager {
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
         Calendar calendar = Calendar.getInstance();
         calendar.set(progressStateNewGuestDOB.getDOBYear(), progressStateNewGuestDOB.getDOBMonth() - 1, progressStateNewGuestDOB.getDOBDay());
-        
+
         String dobString = dateFormat.format(calendar.getTime());
         //String dobString = "02/11/1983";
         requestObject.put("dob", dobString);
