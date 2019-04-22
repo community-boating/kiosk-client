@@ -55,7 +55,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         keyboardView = activity.findViewById(viewId);
         keyboardView.setKeyboard(this);
         keyboardView.setOnKeyboardActionListener(this);
-        keyboardView.setPreviewEnabled(true);
+        keyboardView.setPreviewEnabled(false);
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         updateShiftStatus();
         textViews = new LinkedList<>();
@@ -179,26 +179,41 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         //KeyEvent event = new KeyEvent() {};
         //manager.dispatchKeyEventFromInputMethod(this.keyboardView, event);
+        View focusCurrent = activity.getWindow().getCurrentFocus();
         if(primaryCode == KEY_CODE_NEXT) {
             if(activity instanceof BaseActivity){
+                if(focusCurrent!=null) {
+                    if(focusCurrent instanceof EditText){
+                        EditText editText = (EditText)focusCurrent;
+                        Log.d("derp", "derpime : " + editText.getImeOptions());
+                    }
+                    int id = focusCurrent.getNextFocusForwardId();
+                    if(id >= 0){
+                        View nextFocus = activity.findViewById(id);
+                        nextFocus.requestFocus();
+                        return;
+                    }else{
+                        Log.d("derp", "not good");
+                    }
+                }
                 BaseActivity baseActivity = (BaseActivity)activity;
                 baseActivity.nextProgress();
                 return;
             }
         }
-        View focusCurrent = activity.getWindow().getCurrentFocus();
         if(focusCurrent == null || !(focusCurrent instanceof EditText)) return;
         EditText edittext = (EditText) focusCurrent;
         Editable editable = edittext.getText();
         int start = edittext.getSelectionStart();
-        if(primaryCode == KEY_CODE_DELETE && start > 0){
-            editable.delete(start - 1, start);
+        if(primaryCode == KEY_CODE_DELETE){
+            if(start > 0)
+                editable.delete(start - 1, start);
         }else if(primaryCode == KEY_CODE_SHIFT){
             shiftStatus = !shiftStatus;
             updateShiftStatus();
         }else{
             char c = (char)primaryCode;
-            if(c >= 'a' && c <= 'z' && shiftStatus)
+            if((c >= 'a') && (c <= 'z') && shiftStatus)
                 c = Character.toUpperCase(c);
             editable.append(c);
         }

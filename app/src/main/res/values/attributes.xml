@@ -23,4 +23,7 @@
     <declare-styleable name="SpinnerCustomInput">
         <attr name="progressStateVariable"/>
     </declare-styleable>
+    <declare-styleable name="CustomKeyboardViewNew">
+        <attr name="mDerp" format="dimension"/>
+    </declare-styleable>
 </resources>

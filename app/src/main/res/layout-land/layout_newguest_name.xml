@@ -101,6 +101,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView>
+    <com.example.alexbanks.cbiapp.keyboardnew.CustomKeyboardViewNew
+        android:layout_height="match_parent"
+        android:layout_width="500px"
+        app:mDerp="20dp">
+    </com.example.alexbanks.cbiapp.keyboardnew.CustomKeyboardViewNew>
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_name"
         style="@style/custom_keypad"
