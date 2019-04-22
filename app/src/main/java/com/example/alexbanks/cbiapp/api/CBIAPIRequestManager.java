@@ -31,6 +31,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -79,6 +83,8 @@ public class CBIAPIRequestManager {
     Pass the function a progress with all the user data populated and two callbacks
      */
 
+    static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
     public void callCreateNewUserAndCard(Progress completeUserProgress, final Response.Listener<JSONObject> responseListener, final Response.ErrorListener errorListener) throws JSONException{
         String tempTestFlag = "_FLAG_DEV_12124532";
         JSONObject requestObject = new JSONObject();
@@ -88,9 +94,13 @@ public class CBIAPIRequestManager {
         ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
         requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
-        String dobString = (progressStateNewGuestDOB.getDOBMonth()-1) + "/" + progressStateNewGuestDOB.getDOBDay() + "/" + progressStateNewGuestDOB.getDOBYear();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(progressStateNewGuestDOB.getDOBYear(), progressStateNewGuestDOB.getDOBMonth() - 1, progressStateNewGuestDOB.getDOBDay());
+        
+        String dobString = dateFormat.format(calendar.getTime());
         //String dobString = "02/11/1983";
         requestObject.put("dob", dobString);
+
         Log.d("derpderpa", requestObject.toString());
         final Response.ErrorListener cardCreateErrorListener = new Response.ErrorListener(){
 
