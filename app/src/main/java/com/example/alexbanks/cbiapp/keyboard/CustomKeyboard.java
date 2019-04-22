@@ -11,7 +11,9 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextDirectionHeuristic;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
@@ -58,6 +60,8 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         keyboardView.setPreviewEnabled(false);
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         updateShiftStatus();
+        if(activity.getCurrentFocus() != null)
+            handleFocusChanged(activity.getCurrentFocus());
         textViews = new LinkedList<>();
         for(Key k : this.getKeys()){
             //k.popupResId = R.xml.custom_keypad_popup;
@@ -122,22 +126,29 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) hideSoftwareKeyboard(v);
-            }
-        };
-        View.OnClickListener clickListener = new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if(v.hasFocus()) hideSoftwareKeyboard(v);
+                //Log.d("derpderp", "derpderp : ");
+                if(hasFocus){
+                    handleFocusChanged(v);
+                }
             }
         };
         for(View v : textViews){
-            v.setOnFocusChangeListener(focusChangeListener);
-            v.setOnClickListener(clickListener);
-            if(v instanceof EditText){
-                //((EditText) v).setInputType(InputType.TYPE_NULL);
-                //((EditText)v).setShowSoftInputOnFocus(false);
+            if(v instanceof EditText) {
+                EditText editText = (EditText)v;
+                if((editText.getInputType() & InputType.TYPE_TEXT_VARIATION_PERSON_NAME) == InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
+                    editText.setOnFocusChangeListener(focusChangeListener);
             }
+        }
+    }
+    public void handleFocusChanged(View v){
+        EditText editText = (EditText)v;
+        String text = editText.getText().toString();
+        if(text==null||text.isEmpty()){
+            shiftStatus=true;
+            updateShiftStatus();
+        }else{
+            shiftStatus=false;
+            updateShiftStatus();
         }
     }
     public void hideSoftwareKeyboard(View v){
