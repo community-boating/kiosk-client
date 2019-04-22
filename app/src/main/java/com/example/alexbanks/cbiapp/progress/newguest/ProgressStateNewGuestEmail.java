@@ -31,6 +31,10 @@ public class ProgressStateNewGuestEmail extends ProgressState {
     public Class<? extends Activity> getActivityClass(){ return NewGuestEmailActivity.class; }
 
     @Override
-    public ProgressState createNextProgressState() { return new ProgressStateEmergencyContactName(); }
+    public ProgressState createNextProgressState() {
+        //return new ProgressStateEmergencyContactName();
+        //TODO temporary
+        return new ProgressStateNewGuestWaiver();
+    }
 
 }

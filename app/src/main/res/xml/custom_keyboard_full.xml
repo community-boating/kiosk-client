@@ -21,7 +21,8 @@
         <Key android:keyLabel="delete" android:codes="55551" android:isRepeatable="true"/>
     </Row>
     <Row>
-        <Key android:keyLabel="q" android:horizontalGap="70dp"/>
+        <Key android:keyLabel="\@" android:horizontalGap="6dp"/>
+        <Key android:keyLabel="q"/>
         <Key android:keyLabel="w"/>
         <Key android:keyLabel="e"/>
         <Key android:keyLabel="r"/>

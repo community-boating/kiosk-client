@@ -88,8 +88,8 @@ public class CBIAPIRequestManager {
         ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
         requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
-        //String dobString = progressStateNewGuestDOB.getDOBMonth() + "/" + progressStateNewGuestDOB.getDOBDay() + "/" + progressStateNewGuestDOB.getDOBYear();
-        String dobString = "02/11/1983";
+        String dobString = (progressStateNewGuestDOB.getDOBMonth()-1) + "/" + progressStateNewGuestDOB.getDOBDay() + "/" + progressStateNewGuestDOB.getDOBYear();
+        //String dobString = "02/11/1983";
         requestObject.put("dob", dobString);
         Log.d("derpderpa", requestObject.toString());
         final Response.ErrorListener cardCreateErrorListener = new Response.ErrorListener(){

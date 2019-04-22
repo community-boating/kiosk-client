@@ -42,15 +42,15 @@ public class NewGuestEmailActivity extends BaseActivity<ProgressStateNewGuestEma
     @Override
     public void onAttachedToWindow(){
         super.onAttachedToWindow();
-        View parent = findViewById(R.id.root_layout);
-        view = new CustomKeyboardPreviewPopupWindow(this);
-        window = new CustomKeyboardPopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        //View parent = findViewById(R.id.root_layout);
+        //view = new CustomKeyboardPreviewPopupWindow(this);
+        //window = new CustomKeyboardPopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         //view.setFitsSystemWindows(false);
         //view.getRootView().setFitsSystemWindows(false);
         //parent.setFitsSystemWindows(false);
         try {
-            window.showPopupView(parent, Gravity.NO_GRAVITY, 0, 0);
-            window.hide();
+        //    window.showPopupView(parent, Gravity.NO_GRAVITY, 0, 0);
+        //    window.hide();
             Log.d("done now", "done now");
         } catch (Throwable throwable) {
             throwable.printStackTrace();
@@ -66,11 +66,11 @@ public class NewGuestEmailActivity extends BaseActivity<ProgressStateNewGuestEma
         if(e.getAction() == MotionEvent.ACTION_DOWN){
             tracker.clear();
             tracker.addMovement(e);
-            view.x = (int)e.getRawX();
-            view.y = (int)e.getRawY();
-            window.show();
+            //view.x = (int)e.getRawX();
+            //view.y = (int)e.getRawY();
+            //window.show();
         }else if(e.getAction() == MotionEvent.ACTION_UP){
-            window.hide();
+            //window.hide();
             tracker.addMovement(e);
         }
         else if(e.getAction() == MotionEvent.ACTION_MOVE){
@@ -80,9 +80,9 @@ public class NewGuestEmailActivity extends BaseActivity<ProgressStateNewGuestEma
             float lagOffset = .12f;
             float xOff = Math.max(Math.min(tracker.getXVelocity() * lagOffset, maxOff), -maxOff);
             float yOff = Math.max(Math.min(tracker.getYVelocity() * lagOffset, maxOff), -maxOff);
-            view.x = (int)(e.getRawX() + xOff);
-            view.y = (int)(e.getRawY() + yOff);
-            view.postInvalidateOnAnimation();
+            //view.x = (int)(e.getRawX() + xOff);
+            //view.y = (int)(e.getRawY() + yOff);
+            //view.postInvalidateOnAnimation();
         }
         //window.updatePosition((int)e.getRawX(), (int)e.getRawY());
         return r;

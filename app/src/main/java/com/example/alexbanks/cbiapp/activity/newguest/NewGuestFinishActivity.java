@@ -40,14 +40,14 @@ public class NewGuestFinishActivity extends BaseActivity {
 
     TextView textViewLoading;
 
-    Spinner emulationSpinner;
+    //Spinner emulationSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newguest_finish);
         textViewLoading = (TextView)findViewById(R.id.textview_loading);
-        emulationSpinner = (Spinner)findViewById(R.id.emulationSpinner);
+        //emulationSpinner = (Spinner)findViewById(R.id.emulationSpinner);
     }
 
     @Override
@@ -57,9 +57,10 @@ public class NewGuestFinishActivity extends BaseActivity {
         for(ICommandBuilder.BarcodeWidth e : ICommandBuilder.BarcodeWidth.values()){
             spinnerArray.add(e.name());
         }
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, 0, spinnerArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        emulationSpinner.setAdapter(adapter);
+        performAction();
+        //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, 0, spinnerArray);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //emulationSpinner.setAdapter(adapter);
     }
 
     public void handleButtonClick(View v){
@@ -71,7 +72,7 @@ public class NewGuestFinishActivity extends BaseActivity {
     public void doPrintReceipt(Long cardNumber, String fullName){
         textViewLoading.setText("Starting the printing process...");
         //PrinterManager manager = PrinterManager.getInstance(this);
-        ICommandBuilder.BarcodeWidth width = ICommandBuilder.BarcodeWidth.values()[emulationSpinner.getSelectedItemPosition()];
+        //ICommandBuilder.BarcodeWidth width = ICommandBuilder.BarcodeWidth.values()[emulationSpinner.getSelectedItemPosition()];
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
         ReciptCommandGenerator.generatePrintReciptCommands(this, builder, fullName, Long.toString(cardNumber, 10));

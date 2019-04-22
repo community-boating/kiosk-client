@@ -67,7 +67,9 @@ public class ProgressStateNewGuestDOB extends ProgressState {
 
     @Override
     public ProgressState createNextProgressState() {
-        return new ProgressStateNewGuestPhone();
+        //return new ProgressStateNewGuestPhone();
+        //TODO temporary
+        return new ProgressStateNewGuestEmail();
     }
 
 }
