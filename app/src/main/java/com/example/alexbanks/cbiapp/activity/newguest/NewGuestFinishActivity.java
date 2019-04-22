@@ -3,6 +3,7 @@ package com.example.alexbanks.cbiapp.activity.newguest;
 import android.arch.core.util.Function;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,15 @@ public class NewGuestFinishActivity extends BaseActivity {
 
     //Spinner emulationSpinner;
 
+    Handler resetHandler = new Handler();
+
+    Runnable resetProgressHandler = new Runnable() {
+        @Override
+        public void run() {
+            NewGuestFinishActivity.this.resetNewGuestProgress();
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -58,6 +68,8 @@ public class NewGuestFinishActivity extends BaseActivity {
             spinnerArray.add(e.name());
         }
         performAction();
+        //resetHandler.removeCallbacks(resetProgressHandler);
+        resetHandler.postDelayed(resetProgressHandler, 15000);
         //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, 0, spinnerArray);
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //emulationSpinner.setAdapter(adapter);

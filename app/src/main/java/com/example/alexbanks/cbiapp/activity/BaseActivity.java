@@ -188,8 +188,12 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
                 this.runActivityFromProgress(this.progress);
             }
         }else{
-            this.runActivityFromProgress(Progress.createNewGuestProgress());
+            resetNewGuestProgress();
         }
+    }
+
+    public void resetNewGuestProgress(){
+        this.runActivityFromProgress(Progress.createNewGuestProgress());
     }
 
     public boolean loadProgress(){
