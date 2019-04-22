@@ -39,9 +39,9 @@ public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> 
         //setContentView(R.layout.layout_newguest_dob);
         setContentView(R.layout.layout_newguest_dob);
 
-        spinnerDobDay = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_day);
-        spinnerDobMonth = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_month);
-        spinnerDobYear = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_year);
+        //spinnerDobDay = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_day);
+        //spinnerDobMonth = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_month);
+        //spinnerDobYear = (SpinnerCustomInput)findViewById(R.id.new_guest_dob_year);
 
         List<String> months = Arrays.asList(getResources().getStringArray(R.array.act_4_birthday_months));
         Date date = new Date();
@@ -58,18 +58,14 @@ public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> 
             days.add(Integer.toString(i, 10));
         }
 
-        spinnerDobDay.setAdapterFromList(days);
-        spinnerDobMonth.setAdapterFromList(months);
-        spinnerDobYear.setAdapterFromList(years);
+        //spinnerDobDay.setAdapterFromList(days);
+        //spinnerDobMonth.setAdapterFromList(months);
+        //spinnerDobYear.setAdapterFromList(years);
 
-        //CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_NUMBER_PAD, R.id.custom_keyboard_view_dob);
-        //customKeyboard.addTextViewsFromCustomInputManager();
-        //customKeyboard.showCustomKeyboard();
-        //customKeyboard.setTextViewFocuses();
-    }
-
-    public void onContinueClick(View v){
-        this.nextProgress();
+        CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_NUMBER_PAD, R.id.custom_keyboard_view_dob);
+        customKeyboard.addTextViewsFromCustomInputManager();
+        customKeyboard.showCustomKeyboard();
+        customKeyboard.setTextViewFocuses();
     }
 
     @Override

@@ -6,7 +6,7 @@
     android:background="@color/backgroundWhite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="false">
 
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_3"
@@ -80,7 +80,9 @@
         app:variableType="Integer"
         app:validator="name"
         app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_2"
-        app:layout_constraintTop_toTopOf="@+id/textView11" />
+        app:layout_constraintTop_toTopOf="@+id/textView11">
+        <requestFocus></requestFocus>
+    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
     <FrameLayout
         android:id="@+id/layout_newguest"

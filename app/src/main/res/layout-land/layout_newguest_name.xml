@@ -38,7 +38,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/new_guest_name_last"
         app:progressStateVariable="first_name"
-        app:variableType="String"/>
+        android:nextFocusForward="@id/new_guest_name_last"
+        app:variableType="String"><requestFocus></requestFocus></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"

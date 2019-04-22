@@ -68,7 +68,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newguest_email_desc_text" />
+        app:layout_constraintTop_toBottomOf="@+id/newguest_email_desc_text">
+        <requestFocus></requestFocus>
+    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
     <CheckBox
         android:id="@+id/new_guest_option_checkbox"

@@ -215,7 +215,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             char c = (char)primaryCode;
             if((c >= 'a') && (c <= 'z') && shiftStatus)
                 c = Character.toUpperCase(c);
-            editable.append(c);
+            editable.insert(start, "" + c);
         }
     }
 
