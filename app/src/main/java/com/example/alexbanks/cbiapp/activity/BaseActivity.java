@@ -100,7 +100,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     public void handleNavButtonClickCancel(){
-        Log.d("ffff", "cancel clicked");
+        this.resetNewGuestProgress();
     }
 
     @Override
