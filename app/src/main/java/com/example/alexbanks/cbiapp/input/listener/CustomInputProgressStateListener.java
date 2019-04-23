@@ -18,6 +18,8 @@ public abstract class CustomInputProgressStateListener {
     }
 
     public String getProgressStateVariableValue(){
+        if(CustomInputManager.getActiveProgressState() == null)
+            return null;
         return CustomInputManager.getActiveProgressState().get(progressStateVariableName);
     }
 

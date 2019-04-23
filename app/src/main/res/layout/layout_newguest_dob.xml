@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundWhite"
+    android:fitsSystemWindows="false">
+
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+        android:id="@+id/new_guest_dob_month"
+        style="@style/text_user_input"
+        android:imeOptions="flagNoExtractUi"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:ems="10"
+        android:hint="Month"
+        android:inputType="number"
+        android:textSize="32sp"
+        android:maxLength="2"
+        android:nextFocusForward="@id/new_guest_dob_day"
+        app:layout_constraintBottom_toBottomOf="@+id/textView9"
+        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintTop_toTopOf="@+id/textView9"
+        app:progressStateVariable="dob_month">
+        <requestFocus></requestFocus>
+    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+        android:id="@+id/new_guest_dob_day"
+        style="@style/text_user_input"
+        android:imeOptions="flagNoExtractUi"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:ems="10"
+        android:hint="Day"
+        android:inputType="number"
+        android:textSize="32sp"
+        android:maxLength="2"
+        android:nextFocusForward="@id/new_guest_dob_year"
+        app:layout_constraintBottom_toBottomOf="@+id/new_guest_dob_month"
+        app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
+        app:layout_constraintVertical_bias="0.0"
+        app:progressStateVariable="dob_day"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+        android:id="@+id/new_guest_dob_year"
+        style="@style/text_user_input"
+        android:imeOptions="flagNoExtractUi"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="Year"
+        android:inputType="number"
+        android:textSize="32sp"
+        android:maxLength="4"
+        app:layout_constraintBottom_toBottomOf="@+id/new_guest_dob_month"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
+        app:layout_constraintVertical_bias="0.0"
+        app:progressStateVariable="dob_year"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+
+    <TextView
+        android:id="@+id/textView9"
+        style="@style/text_title_secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:includeFontPadding="false"
+        android:text="@string/act4_birthday"
+        android:textSize="76sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="0.154" />
+
+    <TextView
+        android:id="@+id/textView8"
+        style="@style/text_title_primary_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:includeFontPadding="false"
+        android:text="@string/act1_desc"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="28dp" />
+
+    <FrameLayout
+        android:id="@+id/layout_newguest"
+        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="nav_fragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/custom_keyboard_view_dob"
+        style="@style/custom_keypad"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
+
+</android.support.constraint.ConstraintLayout>

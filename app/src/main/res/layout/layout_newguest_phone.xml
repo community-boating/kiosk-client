@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_newguest_phone_constraint"
+    android:background="@color/backgroundWhite"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false">
+
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+        android:id="@+id/new_guest_phone_3"
+        style="@style/text_user_input_small"
+        android:layout_width="145sp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="4"
+        app:progressStateVariable="phone_3"
+        app:variableType="Integer"
+        app:validator="name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_2" />
+
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+        android:id="@+id/new_guest_phone_2"
+        style="@style/text_user_input_small"
+        android:layout_width="125sp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="3"
+        app:progressStateVariable="phone_2"
+        app:variableType="Integer"
+        app:validator="name"
+        app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_3"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_1" />
+
+    <TextView
+        android:id="@+id/textView11"
+        style="@style/text_title_secondary"
+        android:layout_width="497dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/act5_phonenumber"
+        android:textSize="76sp"
+        app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/act_ng_phone_title" />
+
+    <TextView
+        android:id="@+id/act_ng_phone_title"
+        style="@style/text_title_primary_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+        android:id="@+id/new_guest_phone_1"
+        style="@style/text_user_input_small"
+        android:layout_width="125sp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="(     )"
+        android:inputType="number"
+        android:maxLength="3"
+        app:progressStateVariable="phone_1"
+        app:variableType="Integer"
+        app:validator="name"
+        app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_2"
+        app:layout_constraintTop_toTopOf="@+id/textView11">
+        <requestFocus></requestFocus>
+    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+
+    <FrameLayout
+        android:id="@+id/layout_newguest"
+        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="nav_fragment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.inputmethodservice.KeyboardView
+        android:id="@+id/custom_keyboard_view_phone"
+        style="@style/custom_keypad"
+        android:layout_width="300sp"
+        android:layout_height="300sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
+
+</android.support.constraint.ConstraintLayout>

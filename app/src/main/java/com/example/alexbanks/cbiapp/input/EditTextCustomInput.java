@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.input.listener.CustomInputTextWatcherListener;
 import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
+import com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
 import java.lang.annotation.Retention;
@@ -61,7 +62,8 @@ public class EditTextCustomInput extends AppCompatEditText{
         super.onAttachedToWindow();
         initiateValueFromProgressState();
         if(this.hasFocus()){
-            CustomKeyboard.instance.handleFocusChanged(this);
+            if(CustomKeyboard.instance!=null)
+                CustomKeyboard.instance.handleFocusChanged(this);
         }
     }
 
@@ -107,8 +109,15 @@ public class EditTextCustomInput extends AppCompatEditText{
     }*/
 
     private void initiateValueFromProgressState(){
+        /*if(textWatcherListener==null){
+            this.setText(new String());
+            return;
+        }
         String value = textWatcherListener.getProgressStateVariableValue();
-        this.setText(value);
+        if(value != null)
+            this.setText(value);
+        else
+            this.setText(new String());*/
     }
 
     private void loadAttributes(Context context, AttributeSet attrs){

@@ -45,6 +45,8 @@ public class CustomInputTextWatcherListener extends CustomInputProgressStateList
     @Override
     public void afterTextChanged(Editable s) {
         String value = s.toString();
+        if(CustomInputManager.getActiveProgressState()==null)
+            return;
         CustomInputManager.getActiveProgressState().put(progressStateVariableName, value);
         checkCompletion(value.length());
     }
