@@ -11,10 +11,10 @@ public class ProgressStateDOBYearValueValidator implements ProgressStateValueVal
         }catch(Exception e){
             return "Enter a valid year";
         }
-        if(yearValue >= 2000)
-            return "You must be over 18";
-        if(yearValue < 1900)
-            return "Enter year as 19xx";
+        //if(yearValue >= 2000)
+        //    return "You must be over 18";
+        if(yearValue > 2100 || yearValue < 1900)
+            return "Enter year as 19xx or 20xx";
         return null;
     }
 }

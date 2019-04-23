@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.input.listener.CustomInputTextWatcherListener;
+import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
 import java.lang.annotation.Retention;
@@ -59,6 +60,9 @@ public class EditTextCustomInput extends AppCompatEditText{
     public void onAttachedToWindow(){
         super.onAttachedToWindow();
         initiateValueFromProgressState();
+        if(this.hasFocus()){
+            CustomKeyboard.instance.handleFocusChanged(this);
+        }
     }
 
     /*@Override

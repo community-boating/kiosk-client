@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_opaque"
     android:fitsSystemWindows="true"
-    tools:context=".activity.newguest.NewGuestBeginActivity">
+    tools:context=".activity.newguest.NewGuestBeginActivity"
+    android:onClick="handleBeginClick">
 
     <TextView
         android:id="@+id/textView"

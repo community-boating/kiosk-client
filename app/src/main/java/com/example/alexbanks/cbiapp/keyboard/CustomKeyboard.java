@@ -47,11 +47,15 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
     private boolean shiftStatus=false;
     private int mode;
 
+    //TODO probably not have this forever
+    public static CustomKeyboard instance;
+
     private Activity activity;
     private KeyboardView keyboardView;
     private List<View> textViews;
     public CustomKeyboard(Activity activity, int mode, int viewId){
         super(activity, mode==KEYBOARD_MODE_FULL?R.xml.custom_keyboard_full:mode==KEYBOARD_MODE_SIMPLE?R.xml.custom_keyboard:R.xml.custom_keypad);
+        instance=this;
         this.activity = activity;
         this.mode=mode;
         keyboardView = activity.findViewById(viewId);
@@ -60,8 +64,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         keyboardView.setPreviewEnabled(false);
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         updateShiftStatus();
-        if(activity.getCurrentFocus() != null)
-            handleFocusChanged(activity.getCurrentFocus());
         textViews = new LinkedList<>();
         for(Key k : this.getKeys()){
             //k.popupResId = R.xml.custom_keypad_popup;
@@ -135,15 +137,14 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         for(View v : textViews){
             if(v instanceof EditText) {
                 EditText editText = (EditText)v;
-                if((editText.getInputType() & InputType.TYPE_TEXT_VARIATION_PERSON_NAME) == InputType.TYPE_TEXT_VARIATION_PERSON_NAME)
-                    editText.setOnFocusChangeListener(focusChangeListener);
+                editText.setOnFocusChangeListener(focusChangeListener);
             }
         }
     }
     public void handleFocusChanged(View v){
         EditText editText = (EditText)v;
         String text = editText.getText().toString();
-        if(text==null||text.isEmpty()){
+        if(text==null||text.isEmpty() && (editText.getInputType() & InputType.TYPE_TEXT_VARIATION_PERSON_NAME) == InputType.TYPE_TEXT_VARIATION_PERSON_NAME){
             shiftStatus=true;
             updateShiftStatus();
         }else{
