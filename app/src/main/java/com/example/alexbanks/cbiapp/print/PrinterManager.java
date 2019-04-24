@@ -3,6 +3,7 @@ package com.example.alexbanks.cbiapp.print;
 import android.content.Context;
 import android.util.Printer;
 
+import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarPrinterStatus;
@@ -34,11 +35,14 @@ public class PrinterManager {
         //StarIoExt.Emulation emulation = ModelCapability.getEmulation(printerSettings.getModelIndex());
         //int paperSize = printerSettings.getPaperSize();
         List<PortInfo> portInfos = StarIOPort.searchPrinter("BT:", context);
-        if(portInfos.isEmpty())
-            throw new RuntimeException("No printer ports found");
-        PortInfo info = portInfos.get(0);
 
-        Communication.sendCommands(context, builder.getCommands(), info.getPortName(), printerSettings.getPortSettings(), 10000, context, mCallback);     // 10000mS!!!
+        String bluetoothPort=AdminConfigProperties.getCBIPrinterBluetoothAddress();
+
+        //if(portInfos.isEmpty())
+        //    throw new RuntimeException("No printer ports found");
+        //PortInfo info = portInfos.get(0);
+
+        Communication.sendCommands(context, builder.getCommands(), bluetoothPort, printerSettings.getPortSettings(), 10000, context, mCallback);     // 10000mS!!!
     }
 
 }

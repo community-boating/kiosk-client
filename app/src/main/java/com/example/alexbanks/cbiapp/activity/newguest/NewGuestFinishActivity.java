@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.api.CBIAPIRequestManager;
+import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.print.PrinterManager;
 import com.example.alexbanks.cbiapp.print.ReciptCommandGenerator;
 import com.example.alexbanks.cbiapp.progress.Progress;
@@ -55,6 +56,7 @@ public class NewGuestFinishActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        AdminConfigProperties.loadProperties(this);
         setContentView(R.layout.layout_newguest_finish);
         textViewLoading = (TextView)findViewById(R.id.textview_loading);
         //emulationSpinner = (Spinner)findViewById(R.id.emulationSpinner);

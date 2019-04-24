@@ -26,4 +26,7 @@
     <declare-styleable name="CustomKeyboardViewNew">
         <attr name="mDerp" format="dimension"/>
     </declare-styleable>
+    <declare-styleable name="AdminConfigPropertyEditText">
+        <attr name="adminConfigPropertyName" format="string"/>
+    </declare-styleable>
 </resources>

@@ -66,7 +66,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         keyboardView.setKeyboard(this);
         keyboardView.setOnKeyboardActionListener(this);
         keyboardView.setPreviewEnabled(false);
-        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        updatePreventSoftwareKeyboard(true);
         updateShiftStatus();
         textViews = new LinkedList<>();
         for(Key k : this.getKeys()){
@@ -76,6 +76,12 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             Log.d("keyval", "value: " + k.label + ":" + k.codes.length + ":" + k.codes[0]);
         }
         initializeKeys();
+    }
+    public void updatePreventSoftwareKeyboard(boolean preventSoftwareKeyboard){
+        if(preventSoftwareKeyboard)
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        else
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
     }
     public static final Rect minimumKeyboardRes=new Rect(0,0,800,400);
     private static DisplayMetrics displayMetrics = new DisplayMetrics();

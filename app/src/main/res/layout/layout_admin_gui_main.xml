@@ -13,7 +13,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="600dp">
+            android:minHeight="900dp">
 
             <TextView
                 android:id="@+id/textView12"
@@ -43,24 +43,21 @@
                     android:layout_margin="16dp"
                     android:text="CBI API key management"
                     android:textSize="16sp"></TextView>
-                <TextView
-                    android:id="@+id/admin_gui_cbi_api_key_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text=""
-                    android:textSize="16sp"
-                    android:visibility="invisible"></TextView>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:orientation="horizontal">
 
+                    <EditText
+                        android:id="@+id/admin_gui_cbi_api_key_edit_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="448sp"/>
                     <Button
                         android:id="@+id/button7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:onClick="handleCBIAPIKeySetClick"
                         android:text="Set Key" />
 
@@ -68,22 +65,45 @@
                         android:id="@+id/button8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:onClick="handleCBIAPIKeyGetClick"
                         android:text="Get Key" />
-
                     <Button
                         android:id="@+id/button9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:onClick="handleCBIAPIKeySetRandomClick"
                         android:text="Set Random Key" />
+                    <TextView
+                        android:id="@+id/admin_gui_cbi_api_key_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:text=""
+                        android:textSize="16sp"
+                        android:visibility="invisible"></TextView>
                 </LinearLayout>
-                <EditText
-                    android:id="@+id/admin_gui_cbi_api_key_edit_text"
-                    android:layout_width="400dp"
-                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:orientation="horizontal">
+                    <com.example.alexbanks.cbiapp.config.AdminConfigPropertyEditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="448sp"
+                        app:adminConfigPropertyName="cbi.api.url"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:orientation="horizontal">
+                    <com.example.alexbanks.cbiapp.config.AdminConfigPropertyEditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="448sp"
+                        app:adminConfigPropertyName="cbi.printer.bluetooth.address"/>
+                </LinearLayout>
             </LinearLayout>
 
             <Button

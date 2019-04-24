@@ -16,6 +16,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.alexbanks.cbiapp.activity.AdminGUIActivity;
 import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
@@ -41,8 +42,8 @@ import java.util.TreeMap;
 
 public class CBIAPIRequestManager {
 
-    public static final String CBI_API_URL_CREATE_USER = "https://api-dev.community-boating.org/api/fo-kiosk/create-person";
-    public static final String CBI_API_URL_CREATE_CARD = "https://api-dev.community-boating.org/api/fo-kiosk/create-card";
+    public static final String CBI_API_URL_CREATE_USER = "/fo-kiosk/create-person";
+    public static final String CBI_API_URL_CREATE_CARD = "/fo-kiosk/create-card";
 
     private Context context;
     private RequestQueue requestQueue;
@@ -120,7 +121,7 @@ public class CBIAPIRequestManager {
                     personID = response.getLong("personID");
                     JSONObject cardRequestObject = new JSONObject();
                     cardRequestObject.put("personID", personID);
-                    JsonObjectRequest createCardJsonObjectRequest = new CBIAPIJsonObjectRequest(CBI_API_URL_CREATE_CARD, cardRequestObject, responseListener, cardCreateErrorListener);
+                    JsonObjectRequest createCardJsonObjectRequest = new CBIAPIJsonObjectRequest(AdminConfigProperties.getPropertyCbiApiUrl() + CBI_API_URL_CREATE_CARD, cardRequestObject, responseListener, cardCreateErrorListener);
                     getRequestQueue().add(createCardJsonObjectRequest);
                 }catch(JSONException e){
                     Log.e("api error", "api error happened");
@@ -136,7 +137,7 @@ public class CBIAPIRequestManager {
                 Log.e("api error", "user creation failed");
             }
         };
-        JsonObjectRequest jsonObjectRequest = new CBIAPIJsonObjectRequest(CBI_API_URL_CREATE_USER, requestObject, userCreateListener, userCreateErrorListener);
+        JsonObjectRequest jsonObjectRequest = new CBIAPIJsonObjectRequest(AdminConfigProperties.getPropertyCbiApiUrl() + CBI_API_URL_CREATE_USER, requestObject, userCreateListener, userCreateErrorListener);
         getRequestQueue().add(jsonObjectRequest);
     }
 

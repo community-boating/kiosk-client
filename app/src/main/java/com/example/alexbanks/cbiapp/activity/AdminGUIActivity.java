@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
+import com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,11 +42,11 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
 
     TextView passwordText;
 
-
-
     TextView cbiAPIKeyText;
 
     EditText cbiAPIKeyEditText;
+
+    CustomKeyboard customKeyboard;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -54,10 +55,15 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         this.setContentView(R.layout.layout_admin_gui);
         //this.setContentView(R.layout.layout_admin_gui_main);
         //if(true)return;
+
         loadAdminPassword();
 
         passwordInput=findViewById(R.id.admin_gui_password_input);
         passwordText=findViewById(R.id.admin_gui_password_input_text);
+
+        //hasValidPassword=true;
+        //setContentView(R.layout.layout_admin_gui_main);
+        //getMainComponents();
 
         if(!hasPasswordSet){
             setPasswordText("No Admin password set, enter one now to complete");
@@ -65,7 +71,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
             setPasswordText("Enter Admin password");
         }
 
-        CustomKeyboard customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_FULL, R.id.custom_keyboard_view_admin_gui);
+        customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_FULL, R.id.custom_keyboard_view_admin_gui);
         //customKeyboard.addTextView(emailText);
         //customKeyboard.addTextViewsFromCustomInputManager();
         customKeyboard.setEnterListener(this);
@@ -138,8 +144,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     }
 
 
-    //TODO check this code
-    private void checkAdminReady(){
+    public void checkAdminReady(){
         if(!this.hasValidPassword)
             throw new RuntimeException("Password has not been entered");
     }
@@ -210,8 +215,10 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
                 return true;
             }
             try {
-                boolean valid = validatePassword(password.toCharArray(), passwordSalt, adminPassword);
+                char[] passwordCharArray=password.toCharArray();
+                boolean valid = validatePassword(passwordCharArray, passwordSalt, adminPassword);
                 if(valid){
+                    customKeyboard.updatePreventSoftwareKeyboard(false);
                     setContentView(R.layout.layout_admin_gui_main);
                     hasValidPassword=true;
                     getMainComponents();
