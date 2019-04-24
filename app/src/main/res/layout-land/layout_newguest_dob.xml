@@ -10,20 +10,21 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_dob_month"
         style="@style/text_user_input"
-        android:imeOptions="flagNoExtractUi"
-        android:layout_width="100dp"
+        android:layout_width="151dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:ems="10"
         android:hint="Month"
+        android:imeOptions="flagNoExtractUi"
         android:inputType="number"
-        android:textSize="32sp"
         android:maxLength="2"
         android:nextFocusForward="@id/new_guest_dob_day"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="@+id/textView9"
         app:progressStateVariable="dob_month">
+
         <requestFocus></requestFocus>
     </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
@@ -49,19 +50,19 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_dob_year"
         style="@style/text_user_input"
-        android:imeOptions="flagNoExtractUi"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Year"
+        android:imeOptions="flagNoExtractUi"
         android:inputType="number"
-        android:textSize="32sp"
         android:maxLength="4"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="@+id/new_guest_dob_month"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
         app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
         app:layout_constraintVertical_bias="0.0"
@@ -72,7 +73,7 @@
         style="@style/text_title_secondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="144dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:includeFontPadding="false"
@@ -81,7 +82,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:layout_constraintVertical_bias="0.154" />
+        app:layout_constraintVertical_bias="0.034" />
 
     <TextView
         android:id="@+id/textView8"

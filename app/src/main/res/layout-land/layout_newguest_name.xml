@@ -44,7 +44,6 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input"
-        android:imeOptions="flagNoExtractUi"
         android:layout_width="wrap_content"
         android:layout_height="87dp"
         android:layout_marginStart="8dp"
@@ -53,13 +52,14 @@
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="@string/act3_name_last"
+        android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
         android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/new_guest_name_first"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36"
+        app:layout_constraintVertical_bias="0.256"
         app:progressStateVariable="last_name"
         app:variableType="String" />
 
@@ -87,19 +87,21 @@
         android:text="@string/act3_desc"
         android:textSize="76sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.338"
+        app:layout_constraintHorizontal_bias="0.253"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="378dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/layout_newguest"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.736">
 
     </com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView>
     <com.example.alexbanks.cbiapp.keyboardnew.CustomKeyboardViewNew
