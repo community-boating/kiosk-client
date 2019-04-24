@@ -16,6 +16,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
@@ -86,6 +87,7 @@ public class CBIAPIRequestManager {
     static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
     public void callCreateNewUserAndCard(Progress completeUserProgress, final Response.Listener<JSONObject> responseListener, final Response.ErrorListener errorListener) throws JSONException{
+        AdminConfigProperties.loadProperties(context);
         String tempTestFlag = "_FLAG_DEV_12124532";
         JSONObject requestObject = new JSONObject();
         ProgressStateNewGuestName progressStateNewGuestName = completeUserProgress.findByProgressStateType(ProgressStateNewGuestName.class);
@@ -138,14 +140,6 @@ public class CBIAPIRequestManager {
         getRequestQueue().add(jsonObjectRequest);
     }
 
-    public static final Map<String, String> cbiAPIRequestHeaders = new TreeMap<String, String>(){
-        {
-            put("Content-Type", "application/json");
-            //put("Accept", "application/json");
-            put("Am-CBI-Kiosk", "kiosk-2019-04-10_Ez4XAfPwYUMNTauLHGM8zCP9");
-        }
-    };
-
     public class CBIAPIJsonObjectRequest extends JsonObjectRequest{
 
         public CBIAPIJsonObjectRequest(int method, String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
@@ -158,6 +152,15 @@ public class CBIAPIRequestManager {
 
         @Override
         public Map<String, String> getHeaders(){
+            Map<String, String> cbiAPIRequestHeaders = new TreeMap<String, String>();
+            cbiAPIRequestHeaders.put("Content-Type", "application/json");
+            //put("Accept", "application/json");
+            if(AdminConfigProperties.hasCBIAPIKey()){
+                cbiAPIRequestHeaders.put("Am-CBI-Kiosk", AdminConfigProperties.getCBIAPIKey());
+            }else{
+                Log.w("cbiadmin", "cbi kiosk key not set, doing dev mode");
+                cbiAPIRequestHeaders.put("Am-CBI-Kiosk", "true");
+            }
             return cbiAPIRequestHeaders;
         }
     }

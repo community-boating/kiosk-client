@@ -2,6 +2,7 @@ package com.example.alexbanks.cbiapp.keyboard;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -24,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
+import com.example.alexbanks.cbiapp.activity.AdminGUIActivity;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.input.CustomInputManager;
 import com.example.alexbanks.cbiapp.input.listener.CustomInputProgressStateListener;
@@ -49,6 +51,8 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
 
     //TODO probably not have this forever
     public static CustomKeyboard instance;
+
+    private EnterListener enterListener;
 
     private Activity activity;
     private KeyboardView keyboardView;
@@ -116,6 +120,9 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
                 textViews.add(textValueValidator.getInputRef());
             }
         }
+    }
+    public void setEnterListener(EnterListener enterListener){
+        this.enterListener=enterListener;
     }
     public void addTextViews(Collection<View> views){ textViews.addAll(views); }
     public void addTextView(View v){
@@ -186,6 +193,8 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             keyboardView.setPreviewEnabled(true);
     }
 
+    private int hashtags=0;
+
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -193,6 +202,10 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         //manager.dispatchKeyEventFromInputMethod(this.keyboardView, event);
         View focusCurrent = activity.getWindow().getCurrentFocus();
         if(primaryCode == KEY_CODE_NEXT) {
+            if(enterListener != null){
+                if(enterListener.handleEnter())
+                    return;
+            }
             if(activity instanceof BaseActivity){
                 if(focusCurrent!=null) {
                     if(focusCurrent instanceof EditText){
@@ -217,6 +230,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         EditText edittext = (EditText) focusCurrent;
         Editable editable = edittext.getText();
         int start = edittext.getSelectionStart();
+        boolean wasHashtag=false;
         if(primaryCode == KEY_CODE_DELETE){
             if(start > 0)
                 editable.delete(start - 1, start);
@@ -225,6 +239,16 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             updateShiftStatus();
         }else{
             char c = (char)primaryCode;
+            //TODO janky code for admin panel access
+            if(c == '#'){
+                hashtags++;
+                wasHashtag=true;
+                if(hashtags>=5){
+                    hashtags=0;
+                    Intent adminIntent = new Intent(activity, AdminGUIActivity.class);
+                    activity.startActivity(adminIntent);
+                }
+            }
             if((c >= 'a') && (c <= 'z') && shiftStatus) {
                 c = Character.toUpperCase(c);
                 shiftStatus=false;
@@ -232,6 +256,8 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             }
             editable.insert(start, "" + c);
         }
+        if(!wasHashtag)
+            hashtags=0;
     }
 
     @Override
@@ -258,4 +284,9 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
     public void swipeUp() {
 
     }
+
+    public static interface EnterListener {
+        public boolean handleEnter();
+    }
+
 }
