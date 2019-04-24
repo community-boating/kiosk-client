@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_newguest_phone_constraint"
-    android:background="@color/backgroundWhite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundWhite"
     android:fitsSystemWindows="false">
 
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
@@ -17,11 +17,11 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="4"
-        app:progressStateVariable="phone_3"
-        app:variableType="Integer"
-        app:validator="name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_2" />
+        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_2"
+        app:progressStateVariable="phone_3"
+        app:validator="name"
+        app:variableType="Integer" />
 
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_2"
@@ -32,11 +32,11 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="3"
-        app:progressStateVariable="phone_2"
-        app:variableType="Integer"
-        app:validator="name"
         app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_3"
-        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_1" />
+        app:layout_constraintTop_toTopOf="@+id/new_guest_phone_1"
+        app:progressStateVariable="phone_2"
+        app:validator="name"
+        app:variableType="Integer" />
 
     <TextView
         android:id="@+id/textView11"
@@ -76,11 +76,12 @@
         android:hint="(     )"
         android:inputType="number"
         android:maxLength="3"
-        app:progressStateVariable="phone_1"
-        app:variableType="Integer"
-        app:validator="name"
         app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_2"
-        app:layout_constraintTop_toTopOf="@+id/textView11">
+        app:layout_constraintTop_toTopOf="@+id/textView11"
+        app:progressStateVariable="phone_1"
+        app:validator="name"
+        app:variableType="Integer">
+
         <requestFocus></requestFocus>
     </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
