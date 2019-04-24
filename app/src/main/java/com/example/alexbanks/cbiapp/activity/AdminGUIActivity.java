@@ -99,7 +99,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         }
     }
 
-    private static final String ALLOWED_CHARACTERS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+-=`~,.<>/?\\|";
+    private static final String ALLOWED_CHARACTERS="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
     public void handleCBIAPIKeySetRandomClick(View v){
         checkAdminReady();
