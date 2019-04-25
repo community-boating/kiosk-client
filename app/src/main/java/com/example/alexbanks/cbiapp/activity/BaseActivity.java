@@ -2,6 +2,7 @@ package com.example.alexbanks.cbiapp.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothClass;
 import android.content.ComponentName;
@@ -149,12 +150,13 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         hideStatusNavBar();
         //dpm.setLockTaskFeatures(cbiAdminDeviceSample, DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD);
         this.checkProgress();
-        /*if(CBIKioskLauncherActivity.getDPM(this).isLockTaskPermitted(getApplicationContext().getPackageName())){
+        ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        if(CBIKioskLauncherActivity.getDPM(this).isLockTaskPermitted(getApplicationContext().getPackageName()) && !manager.isInLockTaskMode()){
             this.startLockTask();
             Log.d("bad", "no issues here");
         }else{
             Log.d("bad", "we have an issue here, no dpm");
-        }*/
+        }
         if(this.hasNavFragment())
             this.startNavFragment();
         //dpm.setStatusBarDisabled(cbiAdminDeviceSample, true);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
-    android:keyWidth="100dp"
-    android:keyHeight="100dp"
-    android:horizontalGap="12dp"
-    android:verticalGap="12dp">
+    android:keyWidth="75dp"
+    android:keyHeight="75dp"
+    android:horizontalGap="9dp"
+    android:verticalGap="9dp">
 
     <Row>
         <Key android:keyLabel="q"/>
@@ -31,7 +31,7 @@
         <Key android:keyLabel="-"/>
     </Row>
     <Row>
-        <Key android:keyLabel="shift" android:codes="55553" android:keyWidth="200dp" android:isModifier="true"/>
+        <Key android:keyLabel="shift" android:codes="55553" android:keyWidth="150dp" android:isModifier="true"/>
         <Key android:keyLabel="z"/>
         <Key android:keyLabel="x"/>
         <Key android:keyLabel="c"/>
@@ -39,6 +39,6 @@
         <Key android:keyLabel="b"/>
         <Key android:keyLabel="n"/>
         <Key android:keyLabel="m"/>
-        <Key android:keyIcon="@drawable/ic_right_arrow" android:codes="55552" android:keyWidth="200dp"/>
+        <Key android:keyIcon="@drawable/ic_right_arrow" android:codes="55552" android:keyWidth="150dp"/>
     </Row>
 </Keyboard>

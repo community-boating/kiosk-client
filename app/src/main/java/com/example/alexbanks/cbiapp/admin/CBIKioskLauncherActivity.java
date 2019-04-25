@@ -55,8 +55,8 @@ public class CBIKioskLauncherActivity extends Activity {
             else dpm.clearUserRestriction(admin, s);
         }
 
-        dpm.setKeyguardDisabled(admin, enabled);
-        dpm.setStatusBarDisabled(admin, enabled);
+        //dpm.setKeyguardDisabled(admin, enabled);
+        //dpm.setStatusBarDisabled(admin, enabled);
 
         dpm.setLockTaskPackages(admin, enabled?new String[]{getPackageName()}:new String[0]);
 

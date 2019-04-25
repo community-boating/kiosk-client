@@ -110,8 +110,8 @@
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_name"
         style="@style/custom_keypad"
-        android:layout_width="1250dp"
-        android:layout_height="800dp"
+        android:layout_width="1200dp"
+        android:layout_height="700dp"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
