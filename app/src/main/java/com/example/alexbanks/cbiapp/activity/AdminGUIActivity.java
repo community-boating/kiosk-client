@@ -1,6 +1,7 @@
 package com.example.alexbanks.cbiapp.activity;
 
 import android.app.Activity;
+import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.alexbanks.cbiapp.BasePackageClass;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.admin.CBIDeviceAdmin;
 import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
@@ -53,6 +55,8 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     EditText cbiAPIKeyEditText;
 
     TextView deviceOwnerStatusText;
+
+    TextView deviceOwnerCommandText;
 
     CustomKeyboard customKeyboard;
 
@@ -93,10 +97,15 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         cbiAPIKeyText=findViewById(R.id.admin_gui_cbi_api_key_text);
         cbiAPIKeyEditText=findViewById(R.id.admin_gui_cbi_api_key_edit_text);
         deviceOwnerStatusText=findViewById(R.id.admin_gui_device_owner_status_text);
+        deviceOwnerCommandText=findViewById(R.id.admin_gui_device_owner_command_text);
         //cbiAPIKeyUpdateButton = (Button) findViewById(R.id.admin_gui_cbi_api_key_update_button);
     }
 
     private void initMainComponents(){
+        String rootPackage = BasePackageClass.class.getPackage().getName();
+        String fullClassName = CBIDeviceAdmin.class.getName();
+        String commandText="adb shell dpm set-device-owner " + rootPackage + "/" + fullClassName;
+        deviceOwnerCommandText.setText(commandText);
         updateDeviceOwnerStatus();
     }
 
