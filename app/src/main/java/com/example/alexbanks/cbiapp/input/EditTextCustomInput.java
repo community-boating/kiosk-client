@@ -109,7 +109,7 @@ public class EditTextCustomInput extends AppCompatEditText{
     }*/
 
     private void initiateValueFromProgressState(){
-        /*if(textWatcherListener==null){
+        if(textWatcherListener==null){
             this.setText(new String());
             return;
         }
@@ -117,7 +117,7 @@ public class EditTextCustomInput extends AppCompatEditText{
         if(value != null)
             this.setText(value);
         else
-            this.setText(new String());*/
+            this.setText(new String());
     }
 
     private void loadAttributes(Context context, AttributeSet attrs){

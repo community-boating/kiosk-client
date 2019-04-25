@@ -15,6 +15,7 @@ public class NavButtonGroupFragment extends Fragment implements View.OnClickList
 
     private static View view;
 
+    private Button navButtonNext;
     private Button navButtonBack;
     private Button navButtonHelp;
     private Button navButtonCancel;
@@ -29,9 +30,11 @@ public class NavButtonGroupFragment extends Fragment implements View.OnClickList
         }
         try{
             view = inflater.inflate(R.layout.nav_button_group_layout, container, false);
+            navButtonNext = view.findViewById(R.id.nav_button_next);
             navButtonBack = view.findViewById(R.id.nav_button_back);
             navButtonHelp = view.findViewById(R.id.nav_button_help);
             navButtonCancel = view.findViewById(R.id.nav_button_cancel);
+            navButtonNext.setOnClickListener(this);
             navButtonBack.setOnClickListener(this);
             navButtonHelp.setOnClickListener(this);
             navButtonCancel.setOnClickListener(this);
@@ -60,6 +63,9 @@ public class NavButtonGroupFragment extends Fragment implements View.OnClickList
         BaseActivity baseActivity = getBaseActivity();
         if(baseActivity != null) {
             switch (v.getId()) {
+                case R.id.nav_button_next:
+                    baseActivity.handleNavButtonClickNext();
+                    break;
                 case R.id.nav_button_back:
                     baseActivity.handleNavButtonClickBack();
                     break;

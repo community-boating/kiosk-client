@@ -90,6 +90,10 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     }
 
+    public void handleNavButtonClickNext() {
+        this.nextProgress();
+    }
+
     public void handleNavButtonClickHelp(){
         Log.d("ffff", "help clicked");
     }
