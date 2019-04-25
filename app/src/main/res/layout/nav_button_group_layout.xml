@@ -35,4 +35,37 @@
         app:layout_constraintHorizontal_bias="0.956"
         app:layout_constraintStart_toEndOf="@+id/nav_button_help"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="56dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/help"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="56dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/back"
+        tools:layout_editor_absoluteX="1017dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="56dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/next"
+        tools:layout_editor_absoluteX="1088dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="56dp"
+        android:layout_height="70dp"
+        app:srcCompat="@drawable/close"
+        tools:layout_editor_absoluteX="1210dp"
+        tools:layout_editor_absoluteY="0dp" />
+
 </android.support.constraint.ConstraintLayout>
