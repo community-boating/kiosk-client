@@ -249,7 +249,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             if(c == '#'){
                 hashtags++;
                 wasHashtag=true;
-                if(hashtags>=5){
+                if(hashtags>=1){
                     hashtags=0;
                     Intent adminIntent = new Intent(activity, AdminGUIActivity.class);
                     activity.startActivity(adminIntent);

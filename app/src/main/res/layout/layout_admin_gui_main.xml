@@ -104,6 +104,23 @@
                         android:minWidth="448sp"
                         app:adminConfigPropertyName="cbi.printer.bluetooth.address"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Device Owner Status : "
+                        android:textSize="32sp"/>
+                    <TextView
+                        android:id="@+id/admin_gui_device_owner_status_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="32sp"/>
+                </LinearLayout>
             </LinearLayout>
 
             <Button

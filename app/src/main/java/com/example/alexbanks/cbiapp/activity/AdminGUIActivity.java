@@ -1,8 +1,11 @@
 package com.example.alexbanks.cbiapp.activity;
 
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaMuxer;
+import android.media.tv.TvView;
 import android.os.Bundle;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v4.view.ViewPager;
@@ -13,10 +16,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.alexbanks.cbiapp.R;
+import com.example.alexbanks.cbiapp.admin.CBIDeviceAdmin;
 import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
 import com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView;
 
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,6 +29,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Scanner;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -45,6 +51,8 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     TextView cbiAPIKeyText;
 
     EditText cbiAPIKeyEditText;
+
+    TextView deviceOwnerStatusText;
 
     CustomKeyboard customKeyboard;
 
@@ -82,9 +90,26 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     }
 
     private void getMainComponents() {
-        cbiAPIKeyText=(TextView)findViewById(R.id.admin_gui_cbi_api_key_text);
-        cbiAPIKeyEditText=(EditText)findViewById(R.id.admin_gui_cbi_api_key_edit_text);
+        cbiAPIKeyText=findViewById(R.id.admin_gui_cbi_api_key_text);
+        cbiAPIKeyEditText=findViewById(R.id.admin_gui_cbi_api_key_edit_text);
+        deviceOwnerStatusText=findViewById(R.id.admin_gui_device_owner_status_text);
         //cbiAPIKeyUpdateButton = (Button) findViewById(R.id.admin_gui_cbi_api_key_update_button);
+    }
+
+    private void initMainComponents(){
+        updateDeviceOwnerStatus();
+    }
+
+    private void updateDeviceOwnerStatus(){
+        DevicePolicyManager dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+        boolean isDeviceOwner = dpm.isDeviceOwnerApp(this.getPackageName());
+        if(isDeviceOwner){
+            deviceOwnerStatusText.setText("App is currently device owner");
+            deviceOwnerStatusText.setTextColor(Color.GREEN);
+        }else{
+            deviceOwnerStatusText.setText("App is not device owner");
+            deviceOwnerStatusText.setTextColor(Color.RED);
+        }
     }
 
     private void setCBIAPIKeyText(String text){
@@ -142,7 +167,6 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
             passwordText.setVisibility(View.VISIBLE);
         passwordText.setText(text);
     }
-
 
     public void checkAdminReady(){
         if(!this.hasValidPassword)
@@ -222,6 +246,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
                     setContentView(R.layout.layout_admin_gui_main);
                     hasValidPassword=true;
                     getMainComponents();
+                    initMainComponents();
                     setPasswordText("Password is valid");
                 }else{
                     setPasswordText("Password is invalid");

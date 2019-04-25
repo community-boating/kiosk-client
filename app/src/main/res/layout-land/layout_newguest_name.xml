@@ -24,7 +24,7 @@
 
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
-        style="@style/text_user_input"
+        style="@style/text_user_input_small"
         android:imeOptions="flagNoExtractUi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,6 @@
         android:ems="10"
         android:hint="@string/act3_name_first"
         android:inputType="textPersonName"
-        android:textSize="32sp"
         app:layout_constraintEnd_toStartOf="@+id/new_guest_name_last"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/new_guest_name_last"
@@ -43,9 +42,9 @@
 
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
-        style="@style/text_user_input"
+        style="@style/text_user_input_small"
         android:layout_width="wrap_content"
-        android:layout_height="87dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="40dp"
@@ -54,7 +53,6 @@
         android:hint="@string/act3_name_last"
         android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
-        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/new_guest_name_first"
@@ -112,8 +110,8 @@
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_name"
         style="@style/custom_keypad"
-        android:layout_width="1100dp"
-        android:layout_height="700dp"
+        android:layout_width="1250dp"
+        android:layout_height="800dp"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
