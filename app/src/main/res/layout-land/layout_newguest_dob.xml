@@ -12,7 +12,7 @@
         style="@style/text_user_input_small"
         android:layout_width="223dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:ems="10"
         android:hint="Month"
         android:imeOptions="flagNoExtractUi"
@@ -58,12 +58,11 @@
         android:maxLength="4"
         app:layout_constraintBottom_toBottomOf="@+id/new_guest_dob_month"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.86"
+        app:layout_constraintHorizontal_bias="0.55"
         app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
         app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
-        app:layout_constraintVertical_bias="1.0"
-        app:progressStateVariable="dob_year"
-        tools:layout_editor_absoluteX="432dp"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+        app:layout_constraintVertical_bias="0.0"
+        app:progressStateVariable="dob_year"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
     <TextView
         android:id="@+id/textView9"
