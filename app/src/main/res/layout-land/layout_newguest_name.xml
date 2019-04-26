@@ -25,25 +25,28 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
         style="@style/text_user_input_small"
-        android:imeOptions="flagNoExtractUi"
-        android:layout_width="wrap_content"
+        android:layout_width="480dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="100dp"
         android:ems="10"
         android:hint="@string/act3_name_first"
+        android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
+        android:nextFocusForward="@id/new_guest_name_last"
         app:layout_constraintEnd_toStartOf="@+id/new_guest_name_last"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/new_guest_name_last"
         app:progressStateVariable="first_name"
-        android:nextFocusForward="@id/new_guest_name_last"
-        app:variableType="String"><requestFocus></requestFocus></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+        app:variableType="String">
+
+        <requestFocus></requestFocus>
+    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input_small"
-        android:layout_width="wrap_content"
+        android:layout_width="523dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
