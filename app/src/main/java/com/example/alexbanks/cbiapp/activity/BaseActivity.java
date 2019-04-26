@@ -16,8 +16,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.admin.CBIDeviceAdmin;
@@ -91,12 +96,26 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     }
 
+    public void showHelpPopupWindow(View view){
+        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View popupView = inflater.inflate(R.layout.help_popup_layout, null);
+        final PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        Button close = popupView.findViewById(R.id.help_popup_button_close);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+    }
+
     public void handleNavButtonClickNext() {
         this.nextProgress();
     }
 
     public void handleNavButtonClickHelp(){
-        Log.d("ffff", "help clicked");
+        showHelpPopupWindow(getWindow().getDecorView().getRootView());
     }
 
     public void handleNavButtonClickBack(){
