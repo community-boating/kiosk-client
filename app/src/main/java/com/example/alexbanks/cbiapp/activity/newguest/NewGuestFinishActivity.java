@@ -78,7 +78,7 @@ public class NewGuestFinishActivity extends BaseActivity {
     }
 
     public void handleButtonClick(View v){
-        doPrintReceipt(123456789l, "Evan McCarter");
+        //doPrintReceipt(123456789l, "Evan McCarter");
         //performAction();
         //performOtherAction();
     }

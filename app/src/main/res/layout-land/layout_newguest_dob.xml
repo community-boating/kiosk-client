@@ -10,9 +10,9 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_dob_month"
         style="@style/text_user_input_small"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="8dp"
         android:ems="10"
         android:hint="Month"
         android:imeOptions="flagNoExtractUi"
@@ -22,6 +22,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toTopOf="@+id/textView9"
+        app:layout_constraintVertical_bias="1.0"
         app:progressStateVariable="dob_month">
 
         <requestFocus></requestFocus>
@@ -31,7 +32,7 @@
         android:id="@+id/new_guest_dob_day"
         style="@style/text_user_input_small"
         android:imeOptions="flagNoExtractUi"
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:ems="10"
@@ -48,29 +49,24 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_dob_year"
         style="@style/text_user_input_small"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="Year"
         android:imeOptions="flagNoExtractUi"
         android:inputType="number"
         android:maxLength="4"
         app:layout_constraintBottom_toBottomOf="@+id/new_guest_dob_month"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
         app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
-        app:layout_constraintVertical_bias="0.0"
-        app:progressStateVariable="dob_year"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+        app:layout_constraintVertical_bias="1.0"
+        app:progressStateVariable="dob_year"
+        tools:layout_editor_absoluteX="432dp"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
     <TextView
         android:id="@+id/textView9"
         style="@style/text_title_secondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:includeFontPadding="false"
@@ -79,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
-        app:layout_constraintVertical_bias="0.034" />
+        app:layout_constraintVertical_bias="0.041" />
 
     <TextView
         android:id="@+id/textView8"
@@ -105,8 +101,8 @@
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_dob"
         style="@style/custom_keypad"
-        android:layout_width="700dp"
-        android:layout_height="700dp"
+        android:layout_width="800dp"
+        android:layout_height="800dp"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
