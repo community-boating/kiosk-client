@@ -89,11 +89,10 @@ public class CBIAPIRequestManager {
 
     public void callCreateNewUserAndCard(Progress completeUserProgress, final Response.Listener<JSONObject> responseListener, final Response.ErrorListener errorListener) throws JSONException{
         AdminConfigProperties.loadProperties(context);
-        String tempTestFlag = "_FLAG_DEV_12124532";
         JSONObject requestObject = new JSONObject();
         ProgressStateNewGuestName progressStateNewGuestName = completeUserProgress.findByProgressStateType(ProgressStateNewGuestName.class);
-        requestObject.put("firstName", progressStateNewGuestName.getFirstName() + tempTestFlag);
-        requestObject.put("lastName", progressStateNewGuestName.getLastName() + tempTestFlag);
+        requestObject.put("firstName", progressStateNewGuestName.getFirstName());
+        requestObject.put("lastName", progressStateNewGuestName.getLastName());
         ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
         requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
