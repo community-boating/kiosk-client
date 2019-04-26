@@ -54,36 +54,36 @@ public class NewGuestFinishActivity extends BaseActivity {
     };
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AdminConfigProperties.loadProperties(this);
         setContentView(R.layout.layout_newguest_finish);
-        textViewLoading = (TextView)findViewById(R.id.textview_loading);
+        textViewLoading = (TextView) findViewById(R.id.textview_loading);
         //emulationSpinner = (Spinner)findViewById(R.id.emulationSpinner);
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         List<CharSequence> spinnerArray = new ArrayList(ICommandBuilder.BarcodeWidth.values().length);
-        for(ICommandBuilder.BarcodeWidth e : ICommandBuilder.BarcodeWidth.values()){
+        for (ICommandBuilder.BarcodeWidth e : ICommandBuilder.BarcodeWidth.values()) {
             spinnerArray.add(e.name());
         }
         performAction();
-        //resetHandler.removeCallbacks(resetProgressHandler);
         resetHandler.postDelayed(resetProgressHandler, 15000);
+        //resetHandler.removeCallbacks(resetProgressHandler);
         //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, 0, spinnerArray);
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //emulationSpinner.setAdapter(adapter);
     }
 
-    public void handleButtonClick(View v){
+    public void handleButtonClick(View v) {
         //doPrintReceipt(123456789l, "Evan McCarter");
         //performAction();
         //performOtherAction();
     }
 
-    public void doPrintReceipt(Long cardNumber, String fullName){
+    public void doPrintReceipt(Long cardNumber, String fullName) {
         textViewLoading.setText("Starting the printing process...");
         //PrinterManager manager = PrinterManager.getInstance(this);
         //ICommandBuilder.BarcodeWidth width = ICommandBuilder.BarcodeWidth.values()[emulationSpinner.getSelectedItemPosition()];
@@ -94,19 +94,21 @@ public class NewGuestFinishActivity extends BaseActivity {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
                 public void onStatus(boolean result, Communication.Result communicateResult) {
+                    if(result)
+                        resetHandler.postDelayed(resetProgressHandler, 3000);
                     textViewLoading.setText("Printing : " + result + " : " + communicateResult.name());
                 }
             });
-        }catch(Throwable t){
+        } catch (Throwable t) {
             t.printStackTrace();
             Log.d("evanerror", t.getMessage());
             textViewLoading.setText(t.getMessage());
         }
     }
 
-    public void performAction(){
+    public void performAction() {
         textViewLoading.setText("Starting the load process...");
-        final Response.ErrorListener responseErrorListener = new Response.ErrorListener(){
+        final Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -140,21 +142,20 @@ public class NewGuestFinishActivity extends BaseActivity {
         }
     }
 
-    public void handleCardCreated(JSONObject response){
+    public void handleCardCreated(JSONObject response) {
         ProgressStateNewGuestName guestName = this.progress.findByProgressStateType(ProgressStateNewGuestName.class);
         String fullName = guestName.getFirstName() + " " + guestName.getLastName();
         try {
             Long cardNumber = response.getLong("cardNumber");
             doPrintReceipt(cardNumber, fullName);
-        }catch(JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         textViewLoading.setText("Created user/card well successfully : " + response.toString());
     }
 
-    public void handleCardError(VolleyError volleyError){
+    public void handleCardError(VolleyError volleyError) {
         textViewLoading.setText("Failed to create user/card : " + new String(volleyError.networkResponse.data));
         volleyError.printStackTrace();
     }
-
 }

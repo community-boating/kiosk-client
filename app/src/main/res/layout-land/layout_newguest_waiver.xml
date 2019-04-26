@@ -23,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/checkBox2"
         app:layout_constraintTop_toBottomOf="@+id/waiver_web_view"
-        app:layout_constraintVertical_bias="0.272" />
+        app:layout_constraintVertical_bias="0.373" />
 
     <TextView
         android:id="@+id/textView15"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/new_guest_waiver_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="268dp"
@@ -85,5 +85,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="180dp"
+        android:text="Scroll Down"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/layout_newguest"
+        app:layout_constraintEnd_toEndOf="@+id/waiver_web_view"
+        app:layout_constraintStart_toStartOf="@+id/waiver_web_view"
+        app:layout_constraintTop_toBottomOf="@+id/waiver_web_view"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
