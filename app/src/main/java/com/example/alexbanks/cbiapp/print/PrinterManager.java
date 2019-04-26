@@ -36,11 +36,12 @@ public class PrinterManager {
         //int paperSize = printerSettings.getPaperSize();
         List<PortInfo> portInfos = StarIOPort.searchPrinter("BT:", context);
 
-        String bluetoothPort=AdminConfigProperties.getCBIPrinterBluetoothAddress();
+        //String bluetoothPort=AdminConfigProperties.getCBIPrinterBluetoothAddress();
 
-        //if(portInfos.isEmpty())
-        //    throw new RuntimeException("No printer ports found");
-        //PortInfo info = portInfos.get(0);
+        if(portInfos.isEmpty())
+            throw new RuntimeException("No printer ports found");
+        PortInfo info = portInfos.get(0);
+        String bluetoothPort=info.getPortName();
 
         Communication.sendCommands(context, builder.getCommands(), bluetoothPort, printerSettings.getPortSettings(), 10000, context, mCallback);     // 10000mS!!!
     }
