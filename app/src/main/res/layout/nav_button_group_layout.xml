@@ -7,8 +7,8 @@
 
     <Button
         android:id="@+id/nav_button_help"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="78dp"
+        android:layout_height="110dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/help"
@@ -20,9 +20,9 @@
 
     <Button
         android:id="@+id/nav_button_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_width="85dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/close"
         android:text=""
         app:layout_constraintEnd_toStartOf="@+id/nav_button_next"
@@ -31,9 +31,9 @@
     <Button
         android:id="@+id/nav_button_back"
         style="@style/button_nav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_width="78dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="40dp"
         android:background="@drawable/back"
         android:text=""
         app:layout_constraintEnd_toStartOf="@+id/nav_button_cancel"
@@ -41,8 +41,8 @@
 
     <Button
         android:id="@+id/nav_button_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="78dp"
+        android:layout_height="110dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/next"
         android:text=""
