@@ -19,9 +19,13 @@ import com.android.volley.toolbox.Volley;
 import com.example.alexbanks.cbiapp.activity.AdminGUIActivity;
 import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.progress.Progress;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactPhone;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestReturning;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,6 +107,18 @@ public class CBIAPIRequestManager {
         //String dobString = "02/11/1983";
         requestObject.put("dob", dobString);
 
+        ProgressStateNewGuestPhone progressStateNewGuestPhone = completeUserProgress.findByProgressStateType(ProgressStateNewGuestPhone.class);
+        String phoneString = progressStateNewGuestPhone.getPhoneNumber();
+        requestObject.put("phonePrimary", phoneString);
+        ProgressStateEmergencyContactName progressStateEmergencyContactName = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactName.class);
+        String emerg1NameString = progressStateEmergencyContactName.getECFirstName() + " " + progressStateNewGuestName.getLastName();
+        requestObject.put("emerg1Name", emerg1NameString);
+        ProgressStateEmergencyContactPhone progressStateEmergencyContactPhone = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
+        String emerg1PhoneString = progressStateEmergencyContactPhone.getPhoneNumber();
+        requestObject.put("emerg1PhonePrimary", emerg1PhoneString);
+        requestObject.put("emerg1Relation", progressStateEmergencyContactName.getECType());
+        ProgressStateNewGuestReturning progressStateNewGuestReturning = completeUserProgress.findByProgressStateType(ProgressStateNewGuestReturning.class);
+        requestObject.put("previousMember", progressStateNewGuestReturning.getReturningMember().toString());
         Log.d("derpderpa", requestObject.toString());
         final Response.ErrorListener cardCreateErrorListener = new Response.ErrorListener(){
 

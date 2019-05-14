@@ -42,6 +42,8 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.newguest.NewGuestReturningActivity" android:windowSoftInputMode="adjustNothing">
+        </activity>
         <activity android:name=".activity.newguest.NewGuestNameActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity android:name=".activity.newguest.NewGuestEmailActivity" android:windowSoftInputMode="adjustResize">

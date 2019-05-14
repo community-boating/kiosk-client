@@ -33,6 +33,10 @@ public class ProgressStateGenericPhone extends ProgressState {
     public ProgressStateGenericPhone(){
     }
 
+    public String getPhoneNumber(){
+        return getPhone1().toString() + getPhone2().toString() + getPhone3().toString();
+    }
+
     public void setPhone1(Integer v){
         putInteger(KEY_PHONE_1, v);
     }

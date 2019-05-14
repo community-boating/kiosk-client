@@ -71,6 +71,12 @@ public class ProgressState implements Parcelable {
             return null;
     }
 
+    public Boolean getBoolean(String key){
+        if(contains(key))
+            return get(key).equals("1");
+        return null;
+    }
+
     public String get(String key){
         return this.valueMap.get(key);
     }
@@ -84,6 +90,15 @@ public class ProgressState implements Parcelable {
             if (contains(key)) remove(key);
         }else {
             return put(key, value.toString());
+        }
+        return null;
+    }
+
+    public String putBoolean(String key, Boolean value){
+        if(value == null) {
+            if (contains(key)) remove(key);
+        }else {
+            return put(key, value?"1":"0");
         }
         return null;
     }

@@ -32,9 +32,7 @@ public class ProgressStateNewGuestEmail extends ProgressState {
 
     @Override
     public ProgressState createNextProgressState() {
-        //return new ProgressStateEmergencyContactName();
-        //TODO temporary
-        return new ProgressStateNewGuestWaiver();
+        return new ProgressStateEmergencyContactName();
     }
 
 }
