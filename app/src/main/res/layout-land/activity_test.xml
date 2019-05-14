@@ -33,16 +33,14 @@
         android:text="@string/act1_subtitle"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="200dp"
+        android:layout_width="223dp"
         android:layout_height="229dp"
         android:layout_marginStart="280dp"
-        android:layout_marginTop="8dp"
         android:scaleX="1.45"
         android:scaleY="1.45"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
@@ -54,6 +52,7 @@
         android:id="@+id/imageView2"
         android:layout_width="169dp"
         android:layout_height="217dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="280dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
@@ -84,6 +83,7 @@
         android:layout_width="674dp"
         android:layout_height="119dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/act1_desc"
         android:textAlignment="center"
