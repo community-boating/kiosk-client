@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_opaque"
+    android:background="@color/backgroundWhite"
     android:fitsSystemWindows="true"
-    tools:context=".activity.newguest.NewGuestBeginActivity"
-    android:onClick="handleBeginClick">
+    android:onClick="handleBeginClick"
+    tools:context=".activity.newguest.NewGuestBeginActivity">
 
     <TextView
         android:id="@+id/textView"
         style="@style/text_title_primary_regular"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="106dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/act1_title"
+        android:textSize="80sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,17 +31,18 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/act1_subtitle"
-        android:textSize="48sp"
+        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_height="229dp"
         android:layout_marginStart="280dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:scaleX="1.45"
         android:scaleY="1.45"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
@@ -51,7 +53,7 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="169dp"
-        android:layout_height="200dp"
+        android:layout_height="217dp"
         android:layout_marginEnd="280dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
@@ -61,30 +63,32 @@
     <Button
         android:id="@+id/button5"
         style="@style/button_background_large"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="468dp"
+        android:layout_height="124dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:onClick="handleBeginClick"
         android:text="@string/act1_help"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView5"
         style="@style/text_title_primary_medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="674dp"
+        android:layout_height="119dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/act1_desc"
+        android:textAlignment="center"
+        android:textSize="80sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
