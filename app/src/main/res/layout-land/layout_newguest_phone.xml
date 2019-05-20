@@ -11,9 +11,9 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_3"
         style="@style/text_user_input_small"
-        android:layout_width="145sp"
+        android:layout_width="214dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="number"
         android:maxLength="4"
@@ -26,9 +26,9 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_2"
         style="@style/text_user_input_small"
-        android:layout_width="125sp"
+        android:layout_width="163dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="56dp"
         android:ems="10"
         android:inputType="number"
         android:maxLength="3"
@@ -41,14 +41,15 @@
     <TextView
         android:id="@+id/textView11"
         style="@style/text_title_secondary"
-        android:layout_width="497dp"
+        android:layout_width="562dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="@string/act5_phonenumber"
         android:textSize="76sp"
         app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_1"
+        app:layout_constraintHorizontal_bias="0.123"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/act_ng_phone_title" />
 
@@ -69,9 +70,9 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_1"
         style="@style/text_user_input_small"
-        android:layout_width="125sp"
+        android:layout_width="163dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="52dp"
         android:ems="10"
         android:hint="(     )"
         android:inputType="number"
