@@ -157,5 +157,6 @@ public class NewGuestFinishActivity extends BaseActivity {
     public void handleCardError(VolleyError volleyError) {
         textViewLoading.setText("Failed to create user/card : " + new String(volleyError.networkResponse.data));
         volleyError.printStackTrace();
+        Log.d("response", new String(volleyError.networkResponse.data));
     }
 }
