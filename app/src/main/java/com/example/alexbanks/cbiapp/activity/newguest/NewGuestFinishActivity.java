@@ -135,9 +135,11 @@ public class NewGuestFinishActivity extends BaseActivity {
         ProgressStateNewGuestEmail progressStateNewGuestEmail = new ProgressStateNewGuestEmail();
         progressStateNewGuestEmail.setEmail("test_email@test.com");
         progress.states.add(progressStateNewGuestEmail);
+        Log.d("derp", "about to start creating card");
         try {
             CBIAPIRequestManager.getInstance(this).callCreateNewUserAndCard(this.progress, responseListener, responseErrorListener);
         } catch (JSONException e) {
+            Log.d("bad","Card failure sadly");
             e.printStackTrace();
         }
     }
@@ -155,7 +157,7 @@ public class NewGuestFinishActivity extends BaseActivity {
     }
 
     public void handleCardError(VolleyError volleyError) {
-        textViewLoading.setText("Failed to create user/card : " + new String(volleyError.networkResponse.data));
+        //textViewLoading.setText("Failed to create user/card : " + new String(volleyError.networkResponse.data));
         volleyError.printStackTrace();
         Log.d("response", new String(volleyError.networkResponse.data));
     }
