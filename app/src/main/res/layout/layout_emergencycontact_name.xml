@@ -11,39 +11,24 @@
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
         style="@style/text_user_input"
-        android:layout_width="wrap_content"
+        android:layout_width="505dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="28dp"
         android:ems="10"
         android:hint="@string/act3_name_first"
         android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
         android:textSize="32sp"
-        app:layout_constraintEnd_toStartOf="@+id/customInputRadioGridLayout"
-        app:layout_constraintHorizontal_bias="0.611"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:progressStateVariable="ec_name_first"
         app:variableType="String" />
 
-    <com.example.alexbanks.cbiapp.input.CustomInputRadioTableLayout
-        android:id="@+id/customInputRadioGridLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="112dp"
-        app:preferredColumns="3"
-        app:layout_constraintBottom_toBottomOf="@+id/new_guest_name_last"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/new_guest_name_first"
-        app:layout_constraintVertical_bias="0.0"
-        app:progressStateVariable="ec_type"
-        app:valueStringArrayResource="@array/act_ec_contact_options"></com.example.alexbanks.cbiapp.input.CustomInputRadioTableLayout>
-
     <com.example.alexbanks.cbiapp.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input"
-        android:layout_width="wrap_content"
+        android:layout_width="503dp"
         android:layout_height="87dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -78,7 +63,7 @@
     <com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView
         android:id="@+id/customKeyboardView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="469dp"
         app:layout_constraintBottom_toBottomOf="@+id/layout_newguest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -109,12 +94,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:includeFontPadding="false"
         android:text="@string/act_title_ec"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
