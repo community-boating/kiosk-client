@@ -116,8 +116,8 @@ public class CBIAPIRequestManager {
         ProgressStateEmergencyContactPhone progressStateEmergencyContactPhone = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
         String emerg1PhoneString = progressStateEmergencyContactPhone.getPhoneNumber();
         requestObject.put("emerg1PhonePrimary", emerg1PhoneString);
-        String ecType = progressStateEmergencyContactName.getECType();
-        requestObject.put("emerg1Relation", ecType == null ? JSONObject.NULL : ecType);
+        //String ecType = progressStateEmergencyContactName.getECType();
+        //requestObject.put("emerg1Relation", ecType == null ? JSONObject.NULL : ecType);
         ProgressStateNewGuestReturning progressStateNewGuestReturning = completeUserProgress.findByProgressStateType(ProgressStateNewGuestReturning.class);
         requestObject.put("previousMember", progressStateNewGuestReturning.getReturningMember().booleanValue());
         Log.d("derpderpa", requestObject.toString());

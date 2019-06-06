@@ -11,7 +11,6 @@ import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValueValidat
 public class ProgressStateEmergencyContactName extends ProgressState {
     public static final String KEY_EC_NAME_FIRST="ec_name_first";
     public static final String KEY_EC_NAME_LAST="ec_name_last";
-    public static final String KEY_EC_TYPE="ec_type";
     static{
         Class<ProgressStateEmergencyContactName> emergencyContactNameClass = ProgressStateEmergencyContactName.class;
         ProgressStateValidator.addProgressStateValidator(emergencyContactNameClass, KEY_EC_NAME_FIRST, new ProgressStateNotBlankValueValidator("Enter a first name"));
@@ -37,13 +36,6 @@ public class ProgressStateEmergencyContactName extends ProgressState {
         put(KEY_EC_NAME_LAST, ecNameLast);
     }
 
-    public String getECType(){
-        return get(KEY_EC_TYPE);
-    }
-
-    public void setEcType(String ecType){
-        put(KEY_EC_TYPE, ecType);
-    }
     @Override
     public Class<? extends Activity> getActivityClass(){
         return EmergencyContactNameActivity.class;
