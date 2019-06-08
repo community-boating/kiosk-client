@@ -8,24 +8,6 @@
     android:fitsSystemWindows="false">
 
     <TextView
-        android:id="@+id/textView16"
-        style="@style/text_title_secondary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/act9_waiver_agree"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/checkBox2"
-        app:layout_constraintTop_toBottomOf="@+id/waiver_web_view"
-        app:layout_constraintVertical_bias="0.272" />
-
-    <TextView
         android:id="@+id/textView15"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
@@ -56,9 +38,11 @@
 
     <CheckBox
         android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_marginStart="268dp"
+        android:textSize="50sp"
+        android:text="@string/act9_waiver_agree"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView16" />
 

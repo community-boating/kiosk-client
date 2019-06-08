@@ -15,9 +15,10 @@ import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestSignature;
 import com.example.alexbanks.cbiapp.view.SignatureView;
 
-public class NewGuestSignatureActivity extends BaseActivity{
+public class NewGuestSignatureActivity extends BaseActivity<ProgressStateNewGuestSignature> implements SignatureView.SignatureViewEventListener {
 
     private SignatureView signatureView;
 
@@ -26,12 +27,18 @@ public class NewGuestSignatureActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newguest_signature);
         signatureView = findViewById(R.id.new_guest_signature_box);
+        signatureView.setSignatureEventListener(this);
         //signatureView.setFocusable(View.FOCUSABLE);
         //signatureView.setOnClickListener(this);
         //signatureView.setOnDragListener(this);
     }
 
     public void handleContinueButtonPressed(View v){this.nextProgress();}
+
+    @Override
+    public void onViewValidChange(boolean valid) {
+        getProgressState().setSignatureValid(valid);
+    }
 
     /*@Override
     public boolean onClick(View v) {

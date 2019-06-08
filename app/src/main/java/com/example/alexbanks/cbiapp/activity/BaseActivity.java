@@ -3,10 +3,13 @@ package com.example.alexbanks.cbiapp.activity;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothClass;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -18,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -32,13 +36,33 @@ import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /* This class contains general methods shared by most activities in this app */
-public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
+public class BaseActivity<ps extends ProgressState> extends FragmentActivity implements TimeoutDialogFragment.TimeoutDialogListener {
 
     public static final String PROGRESS_EXTRA_KEY = "progress_extra";
 
     public Progress progress;
+
+    public static final long PAGE_TIMEOUT_DURATION=20000;
+
+    private Timer pageTimeout = new Timer();
+    private final TimerTask taskTimeoutPrompt = new TimerTask(){
+
+        @Override
+        public void run() {
+            BaseActivity.this.handleTimeoutPrompt();
+        }
+    };
+    private final TimerTask taskTimeoutExpire = new TimerTask(){
+
+        @Override
+        public void run(){
+            BaseActivity.this.handleTimeoutExpire();
+        }
+    };
 
     //public DevicePolicyManager dpm;
     //public ComponentName cbiAdminDeviceSample;
@@ -158,6 +182,62 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         super.onStart();
     }
 
+    public boolean canTimeout(){
+        return true;
+    }
+
+    public void handleTimeoutPrompt(){
+        pageTimeout.cancel();
+        Runnable runnable = new Runnable(){
+            @Override
+            public void run(){
+
+            }
+        };
+        TimeoutDialogFragment fragment = new TimeoutDialogFragment();
+        fragment.show(getSupportFragmentManager(), "Simple Fragment");
+        pageTimeout = new Timer();
+        pageTimeout.schedule(new TimerTask(){
+
+            @Override
+            public void run(){
+                BaseActivity.this.handleTimeoutExpire();
+            }
+        }, 5000);
+    }
+
+    public void handleTimeoutExpire(){
+        pageTimeout.cancel();
+        resetNewGuestProgress();
+    }
+
+    public void resetTimeoutPrompt(){
+        pageTimeout.cancel();
+        pageTimeout = new Timer();
+        pageTimeout.schedule(new TimerTask(){
+
+            @Override
+            public void run(){
+                BaseActivity.this.handleTimeoutPrompt();
+            }
+        }, PAGE_TIMEOUT_DURATION);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event){
+        boolean ret = super.dispatchTouchEvent(event);
+        if(canTimeout())
+            resetTimeoutPrompt();
+        return ret;
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(canTimeout())
+            pageTimeout.cancel();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -178,6 +258,8 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         }
         if(this.hasNavFragment())
             this.startNavFragment();
+        if(this.canTimeout())
+            this.resetTimeoutPrompt();
         //dpm.setStatusBarDisabled(cbiAdminDeviceSample, true);
         //IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MAIN);
         //intentFilter.addCategory(Intent.CATEGORY_HOME);
@@ -312,4 +394,16 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     }
 
+    @Override
+    public void handleTimeoutPromptYes(android.support.v4.app.DialogFragment fragment) {
+        fragment.dismiss();
+        resetTimeoutPrompt();
+    }
+
+    @Override
+    public void handleTimeoutPromptNo(android.support.v4.app.DialogFragment fragment) {
+        fragment.dismiss();
+        pageTimeout.cancel();
+        resetNewGuestProgress();
+    }
 }

@@ -29,6 +29,8 @@ public class SignatureView extends View implements View.OnTouchListener{
     private Bitmap signature;
     private Canvas signatureCanvas;
     private static Paint signaturePaint = new Paint();
+    private SignatureViewEventListener listener;
+    private boolean signatureValid=false;
     //private static Paint signaturePaintPreview = new Paint();
 
     private float lastX=-1,lastY=-1;
@@ -58,6 +60,17 @@ public class SignatureView extends View implements View.OnTouchListener{
 
     public SignatureView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+    }
+
+    public void setSignatureEventListener(SignatureViewEventListener listener){
+        this.listener = listener;
+    }
+
+    private void updateSignatureValid(boolean valid){
+        if(signatureValid != valid){
+            signatureValid=valid;
+            listener.onViewValidChange(valid);
+        }
     }
 
     int w, h;
@@ -238,12 +251,15 @@ public class SignatureView extends View implements View.OnTouchListener{
                 //points.reset();
                 signatureCanvas.drawBitmap(points.tempMap, 0, 0, signaturePaint);
                 points.tempMap.eraseColor(Color.TRANSPARENT);
+                updateSignatureValid(true);
                 //points.tempMap.eraseColor(signaturePaint.getColor());
             }else if((action&MotionEvent.ACTION_POINTER_UP)==MotionEvent.ACTION_POINTER_UP){
                 if(p==actionIndex){
                     signatureCanvas.drawBitmap(points.tempMap, 0, 0, signaturePaint);
+
                     //signatureCanvas.drawBitmap(points.tempMap, 0, 0, signaturePaint);
                     points.tempMap.eraseColor(Color.TRANSPARENT);
+                    updateSignatureValid(true);
                     //points.tempMap.eraseColor(signaturePaint.getColor());
                     //signatureCanvas.drawPath(points, signaturePaint);
                     //points.reset();
@@ -353,6 +369,10 @@ public class SignatureView extends View implements View.OnTouchListener{
         public float lastR;
         Bitmap tempMap;
         Canvas tempMapCanvas;
+    }
+
+    public static interface SignatureViewEventListener{
+        void onViewValidChange(boolean valid);
     }
 
 }

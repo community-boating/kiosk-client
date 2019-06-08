@@ -23,7 +23,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:progressStateVariable="ec_name_first"
-        app:variableType="String" />
+        app:variableType="String">
+        <requestFocus></requestFocus>
+    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
 
     <com.example.alexbanks.cbiapp.input.CustomInputRadioTableLayout
         android:id="@+id/customInputRadioGridLayout"
@@ -109,10 +111,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:includeFontPadding="false"
+        android:textSize="80sp"
         android:text="@string/act_title_ec"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -8,6 +8,9 @@ import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
 
+import java.io.File;
+import java.util.Scanner;
+
 public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBegin> {
 
     @Override
@@ -16,6 +19,11 @@ public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBeg
         Log.d("aaaa", "ffff");
         //TODO fix this name maybe?
         setContentView(R.layout.activity_test);
+    }
+
+    @Override
+    public boolean canTimeout(){
+        return false;
     }
 
     public void handleBeginClick(View view){
