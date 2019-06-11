@@ -10,6 +10,9 @@ import com.example.alexbanks.cbiapp.progress.validator.ProgressStateDOBYearValue
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateNotBlankValueValidator;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class ProgressStateNewGuestDOB extends ProgressState {
 
     public static final String KEY_DOB_DAY="dob_day";
@@ -24,6 +27,12 @@ public class ProgressStateNewGuestDOB extends ProgressState {
     }
 
     public ProgressStateNewGuestDOB() {
+    }
+
+    public Date getDOB(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(getDOBYear(), getDOBMonth() - 1, getDOBDay());
+        return calendar.getTime();
     }
 
     public Integer getDOBDay(){

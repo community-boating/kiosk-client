@@ -47,6 +47,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity imp
     public Progress progress;
 
     public static final long PAGE_TIMEOUT_DURATION=20000;
+    public static final long PAGE_TIMEOUT_DIALOG_DURATION=10000;
 
     private Timer pageTimeout = new Timer();
     private final TimerTask taskTimeoutPrompt = new TimerTask(){
@@ -203,7 +204,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity imp
             public void run(){
                 BaseActivity.this.handleTimeoutExpire();
             }
-        }, 5000);
+        }, PAGE_TIMEOUT_DIALOG_DURATION);
     }
 
     public void handleTimeoutExpire(){

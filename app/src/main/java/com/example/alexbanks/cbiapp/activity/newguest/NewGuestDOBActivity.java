@@ -1,7 +1,7 @@
 package com.example.alexbanks.cbiapp.activity.newguest;
 
 import android.app.Activity;
-import android.icu.util.Calendar;
+import android.app.AlertDialog;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
@@ -21,9 +21,9 @@ import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 
 import org.w3c.dom.Text;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +66,30 @@ public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> 
         customKeyboard.addTextViewsFromCustomInputManager();
         customKeyboard.showCustomKeyboard();
         customKeyboard.setTextViewFocuses();
+    }
+
+    @Override
+    public boolean nextProgress(){
+        try {
+            Date currentDOB = getProgressState().getDOB();
+            Calendar today = Calendar.getInstance();
+            today.add(Calendar.YEAR, -18);
+            if(currentDOB.after(today.getTime())){
+                Runnable runnable = new Runnable() {public void run() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(NewGuestDOBActivity.this);
+                    builder.setTitle("Warning!");
+                    builder.setMessage("If you are under 18 you must sign up at the front office!");
+                    builder.create().show();
+                }
+                };
+                runOnUiThread(runnable);
+                return false;
+            }
+        }catch(Exception e){
+            //return false;
+            throw new RuntimeException(e);
+        }
+        return super.nextProgress();
     }
 
     @Override
