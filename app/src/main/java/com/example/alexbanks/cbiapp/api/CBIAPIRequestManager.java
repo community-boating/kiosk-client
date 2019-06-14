@@ -100,6 +100,7 @@ public class CBIAPIRequestManager {
         ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
         requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
+
         Calendar calendar = progressStateNewGuestDOB.getCalendarDOB();
 
         String dobString = dateFormat.format(calendar.getTime());

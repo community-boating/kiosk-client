@@ -21,7 +21,6 @@ import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 
 import org.w3c.dom.Text;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;

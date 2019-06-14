@@ -11,6 +11,9 @@ import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorMan
 
 import java.util.Calendar;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class ProgressStateNewGuestDOB extends ProgressState {
 
     public static final String KEY_DOB_DAY="dob_day";
@@ -27,7 +30,7 @@ public class ProgressStateNewGuestDOB extends ProgressState {
     public ProgressStateNewGuestDOB() {
     }
 
-    public Calendar getCalendarDOB(){
+    public Calendar getCalendarDOB() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(getDOBYear(), getDOBMonth() - 1, getDOBDay());
         return calendar;
