@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
 import com.example.alexbanks.cbiapp.api.CBIAPIRequestManager;
+import com.example.alexbanks.cbiapp.api.CBIAPIRequestResponseHandler;
 import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.print.PrinterManager;
 import com.example.alexbanks.cbiapp.print.ReciptCommandGenerator;
@@ -110,7 +111,12 @@ public class NewGuestFinishActivity extends BaseActivity {
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
         builder.append("Please take this ticket to the front dock house to complete your rental".getBytes());
-        builder.appendPdf417WithAlignment("Hello World".getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC0, 2, 2, ICommandBuilder.AlignmentPosition.Center);
+        try{
+            JSONObject jsonObject = CBIAPIRequestManager.getCreateNewUserJSONObject(this.progress);
+            builder.appendPdf417WithAlignment(jsonObject.toString().getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC0, 2, 2, ICommandBuilder.AlignmentPosition.Center);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
         try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
