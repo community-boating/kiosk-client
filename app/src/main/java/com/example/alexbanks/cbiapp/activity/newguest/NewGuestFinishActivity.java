@@ -109,8 +109,12 @@ public class NewGuestFinishActivity extends BaseActivity {
     public void doPrintManualReceipt(){
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
+        builder.beginDocument();
         builder.append("Please take this ticket to the front dock house to complete your rental".getBytes());
         builder.appendPdf417WithAlignment("Hello World".getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC0, 2, 2, ICommandBuilder.AlignmentPosition.Center);
+        builder.appendUnitFeed(32);
+        builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
+        builder.endDocument();
         try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
@@ -168,7 +172,7 @@ public class NewGuestFinishActivity extends BaseActivity {
 
         //textViewLoading.setText("Failed to create user/card : " + new String(volleyError.networkResponse.data));
         volleyError.printStackTrace();
-        Log.d("response", new String(volleyError.networkResponse.data));
+        //Log.d("response", new String(volleyError.networkResponse.data));
         doPrintManualReceipt();
     }
 }
