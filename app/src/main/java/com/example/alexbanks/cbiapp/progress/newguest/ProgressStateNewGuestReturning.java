@@ -5,14 +5,14 @@ import android.app.Activity;
 import com.example.alexbanks.cbiapp.activity.newguest.NewGuestReturningActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateNotBlankValueValidator;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
 
 public class ProgressStateNewGuestReturning extends ProgressState {
 
     public static final String KEY_RETURNING_MEMBER="returning_member";
 
     static{
-        ProgressStateValidator.addProgressStateValidator(ProgressStateNewGuestReturning.class, KEY_RETURNING_MEMBER, new ProgressStateNotBlankValueValidator("Choose a new guest type"));
+        ProgressStateValidatorManager.addValueValidator(ProgressStateNewGuestReturning.class, KEY_RETURNING_MEMBER, new ProgressStateNotBlankValueValidator("Choose a new guest type"));
     }
 
     public Boolean getReturningMember(){

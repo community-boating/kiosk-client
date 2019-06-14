@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.activity.DialogFragmentUnder18;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
 
 import java.io.File;

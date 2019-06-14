@@ -5,14 +5,14 @@ import android.app.Activity;
 import com.example.alexbanks.cbiapp.activity.newguest.NewGuestWaiverActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateNotBlankValueValidator;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
 
 public class ProgressStateNewGuestWaiver extends ProgressState {
 
     public static final String KEY_WAIVER_ACCEPT="waiver_accept";
 
     static {
-        ProgressStateValidator.addProgressStateValidator(ProgressStateNewGuestWaiver.class, KEY_WAIVER_ACCEPT, new ProgressStateNotBlankValueValidator(""));
+        ProgressStateValidatorManager.addValueValidator(ProgressStateNewGuestWaiver.class, KEY_WAIVER_ACCEPT, new ProgressStateNotBlankValueValidator(""));
     }
 
     public ProgressStateNewGuestWaiver(){

@@ -1,46 +1,33 @@
 package com.example.alexbanks.cbiapp.activity;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.admin.DevicePolicyManager;
-import android.bluetooth.BluetoothClass;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.example.alexbanks.cbiapp.R;
-import com.example.alexbanks.cbiapp.admin.CBIDeviceAdmin;
 import com.example.alexbanks.cbiapp.admin.CBIKioskLauncherActivity;
 import com.example.alexbanks.cbiapp.input.CustomInputManager;
 import com.example.alexbanks.cbiapp.progress.Progress;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /* This class contains general methods shared by most activities in this app */
-public class BaseActivity<ps extends ProgressState> extends FragmentActivity implements TimeoutDialogFragment.TimeoutDialogListener {
+public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     public static final String PROGRESS_EXTRA_KEY = "progress_extra";
 
@@ -120,26 +107,12 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity imp
 
     }
 
-    public void showHelpPopupWindow(View view){
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View popupView = inflater.inflate(R.layout.help_popup_layout, null);
-        final PopupWindow popupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-        Button close = popupView.findViewById(R.id.help_popup_button_close);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-    }
-
     public void handleNavButtonClickNext() {
         this.nextProgress();
     }
 
     public void handleNavButtonClickHelp(){
-        showHelpPopupWindow(getWindow().getDecorView().getRootView());
+        displayFragment(new DialogFragmentHelp());
     }
 
     public void handleNavButtonClickBack(){
@@ -182,6 +155,13 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity imp
         super.onStart();
     }
 
+    public void displayFragment(Fragment fragment){
+        //ViewGroup group = (ViewGroup)getWindow().getDecorView().getRootView();
+        if(findViewById(R.id.root_layout) != null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.root_layout, fragment).commit();
+        }
+    }
+
     public boolean canTimeout(){
         return true;
     }
@@ -194,8 +174,10 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity imp
 
             }
         };
-        TimeoutDialogFragment fragment = new TimeoutDialogFragment();
-        fragment.show(getSupportFragmentManager(), "Simple Fragment");
+        DialogFragmentTimeout fragmentTimeout = new DialogFragmentTimeout();
+        displayFragment(fragmentTimeout);
+        //TimeoutDialogFragment fragment = new TimeoutDialogFragment();
+        //fragment.show(getSupportFragmentManager(), "Simple Fragment");
         pageTimeout = new Timer();
         pageTimeout.schedule(new TimerTask(){
 
@@ -241,6 +223,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity imp
     @Override
     protected void onResume() {
         super.onResume();
+        //displayPopup(new DialogFragmentTimeout());
         //Log.d("bbbb", "a"  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
         /* Re-hide the status/nav bar after being away for a while */
         //Log.d("derp", "dd: " + dpm.isLockTaskPermitted("com.example.alexbanks.cbiapp"));
@@ -394,16 +377,15 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity imp
 
     }
 
-    @Override
-    public void handleTimeoutPromptYes(android.support.v4.app.DialogFragment fragment) {
-        fragment.dismiss();
+    public void handleTimeoutPromptYes(DialogFragmentBase fragment) {
+        fragment.removeDialog();
         resetTimeoutPrompt();
     }
 
-    @Override
-    public void handleTimeoutPromptNo(android.support.v4.app.DialogFragment fragment) {
-        fragment.dismiss();
+    public void handleTimeoutPromptNo(DialogFragmentBase fragment) {
+        fragment.removeDialog();
         pageTimeout.cancel();
         resetNewGuestProgress();
     }
+
 }

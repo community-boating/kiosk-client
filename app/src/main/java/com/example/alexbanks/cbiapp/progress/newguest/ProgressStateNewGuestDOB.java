@@ -7,8 +7,9 @@ import com.example.alexbanks.cbiapp.progress.ProgressState;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateDOBDayValueValidator;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateDOBMonthValueValidator;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateDOBYearValueValidator;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateNotBlankValueValidator;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
+
+import java.util.Calendar;
 
 public class ProgressStateNewGuestDOB extends ProgressState {
 
@@ -18,12 +19,18 @@ public class ProgressStateNewGuestDOB extends ProgressState {
 
     static{
         Class<ProgressStateNewGuestDOB> clazz = ProgressStateNewGuestDOB.class;
-        ProgressStateValidator.addProgressStateValidator(clazz, KEY_DOB_DAY, new ProgressStateDOBDayValueValidator());
-        ProgressStateValidator.addProgressStateValidator(clazz, KEY_DOB_MONTH, new ProgressStateDOBMonthValueValidator());
-        ProgressStateValidator.addProgressStateValidator(clazz, KEY_DOB_YEAR, new ProgressStateDOBYearValueValidator());
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_DAY, new ProgressStateDOBDayValueValidator());
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_MONTH, new ProgressStateDOBMonthValueValidator());
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_YEAR, new ProgressStateDOBYearValueValidator());
     }
 
     public ProgressStateNewGuestDOB() {
+    }
+
+    public Calendar getCalendarDOB(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(getDOBYear(), getDOBMonth() - 1, getDOBDay());
+        return calendar;
     }
 
     public Integer getDOBDay(){

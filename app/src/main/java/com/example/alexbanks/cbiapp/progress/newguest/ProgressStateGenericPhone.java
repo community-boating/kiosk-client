@@ -1,12 +1,8 @@
 package com.example.alexbanks.cbiapp.progress.newguest;
 
-import android.app.Activity;
-
-import com.example.alexbanks.cbiapp.activity.newguest.GenericPhoneActivity;
-import com.example.alexbanks.cbiapp.activity.newguest.NewGuestPhoneActivity;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateSizedNumberValueValidator;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
 
 public class ProgressStateGenericPhone extends ProgressState {
 
@@ -19,13 +15,13 @@ public class ProgressStateGenericPhone extends ProgressState {
         String lengthText3 = "Requires 3 numbers";
         String lengthText4 = "Requires 4 numbers";
         String formatText = "Invalid phone number format";
-        ProgressStateValidator.addProgressStateValidator(clazz, KEY_PHONE_1, new ProgressStateSizedNumberValueValidator(
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_PHONE_1, new ProgressStateSizedNumberValueValidator(
                 3, emptyText, lengthText3, formatText)
         );
-        ProgressStateValidator.addProgressStateValidator(clazz, KEY_PHONE_2, new ProgressStateSizedNumberValueValidator(
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_PHONE_2, new ProgressStateSizedNumberValueValidator(
                 3, emptyText, lengthText3, formatText)
         );
-        ProgressStateValidator.addProgressStateValidator(clazz, KEY_PHONE_3, new ProgressStateSizedNumberValueValidator(
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_PHONE_3, new ProgressStateSizedNumberValueValidator(
                 4, emptyText, lengthText4, formatText)
         );
     }

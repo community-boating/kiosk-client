@@ -1,6 +1,5 @@
 package com.example.alexbanks.cbiapp.input.listener;
 
-import android.renderscript.ScriptGroup;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -11,7 +10,7 @@ import android.widget.EditText;
 import com.example.alexbanks.cbiapp.input.CustomInputManager;
 import com.example.alexbanks.cbiapp.input.EditTextCustomInput;
 import com.example.alexbanks.cbiapp.progress.ProgressState;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
 
 public class CustomInputTextWatcherListener extends CustomInputProgressStateListener implements TextWatcher {
 
@@ -24,7 +23,7 @@ public class CustomInputTextWatcherListener extends CustomInputProgressStateList
 
     @Override
     public void updateProgressStateValidatorError(boolean hidden) {
-        String error = ProgressStateValidator.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), progressStateVariableName);
+        String error = ProgressStateValidatorManager.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), progressStateVariableName);
         if(error != null && !hidden){
             inputRef.setError(error);
         }else{
@@ -59,7 +58,7 @@ public class CustomInputTextWatcherListener extends CustomInputProgressStateList
                 String variableName = inputRef.progressStateVariableName;
                 ProgressState active = CustomInputManager.getActiveProgressState();
                 View view = inputRef.focusSearch(View.FOCUS_RIGHT);
-                if(view != null && ProgressStateValidator.isProgressStateValueValid(active, variableName) == null)
+                if(view != null && ProgressStateValidatorManager.isProgressStateValueValid(active, variableName) == null)
                     view.requestFocus();
             }
         }

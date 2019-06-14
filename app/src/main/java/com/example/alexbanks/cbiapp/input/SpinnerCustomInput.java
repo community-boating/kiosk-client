@@ -1,19 +1,14 @@
 package com.example.alexbanks.cbiapp.input;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.input.listener.CustomInputOnItemSelectedListener;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
 
 import java.util.List;
 

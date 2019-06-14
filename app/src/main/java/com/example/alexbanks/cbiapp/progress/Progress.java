@@ -2,18 +2,9 @@ package com.example.alexbanks.cbiapp.progress;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestFinish;
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone;
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestSignature;
-import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestWaiver;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -84,7 +75,7 @@ public class Progress implements Parcelable {
     public int checkPreviousProgressStates(){
         for(int i = 0; i <= this.currentState; i++){
             ProgressState progressState = this.states.get(i);
-            if(!ProgressStateValidator.isProgressStateValid(progressState)){
+            if(!ProgressStateValidatorManager.isProgressStateValid(progressState)){
                 return i;
             }
         }
@@ -94,7 +85,7 @@ public class Progress implements Parcelable {
     public int checkAllProgressStates(){
         for(int i = 0; i < this.states.size(); i++){
             ProgressState progressState = this.states.get(i);
-            if(!ProgressStateValidator.isProgressStateValid(progressState)){
+            if(!ProgressStateValidatorManager.isProgressStateValid(progressState)){
                 return i;
             }
         }
@@ -116,8 +107,8 @@ public class Progress implements Parcelable {
     }
 
     public static Progress createNewGuestProgress(){
-        //return new Progress(new ProgressStateNewGuestBegin());
-        return new Progress(new ProgressStateNewGuestWaiver());
+        return new Progress(new ProgressStateNewGuestBegin());
+        //return new Progress(new ProgressStateNewGuestWaiver());
     }
 
     @Override

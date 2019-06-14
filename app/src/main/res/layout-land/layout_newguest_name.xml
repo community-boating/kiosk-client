@@ -5,6 +5,7 @@
     style="@style/text_user_input"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_layout"
     android:background="@color/backgroundWhite"
     android:fitsSystemWindows="false">
 

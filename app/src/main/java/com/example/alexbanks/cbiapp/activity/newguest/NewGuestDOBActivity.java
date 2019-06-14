@@ -1,7 +1,6 @@
 package com.example.alexbanks.cbiapp.activity.newguest;
 
 import android.app.Activity;
-import android.icu.util.Calendar;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.widget.EditText;
 
 import com.example.alexbanks.cbiapp.R;
 import com.example.alexbanks.cbiapp.activity.BaseActivity;
+import com.example.alexbanks.cbiapp.activity.DialogFragmentUnder18;
 import com.example.alexbanks.cbiapp.input.SpinnerCustomInput;
 import com.example.alexbanks.cbiapp.keyboard.CustomKeyboard;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
@@ -24,6 +24,7 @@ import org.w3c.dom.Text;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,24 @@ public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> 
         customKeyboard.addTextViewsFromCustomInputManager();
         customKeyboard.showCustomKeyboard();
         customKeyboard.setTextViewFocuses();
+    }
+
+    public static final String KEY_DOB_UNDERAGE_AGREE="key_underage_agree";
+
+    @Override
+    public boolean nextProgress(){
+        Calendar maxDOB = Calendar.getInstance();
+        maxDOB.add(Calendar.YEAR, -18);
+        if(getProgressState().getCalendarDOB().after(maxDOB)){
+            if(getProgressState().contains(KEY_DOB_UNDERAGE_AGREE)) {
+                return super.nextProgress();
+            }else{
+                getProgressState().putBoolean(KEY_DOB_UNDERAGE_AGREE, true);
+                displayFragment(new DialogFragmentUnder18());
+                return false;
+            }
+        }
+        return super.nextProgress();
     }
 
     @Override

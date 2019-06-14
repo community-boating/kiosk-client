@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.example.alexbanks.cbiapp.input.CustomInputManager;
 import com.example.alexbanks.cbiapp.input.SpinnerCustomInput;
-import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidator;
+import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
 
 public class CustomInputOnItemSelectedListener extends CustomInputProgressStateListener implements AdapterView.OnItemSelectedListener {
 
@@ -21,7 +21,7 @@ public class CustomInputOnItemSelectedListener extends CustomInputProgressStateL
     @Override
     public void updateProgressStateValidatorError(boolean hidden) {
         TextView view = (TextView)inputRef.getSelectedView();
-        String error = ProgressStateValidator.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), progressStateVariableName);
+        String error = ProgressStateValidatorManager.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), progressStateVariableName);
         if(error != null && !hidden)
             view.setError(error);
         else

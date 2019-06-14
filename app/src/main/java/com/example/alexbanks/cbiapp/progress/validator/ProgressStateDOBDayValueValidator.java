@@ -35,13 +35,13 @@ public class ProgressStateDOBDayValueValidator implements ProgressStateValueVali
             int maxDay = dayCheck.getActualMaximum(Calendar.DAY_OF_MONTH);
             if(dayValue > maxDay)
                 return "Enter a valid day (this day never occurred)";
-            Calendar calendar = new GregorianCalendar(yearValue, monthValue - 1, dayValue);
+            /*Calendar calendar = new GregorianCalendar(yearValue, monthValue - 1, dayValue);
             Calendar current = Calendar.getInstance();
             int y = current.get(Calendar.YEAR);
             y -= 18;
             current.set(Calendar.YEAR, y);
             if(calendar.after(current))
-                return "You must be over 18";
+                return "You must be over 18";*/
         }
         return null;
     }
