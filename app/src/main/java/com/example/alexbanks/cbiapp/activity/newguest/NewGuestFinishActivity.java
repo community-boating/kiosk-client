@@ -106,6 +106,27 @@ public class NewGuestFinishActivity extends BaseActivity {
         }
     }
 
+    public void doPrintManualReceipt(){
+        ICommandBuilder builder = //PrinterManager.getCommandBuilder();
+                StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
+        builder.append("Please take this ticket to the front dock house to complete your rental".getBytes());
+        builder.appendPdf417WithAlignment("Hello World".getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC0, 2, 2, ICommandBuilder.AlignmentPosition.Center);
+        try {
+            PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
+                @Override
+                public void onStatus(boolean result, Communication.Result communicateResult) {
+                    if(result)
+                        resetHandler.postDelayed(resetProgressHandler, 3000);
+                    textViewLoading.setText("Printing : " + result + " : " + communicateResult.name());
+                }
+            });
+        } catch (Throwable t) {
+            t.printStackTrace();
+            Log.d("evanerror", t.getMessage());
+            textViewLoading.setText(t.getMessage());
+        }
+    }
+
     public void performAction() {
         textViewLoading.setText("Starting the load process...");
         final Response.ErrorListener responseErrorListener = new Response.ErrorListener() {
@@ -122,19 +143,6 @@ public class NewGuestFinishActivity extends BaseActivity {
                 handleCardCreated(response);
             }
         };
-        Progress progress = new Progress();
-        ProgressStateNewGuestName progressStateNewGuestName = new ProgressStateNewGuestName();
-        progressStateNewGuestName.setFirstName("test_first_name");
-        progressStateNewGuestName.setLastName("test_last_name");
-        progress.states.add(progressStateNewGuestName);
-        ProgressStateNewGuestDOB progressStateNewGuestDOB = new ProgressStateNewGuestDOB();
-        progressStateNewGuestDOB.setDOBDay(15);
-        progressStateNewGuestDOB.setDOBMonth(10);
-        progressStateNewGuestDOB.setDOBYear(1998);
-        progress.states.add(progressStateNewGuestDOB);
-        ProgressStateNewGuestEmail progressStateNewGuestEmail = new ProgressStateNewGuestEmail();
-        progressStateNewGuestEmail.setEmail("test_email@test.com");
-        progress.states.add(progressStateNewGuestEmail);
         Log.d("derp", "about to start creating card");
         try {
             CBIAPIRequestManager.getInstance(this).callCreateNewUserAndCard(this.progress, responseListener, responseErrorListener);
@@ -157,8 +165,10 @@ public class NewGuestFinishActivity extends BaseActivity {
     }
 
     public void handleCardError(VolleyError volleyError) {
+
         //textViewLoading.setText("Failed to create user/card : " + new String(volleyError.networkResponse.data));
         volleyError.printStackTrace();
         Log.d("response", new String(volleyError.networkResponse.data));
+        doPrintManualReceipt();
     }
 }
