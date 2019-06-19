@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestBegin;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestFinish;
 import com.example.alexbanks.cbiapp.progress.validator.ProgressStateValidatorManager;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class Progress implements Parcelable {
 
     public static Progress createNewGuestProgress(){
         return new Progress(new ProgressStateNewGuestBegin());
-        //return new Progress(new ProgressStateNewGuestWaiver());
+        //return new Progress(new ProgressStateNewGuestFinish());
     }
 
     @Override

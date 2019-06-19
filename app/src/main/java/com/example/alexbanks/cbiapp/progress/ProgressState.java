@@ -149,7 +149,9 @@ public class ProgressState implements Parcelable {
 
     //public boolean isProgressStateComplete() {return false;}
 
-
+    public Map<String, String> getValueMap(){
+        return valueMap;
+    }
 
     @Override
     public int describeContents() {
