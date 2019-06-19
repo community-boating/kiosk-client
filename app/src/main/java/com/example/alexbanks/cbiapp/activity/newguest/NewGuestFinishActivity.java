@@ -113,7 +113,8 @@ public class NewGuestFinishActivity extends BaseActivity {
         builder.append("Please take this ticket to the front dock house to complete your rental".getBytes());
         try{
             JSONObject jsonObject = CBIAPIRequestManager.getCreateNewUserJSONObject(this.progress);
-            builder.appendPdf417WithAlignment(jsonObject.toString().getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC0, 2, 2, ICommandBuilder.AlignmentPosition.Center);
+
+            builder.appendPdf417WithAlignment(jsonObject.toString().getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC1, 4, 4, ICommandBuilder.AlignmentPosition.Center);
         }catch(JSONException e){
             e.printStackTrace();
         }
