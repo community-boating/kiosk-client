@@ -91,8 +91,7 @@ public class CBIAPIRequestManager {
 
     static DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-    public void callCreateNewUserAndCard(Progress completeUserProgress, final Response.Listener<JSONObject> responseListener, final Response.ErrorListener errorListener) throws JSONException{
-        AdminConfigProperties.loadProperties(context);
+    public static JSONObject getCreateNewUserJSONObject(Progress completeUserProgress) throws JSONException {
         JSONObject requestObject = new JSONObject();
         ProgressStateNewGuestName progressStateNewGuestName = completeUserProgress.findByProgressStateType(ProgressStateNewGuestName.class);
         requestObject.put("firstName", progressStateNewGuestName.getFirstName());
@@ -120,7 +119,12 @@ public class CBIAPIRequestManager {
         //requestObject.put("emerg1Relation", ecType == null ? JSONObject.NULL : ecType);
         ProgressStateNewGuestReturning progressStateNewGuestReturning = completeUserProgress.findByProgressStateType(ProgressStateNewGuestReturning.class);
         requestObject.put("previousMember", progressStateNewGuestReturning.getReturningMember().booleanValue());
-        Log.d("derpderpa", requestObject.toString());
+        return requestObject;
+    }
+
+    public void callCreateNewUserAndCard(Progress completeUserProgress, final Response.Listener<JSONObject> responseListener, final Response.ErrorListener errorListener) throws JSONException{
+        AdminConfigProperties.loadProperties(context);
+        JSONObject requestObject = getCreateNewUserJSONObject(completeUserProgress);
         final Response.ErrorListener cardCreateErrorListener = new Response.ErrorListener(){
 
             @Override
