@@ -22,9 +22,13 @@ import com.example.alexbanks.cbiapp.config.AdminConfigProperties;
 import com.example.alexbanks.cbiapp.print.PrinterManager;
 import com.example.alexbanks.cbiapp.print.ReciptCommandGenerator;
 import com.example.alexbanks.cbiapp.progress.Progress;
+import com.example.alexbanks.cbiapp.progress.ProgressState;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactName;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateEmergencyContactPhone;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestDOB;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestEmail;
 import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestName;
+import com.example.alexbanks.cbiapp.progress.newguest.ProgressStateNewGuestPhone;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
@@ -38,6 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class NewGuestFinishActivity extends BaseActivity {
 
@@ -110,14 +115,41 @@ public class NewGuestFinishActivity extends BaseActivity {
     public void doPrintManualReceipt(){
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
-        builder.append("Please take this ticket to the front dock house to complete your rental".getBytes());
-        try{
-            JSONObject jsonObject = CBIAPIRequestManager.getCreateNewUserJSONObject(this.progress);
+        builder.beginDocument();
+        builder.append("Please take this ticket to the Front Office to complete your registration".getBytes());
+        StringBuilder stringBuilder = new StringBuilder();
+        ProgressStateNewGuestName newGuestName = this.progress.findByProgressStateType(ProgressStateNewGuestName.class);
+        stringBuilder.append("FirstName:");
+        stringBuilder.append(newGuestName.getFirstName());
+        stringBuilder.append("\nLastName:");
+        stringBuilder.append(newGuestName.getLastName());
+        ProgressStateNewGuestDOB newGuestDOB = this.progress.findByProgressStateType(ProgressStateNewGuestDOB.class);
+        stringBuilder.append("\nDOBDay:");
+        stringBuilder.append(newGuestDOB.getDOBDay());
+        stringBuilder.append("\nDOBMonth:");
+        stringBuilder.append(newGuestDOB.getDOBMonth());
+        stringBuilder.append("\nDOBYear:");
+        stringBuilder.append(newGuestDOB.getDOBYear());
+        ProgressStateNewGuestEmail newGuestEmail = this.progress.findByProgressStateType(ProgressStateNewGuestEmail.class);
+        stringBuilder.append("\nEmail:");
+        stringBuilder.append(newGuestEmail.getEmail());
+        ProgressStateNewGuestPhone newGuestPhone = this.progress.findByProgressStateType(ProgressStateNewGuestPhone.class);
+        stringBuilder.append("\nPhoneNumber:");
+        stringBuilder.append(newGuestPhone.getPhoneNumber());
+        ProgressStateEmergencyContactName emergencyContactName = this.progress.findByProgressStateType(ProgressStateEmergencyContactName.class);
+        stringBuilder.append("\nEmerg1Name:");
+        stringBuilder.append(emergencyContactName.getECFirstName());
+        stringBuilder.append(" ");
+        stringBuilder.append(emergencyContactName.getECLastName());
+        ProgressStateEmergencyContactPhone emergencyContactPhone = this.progress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
+        stringBuilder.append("\nEmerg1Phone:");
+        stringBuilder.append(emergencyContactPhone.getPhoneNumber());
+        builder.appendPdf417WithAlignment(stringBuilder.toString().getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC0, 2, 2, ICommandBuilder.AlignmentPosition.Center);
 
-            builder.appendPdf417WithAlignment(jsonObject.toString().getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC1, 4, 4, ICommandBuilder.AlignmentPosition.Center);
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
+        builder.appendUnitFeed(32);
+        builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
+        builder.endDocument();
+        
         try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
@@ -175,7 +207,7 @@ public class NewGuestFinishActivity extends BaseActivity {
 
         //textViewLoading.setText("Failed to create user/card : " + new String(volleyError.networkResponse.data));
         volleyError.printStackTrace();
-        Log.d("response", new String(volleyError.networkResponse.data));
+        //Log.d("response", new String(volleyError.networkResponse.data));
         doPrintManualReceipt();
     }
 }
