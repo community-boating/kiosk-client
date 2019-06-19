@@ -116,7 +116,7 @@ public class NewGuestFinishActivity extends BaseActivity {
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
         builder.beginDocument();
-        builder.append("Please take this ticket to the front dock house to complete your rental".getBytes());
+        builder.append("Please take this ticket to the Front Office to complete your registration".getBytes());
         StringBuilder stringBuilder = new StringBuilder();
         ProgressStateNewGuestName newGuestName = this.progress.findByProgressStateType(ProgressStateNewGuestName.class);
         stringBuilder.append("FirstName:");
