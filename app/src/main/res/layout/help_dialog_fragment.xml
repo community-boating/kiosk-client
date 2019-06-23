@@ -10,23 +10,26 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:layout_marginBottom="8dp"
-        android:text="See a front office staff member for help."
-        android:textSize="40sp"
+        android:text="For help push the button on the desk below."
+        android:textAlignment="center"
+        android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:layout_constraintVertical_bias="0.102" />
+        app:layout_constraintVertical_bias="0.188" />
 
     <Button
         android:id="@+id/help_dialog_fragment_close"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="96dp"
+        android:layout_width="146dp"
+        android:layout_height="84dp"
+        android:layout_marginTop="620dp"
+        android:layout_marginEnd="88dp"
         android:text="Close"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

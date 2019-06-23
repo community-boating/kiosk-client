@@ -26,13 +26,14 @@
 
     <WebView
         android:id="@+id/waiver_web_view"
-        android:layout_width="1000sp"
+        android:layout_width="1166dp"
         android:layout_height="380sp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="8dp"
         android:background="@color/shadowGray"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -48,10 +49,10 @@
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.276"
+        app:layout_constraintHorizontal_bias="0.596"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/waiver_web_view"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintVertical_bias="0.142" />
 
     <Button
         android:layout_width="wrap_content"
