@@ -46,23 +46,18 @@
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input"
         android:layout_width="503dp"
-        android:layout_height="87dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="116dp"
         android:ems="10"
         android:hint="@string/act3_name_last"
         android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
         android:textSize="32sp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/new_guest_name_first"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/new_guest_name_first"
-        app:layout_constraintTop_toBottomOf="@+id/new_guest_name_first"
-        app:layout_constraintVertical_bias="0.027"
+        app:layout_constraintStart_toEndOf="@+id/new_guest_name_first"
         app:progressStateVariable="ec_name_last"
-        app:variableType="String" />
+        app:variableType="String"
+        tools:layout_editor_absoluteY="135dp" />
 
     <FrameLayout
         android:id="@+id/layout_newguest"
