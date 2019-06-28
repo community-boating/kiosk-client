@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -75,12 +76,19 @@ public class NewGuestFinishActivity extends BaseActivity {
         for (ICommandBuilder.BarcodeWidth e : ICommandBuilder.BarcodeWidth.values()) {
             spinnerArray.add(e.name());
         }
-        performAction();
-        resetHandler.postDelayed(resetProgressHandler, 15000);
+        doPrintManualReceipt();
+        //performAction();
+        //resetHandler.postDelayed(resetProgressHandler, 15000);
         //resetHandler.removeCallbacks(resetProgressHandler);
         //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, 0, spinnerArray);
         //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //emulationSpinner.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event){
+        doPrintManualReceipt();
+        return super.dispatchTouchEvent(event);
     }
 
     public void handleButtonClick(View v) {
@@ -113,12 +121,17 @@ public class NewGuestFinishActivity extends BaseActivity {
     }
 
     public void doPrintManualReceipt(){
+        Log.d("evan", "something happening");
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
         builder.beginDocument();
-        builder.append("Please take this ticket to the Front Office to complete your registration".getBytes());
+        builder.append("Please take this ticket to the".getBytes());
         StringBuilder stringBuilder = new StringBuilder();
-        ProgressStateNewGuestName newGuestName = this.progress.findByProgressStateType(ProgressStateNewGuestName.class);
+        for(char i = 'a'; i <= 'z'; i++){
+            stringBuilder.append(i);
+        }
+        stringBuilder.append(" thats how you count the abc's");
+        /*ProgressStateNewGuestName newGuestName = this.progress.findByProgressStateType(ProgressStateNewGuestName.class);
         stringBuilder.append("FirstName:");
         stringBuilder.append(newGuestName.getFirstName());
         stringBuilder.append("\nLastName:");
@@ -143,17 +156,18 @@ public class NewGuestFinishActivity extends BaseActivity {
         stringBuilder.append(emergencyContactName.getECLastName());
         ProgressStateEmergencyContactPhone emergencyContactPhone = this.progress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
         stringBuilder.append("\nEmerg1Phone:");
-        stringBuilder.append(emergencyContactPhone.getPhoneNumber());
+        stringBuilder.append(emergencyContactPhone.getPhoneNumber());*/
         builder.appendPdf417WithAlignment(stringBuilder.toString().getBytes(), 0, 1, ICommandBuilder.Pdf417Level.ECC0, 2, 2, ICommandBuilder.AlignmentPosition.Center);
 
-        builder.appendUnitFeed(32);
+        //builder.appendUnitFeed(32);
         builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
         builder.endDocument();
-        
+
         try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
                 public void onStatus(boolean result, Communication.Result communicateResult) {
+                    Log.d("evansloop", "printed : " + result);
                     if(result)
                         resetHandler.postDelayed(resetProgressHandler, 3000);
                     textViewLoading.setText("Printing : " + result + " : " + communicateResult.name());

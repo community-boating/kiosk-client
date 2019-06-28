@@ -31,8 +31,9 @@ public class CBIKioskLauncherActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        Log.d("derpaderpderp", "what : " + getDPM().isDeviceOwnerApp("com.amazon.parentalcontrols"));
         if(isDeviceOwner()){
-            setKioskPolicies(true);
+            setKioskPolicies(false);
         }else{
             //Warn that the program will not run properly until provisioning of the device is complete
             Toast toast = Toast.makeText(this, R.string.cbi_admin_provision_warning, Toast.LENGTH_LONG);
