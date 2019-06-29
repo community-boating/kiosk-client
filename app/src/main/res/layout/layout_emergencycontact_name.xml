@@ -48,16 +48,19 @@
         android:layout_width="503dp"
         android:layout_height="85dp"
         android:layout_marginStart="116dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:hint="@string/act3_name_last"
         android:imeOptions="flagNoExtractUi"
         android:inputType="textPersonName"
         android:textSize="32sp"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/new_guest_name_first"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/new_guest_name_first"
+        app:layout_constraintTop_toTopOf="@+id/new_guest_name_first"
         app:progressStateVariable="ec_name_last"
-        app:variableType="String"
-        tools:layout_editor_absoluteY="135dp" />
+        app:variableType="String" />
 
     <FrameLayout
         android:id="@+id/layout_newguest"
