@@ -60,7 +60,7 @@
 
     <FrameLayout
         android:id="@+id/layout_newguest"
-        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.alexbanks.cbiapp">
+    package="org.communityboating.kioskclient">
 
     <uses-permission android:name=
         "android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
@@ -28,44 +28,44 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.AdminGUIActivity" android:windowSoftInputMode="adjustNothing">
+        <activity android:name="org.communityboating.kioskclient.activity.AdminGUIActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
-        <activity android:name=".admin.CBIKioskLauncherActivity">
+        <activity android:name="org.communityboating.kioskclient.admin.CBIKioskLauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.newguest.NewGuestBeginActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestBeginActivity" android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.newguest.NewGuestReturningActivity" android:windowSoftInputMode="adjustNothing">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestReturningActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
-        <activity android:name=".activity.newguest.NewGuestNameActivity" android:windowSoftInputMode="adjustNothing">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestNameActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
-        <activity android:name=".activity.newguest.NewGuestEmailActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestEmailActivity" android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".activity.newguest.EmergencyContactNameActivity" android:windowSoftInputMode="adjustNothing">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.EmergencyContactNameActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
-        <activity android:name=".activity.newguest.NewGuestWaiverActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestWaiverActivity" android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".activity.newguest.NewGuestSignatureActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestSignatureActivity" android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".activity.newguest.NewGuestFinishActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestFinishActivity" android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".activity.newguest.NewGuestDOBActivity" android:windowSoftInputMode="adjustResize|stateHidden">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestDOBActivity" android:windowSoftInputMode="adjustResize|stateHidden">
 
         </activity>
-        <activity android:name=".admin.EnableDPCProfileActivity">
+        <activity android:name="org.communityboating.kioskclient.admin.EnableDPCProfileActivity">
         </activity>
-        <activity android:name=".activity.newguest.EmergencyContactPhoneActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.EmergencyContactPhoneActivity" android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".activity.newguest.NewGuestPhoneActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestPhoneActivity" android:windowSoftInputMode="adjustResize">
         </activity>
-        <receiver android:name=".admin.CBIDeviceAdmin"
+        <receiver android:name="org.communityboating.kioskclient.admin.CBIDeviceAdmin"
             android:label="@string/cbi_admin_label"
             android:description="@string/cbi_admin_description"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -78,7 +78,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".keyboard.CustomSystemKeyboard"
+        <service android:name="org.communityboating.kioskclient.keyboard.CustomSystemKeyboard"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
                 <action android:name="android.view.InputMethod" />

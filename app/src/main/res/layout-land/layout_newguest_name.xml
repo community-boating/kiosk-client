@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
         style="@style/text_user_input_small"
         android:layout_width="480dp"
@@ -42,9 +42,9 @@
         app:variableType="String">
 
         <requestFocus></requestFocus>
-    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+    </org.communityboating.kioskclient.input.EditTextCustomInput>
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input_small"
         android:layout_width="523dp"
@@ -68,7 +68,7 @@
     <FrameLayout
         android:id="@+id/layout_newguest"
         android:tag="nav_fragment"
-        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -90,7 +90,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-    <com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView
+    <org.communityboating.kioskclient.keyboard.CustomKeyboardView
         android:layout_width="match_parent"
         android:layout_height="378dp"
         android:layout_marginTop="8dp"
@@ -102,12 +102,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.736">
 
-    </com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView>
-    <com.example.alexbanks.cbiapp.keyboardnew.CustomKeyboardViewNew
+    </org.communityboating.kioskclient.keyboard.CustomKeyboardView>
+    <org.communityboating.kioskclient.keyboardnew.CustomKeyboardViewNew
         android:layout_height="match_parent"
         android:layout_width="500px"
         app:mDerp="20dp">
-    </com.example.alexbanks.cbiapp.keyboardnew.CustomKeyboardViewNew>
+    </org.communityboating.kioskclient.keyboardnew.CustomKeyboardViewNew>
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_name"
         style="@style/custom_keypad"
