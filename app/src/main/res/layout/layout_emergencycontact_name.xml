@@ -9,7 +9,7 @@
     android:background="@color/backgroundWhite"
     android:fitsSystemWindows="false">
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
         style="@style/text_user_input"
         android:layout_width="505dp"
@@ -26,9 +26,9 @@
         app:progressStateVariable="ec_name_first"
         app:variableType="String">
         <requestFocus></requestFocus>
-    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+    </org.communityboating.kioskclient.input.EditTextCustomInput>
 
-    <com.example.alexbanks.cbiapp.input.CustomInputRadioTableLayout
+    <org.communityboating.kioskclient.input.CustomInputRadioTableLayout
         android:id="@+id/customInputRadioGridLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,9 +40,9 @@
         app:layout_constraintVertical_bias="0.0"
         app:preferredColumns="3"
         app:progressStateVariable="ec_type"
-        app:valueStringArrayResource="@array/act_ec_contact_options"></com.example.alexbanks.cbiapp.input.CustomInputRadioTableLayout>
+        app:valueStringArrayResource="@array/act_ec_contact_options"></org.communityboating.kioskclient.input.CustomInputRadioTableLayout>
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_name_last"
         style="@style/text_user_input"
         android:layout_width="503dp"
@@ -62,7 +62,7 @@
     <FrameLayout
         android:id="@+id/layout_newguest"
         android:tag="nav_fragment"
-        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -72,7 +72,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView
+    <org.communityboating.kioskclient.keyboard.CustomKeyboardView
         android:id="@+id/customKeyboardView"
         android:layout_width="match_parent"
         android:layout_height="469dp"
@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-    </com.example.alexbanks.cbiapp.keyboard.CustomKeyboardView>
+    </org.communityboating.kioskclient.keyboard.CustomKeyboardView>
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_ec_name"
         style="@style/custom_keypad"

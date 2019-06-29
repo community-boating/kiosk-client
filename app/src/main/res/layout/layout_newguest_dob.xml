@@ -7,7 +7,7 @@
     android:background="@color/backgroundWhite"
     android:fitsSystemWindows="false">
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_dob_month"
         style="@style/text_user_input"
         android:imeOptions="flagNoExtractUi"
@@ -25,9 +25,9 @@
         app:layout_constraintTop_toTopOf="@+id/textView9"
         app:progressStateVariable="dob_month">
         <requestFocus></requestFocus>
-    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+    </org.communityboating.kioskclient.input.EditTextCustomInput>
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_dob_day"
         style="@style/text_user_input"
         android:imeOptions="flagNoExtractUi"
@@ -44,9 +44,9 @@
         app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
         app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
         app:layout_constraintVertical_bias="0.0"
-        app:progressStateVariable="dob_day"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+        app:progressStateVariable="dob_day"></org.communityboating.kioskclient.input.EditTextCustomInput>
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_dob_year"
         style="@style/text_user_input"
         android:imeOptions="flagNoExtractUi"
@@ -65,7 +65,7 @@
         app:layout_constraintStart_toEndOf="@+id/new_guest_dob_month"
         app:layout_constraintTop_toTopOf="@+id/new_guest_dob_month"
         app:layout_constraintVertical_bias="0.0"
-        app:progressStateVariable="dob_year"></com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+        app:progressStateVariable="dob_year"></org.communityboating.kioskclient.input.EditTextCustomInput>
 
     <TextView
         android:id="@+id/textView9"
@@ -96,7 +96,7 @@
 
     <FrameLayout
         android:id="@+id/layout_newguest"
-        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="nav_fragment"

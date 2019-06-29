@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false">
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_3"
         style="@style/text_user_input_small"
         android:layout_width="145sp"
@@ -23,7 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/new_guest_phone_2" />
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_2"
         style="@style/text_user_input_small"
         android:layout_width="125sp"
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.alexbanks.cbiapp.input.EditTextCustomInput
+    <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_phone_1"
         style="@style/text_user_input_small"
         android:layout_width="125sp"
@@ -82,11 +82,11 @@
         app:layout_constraintEnd_toStartOf="@+id/new_guest_phone_2"
         app:layout_constraintTop_toTopOf="@+id/textView11">
         <requestFocus></requestFocus>
-    </com.example.alexbanks.cbiapp.input.EditTextCustomInput>
+    </org.communityboating.kioskclient.input.EditTextCustomInput>
 
     <FrameLayout
         android:id="@+id/layout_newguest"
-        class="com.example.alexbanks.cbiapp.activity.NavButtonGroupFragment"
+        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="nav_fragment"

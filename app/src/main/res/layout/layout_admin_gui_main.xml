@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:orientation="horizontal">
-                    <com.example.alexbanks.cbiapp.config.AdminConfigPropertyEditText
+                    <org.communityboating.kioskclient.config.AdminConfigPropertyEditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="448sp"
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:orientation="horizontal">
-                    <com.example.alexbanks.cbiapp.config.AdminConfigPropertyEditText
+                    <org.communityboating.kioskclient.config.AdminConfigPropertyEditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="448sp"
@@ -149,6 +149,21 @@
                 app:layout_constraintHorizontal_bias="0.08"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/button12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:onClick="handleExitAppClick"
+                android:text="Exit Kiosk"
+                app:layout_constraintBottom_toBottomOf="@+id/button6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.216"
+                app:layout_constraintStart_toEndOf="@+id/button6"
+                app:layout_constraintTop_toTopOf="@+id/button6"
                 app:layout_constraintVertical_bias="0.0" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
