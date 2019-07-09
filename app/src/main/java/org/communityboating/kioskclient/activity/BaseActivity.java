@@ -20,6 +20,7 @@ import android.widget.PopupWindow;
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.input.CustomInputManager;
+import org.communityboating.kioskclient.print.PrinterManager;
 import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 
@@ -128,6 +129,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PrinterManager.init(this);
         PackageManager pm = getPackageManager();
         Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
         //this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);

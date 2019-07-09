@@ -1,6 +1,8 @@
 package org.communityboating.kioskclient.config;
 
 import android.content.Context;
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.util.Log;
 
 import java.io.FileInputStream;
@@ -19,7 +21,13 @@ public abstract class AdminConfigProperties {
 
     public static final String PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS="cbi.printer.bluetooth.address";
 
+    public static final String PROPERTY_CBI_DEV_MODE="cbi.app.devmode";
 
+    public static final String PROPERTY_CBI_IDLE_TIMEOUT="cbi.page.timeout.idle";
+
+    public static final String PROPERTY_CBI_DURATION_DIALOG_TIMEOUT="cbi.page.timeout.dialog.duration";
+
+    public static final String PROPERTY_CBI_ENABLE_LAUNCHER="cbi.app.launcher.enabled";
 
     private static Properties adminProperties;
 
@@ -27,33 +35,38 @@ public abstract class AdminConfigProperties {
 
     private static final String adminConfigPropertiesLocation="adminconfig";
 
-    private static final Map<String, String> defaultAdminConfigPropertyValues=new HashMap(){
+    private static final Map<String, DefaultAdminConfigProperty> defaultAdminConfigPropertyValues=new HashMap(){
         {
-            put(PROPERTY_CBI_API_URL, "https://api-dev.community-boating.org/api");
-            put(PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS, "some bluetooth address");
+            put(PROPERTY_CBI_API_KEY, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_TEXT));
+            put(PROPERTY_CBI_API_URL, new DefaultAdminConfigProperty(InputType.TYPE_TEXT_VARIATION_URI, "https://api.community-boating.org/api"));
+            put(PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_TEXT));
+            put(PROPERTY_CBI_DEV_MODE, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, new Integer(1)));
+            put(PROPERTY_CBI_IDLE_TIMEOUT, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, 20000l));
+            put(PROPERTY_CBI_DURATION_DIALOG_TIMEOUT, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, 10000l));
+            put(PROPERTY_CBI_ENABLE_LAUNCHER, new DefaultAdminConfigProperty(new Boolean(false)));
         }
     };
 
     public static String getDefaultAdminConfigPropertyValue(String name){
-        return defaultAdminConfigPropertyValues.get(name);
+        return defaultAdminConfigPropertyValues.get(name).defaultValue();
     }
 
     public static String setAdminConfigPropertyValue(String name, String value){
         checkAdminProperties();
         if(value==null||value.isEmpty())
-            value=defaultAdminConfigPropertyValues.get(name);
+            value=defaultAdminConfigPropertyValues.get(name).defaultValue();
         adminProperties.setProperty(name, value);
         return value;
     }
 
-    public static String getAdminConfigPropertyValue(String name){
+    public static String get(String name){
         checkAdminProperties();
-        String defaultValue = defaultAdminConfigPropertyValues.get(name);
+        String defaultValue = defaultAdminConfigPropertyValues.get(name).defaultValue();
         return adminProperties.getProperty(name, defaultValue);
     }
 
     public static String getCBIPrinterBluetoothAddress(){
-        return getAdminConfigPropertyValue(PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS);
+        return get(PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS);
     }
 
     public static void setCBIPrinterBluetoothAddress(String printerBluetoothAddress){
@@ -61,7 +74,7 @@ public abstract class AdminConfigProperties {
     }
 
     public static String getPropertyCbiApiUrl(){
-        return getAdminConfigPropertyValue(PROPERTY_CBI_API_URL);
+        return get(PROPERTY_CBI_API_URL);
     }
 
     public static void setPropertyCbiApiUrl(String apiUrl){
@@ -121,6 +134,78 @@ public abstract class AdminConfigProperties {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public static class DefaultAdminConfigProperty {
+
+        private DefaultAdminConfigProperty(int editTextType, Object defaultValue){
+            this.editTextType = editTextType;
+            this.defaultValue = defaultValue;
+        }
+
+        private DefaultAdminConfigProperty(int editTextType){
+            this.editTextType = editTextType;
+            this.defaultValue = null;
+        }
+
+        private DefaultAdminConfigProperty(Object defaultValue){
+            this.editTextType=InputType.TYPE_CLASS_TEXT;
+            this.defaultValue=defaultValue;
+        }
+
+        public String defaultValue(){
+            return this.defaultValue == null ? null : this.defaultValue.toString();
+        }
+
+        int editTextType;
+        Object defaultValue;
+    }
+
+    public static Boolean getBoolean(String key){
+        return get(key).equals("true");
+    }
+
+    public static Integer getInteger(String key){
+        return Integer.parseInt(get(key));
+    }
+
+    public static Long getLong(String key){
+        return Long.parseLong(get(key));
+    }
+
+    public static Float getFloat(String key){
+        return Float.parseFloat(get(key));
+    }
+
+    public static Double getDouble(String key){
+        return Double.parseDouble(key);
+    }
+
+    public static void set(String key, Object o){
+        if(o == null)
+            setAdminConfigPropertyValue(key, null);
+        else
+            setAdminConfigPropertyValue(key, o.toString());
+    }
+
+    public static Map<String, DefaultAdminConfigProperty> getDefaultProperties(){
+        return defaultAdminConfigPropertyValues;
+    }
+
+    public static Properties getProperties(){
+        return adminProperties;
+    }
+
+    public static Boolean getCBILauncherEnabled(){
+        return getBoolean(PROPERTY_CBI_ENABLE_LAUNCHER);
+    }
+
+    public static void setCBILauncherEnabled(Boolean enabled){
+        set(PROPERTY_CBI_ENABLE_LAUNCHER, enabled);
+    }
+
+    public static int getInputType(String key){
+        return getDefaultProperties().get(key).editTextType;
     }
 
 }
