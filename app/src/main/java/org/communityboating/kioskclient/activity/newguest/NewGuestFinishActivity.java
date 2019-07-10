@@ -96,7 +96,7 @@ public class NewGuestFinishActivity extends BaseActivity {
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
         ReciptCommandGenerator.generatePrintReciptCommands(this, builder, fullName, Long.toString(cardNumber, 10));
-        try {
+        /*try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
                 public void onStatus(boolean result, Communication.Result communicateResult) {
@@ -109,7 +109,7 @@ public class NewGuestFinishActivity extends BaseActivity {
             t.printStackTrace();
             Log.d("evanerror", t.getMessage());
             textViewLoading.setText(t.getMessage());
-        }
+        }*/
     }
 
     public void doPrintManualReceipt(){
@@ -152,7 +152,7 @@ public class NewGuestFinishActivity extends BaseActivity {
         builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
         builder.endDocument();
 
-        try {
+        /*try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
                 public void onStatus(boolean result, Communication.Result communicateResult) {
@@ -166,7 +166,7 @@ public class NewGuestFinishActivity extends BaseActivity {
             t.printStackTrace();
             Log.d("evanerror", t.getMessage());
             textViewLoading.setText(t.getMessage());
-        }
+        }*/
     }
 
     public void performAction() {

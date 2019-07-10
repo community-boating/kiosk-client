@@ -2,10 +2,13 @@ package org.communityboating.kioskclient.activity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -20,6 +23,8 @@ import android.widget.PopupWindow;
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.input.CustomInputManager;
+import org.communityboating.kioskclient.print.PrintService;
+import org.communityboating.kioskclient.print.PrintServiceHolder;
 import org.communityboating.kioskclient.print.PrinterManager;
 import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
@@ -36,6 +41,8 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     public static final long PAGE_TIMEOUT_DURATION=20000;
     public static final long PAGE_TIMEOUT_DIALOG_DURATION=10000;
+
+    public PrintServiceHolder printService = new PrintServiceHolder();
 
     private Timer pageTimeout = new Timer();
     private final TimerTask taskTimeoutPrompt = new TimerTask(){
@@ -129,7 +136,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PrinterManager.init(this);
+        printService.createPrintService(this);
         PackageManager pm = getPackageManager();
         Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
         //this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);

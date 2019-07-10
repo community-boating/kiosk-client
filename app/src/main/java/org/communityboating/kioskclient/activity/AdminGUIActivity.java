@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.IConnectionCallback;
 import com.starmicronics.starioextension.StarIoExt;
@@ -36,6 +37,7 @@ import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.config.AdminConfigProperties;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
 import org.communityboating.kioskclient.keyboard.CustomKeyboardView;
+import org.communityboating.kioskclient.print.PrintServiceHolder;
 import org.communityboating.kioskclient.print.PrinterManager;
 import org.w3c.dom.Text;
 
@@ -64,6 +66,8 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     private byte[] passwordSalt = new byte[16];
     private boolean hasPasswordSet = false;
     private boolean hasValidPassword=true;//false;
+
+    PrintServiceHolder printService = new PrintServiceHolder();
 
     EditText passwordInput;
 
@@ -94,6 +98,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         super.onCreate(savedInstanceState);
         AdminConfigProperties.loadProperties(this);
         this.setContentView(R.layout.layout_admin_gui);
+        printService.createPrintService(this);
         //this.setContentView(R.layout.layout_admin_gui_main);
         //if(true)return;
 
@@ -125,20 +130,44 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         hasValidPassword=true;
         getMainComponents();
         initMainComponents();
-        PrinterManager.init(this);
     }
 
+    int presses=0;
+    int responses=0;
+
     public void handlePrintClick(View v){
+        presses++;
         ICommandBuilder builder = StarIoExt.createCommandBuilder(ModelCapability.getEmulation(ModelCapability.SM_S230I));
         builder.beginDocument();
         builder.append("Test print here".getBytes());
         builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
         builder.endDocument();
         try {
-            PrinterManager.sendCommands(this, builder, null);
+            printService.getPrinterService().sendCommands(builder, new PrinterManager.SendCommandsCallback() {
+                @Override
+                public void handleSuccess() {
+                    Log.d("printer", "done printing");
+                    responses++;
+                    Log.d("printer", "presses : " + presses + " responses : " + responses);
+                }
+
+                @Override
+                public void handleError(StarIOPortException e) {
+                    Log.d("printer", "printer error : " + e.getMessage());
+                    e.printStackTrace();
+                    responses++;
+                    Log.d("printer", "presses : " + presses + " responses : " + responses);
+                }
+
+                @Override
+                public boolean shouldContinue(StarIOPortException e, int attempts) {
+                    return attempts <= 2;
+                }
+            });
         }catch(Throwable t){
             t.printStackTrace();
         }
+        Log.d("printer", "already done with the touch event");
     }
 
     @Override

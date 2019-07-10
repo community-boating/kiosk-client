@@ -61,7 +61,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/new_guest_begin_button_begin"
         style="@style/button_background_large"
         android:layout_width="468dp"
         android:layout_height="124dp"
@@ -69,7 +69,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:onClick="handleBeginClick"
         android:text="@string/act1_help"
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"

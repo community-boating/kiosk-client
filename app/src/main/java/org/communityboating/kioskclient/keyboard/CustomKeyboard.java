@@ -199,8 +199,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             keyboardView.setPreviewEnabled(true);
     }
 
-    private int hashtags=0;
-
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -236,7 +234,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         EditText edittext = (EditText) focusCurrent;
         Editable editable = edittext.getText();
         int start = edittext.getSelectionStart();
-        boolean wasHashtag=false;
         if(primaryCode == KEY_CODE_DELETE){
             if(start > 0)
                 editable.delete(start - 1, start);
@@ -245,16 +242,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             updateShiftStatus();
         }else{
             char c = (char)primaryCode;
-            //TODO janky code for admin panel access
-            if(c == '#'){
-                hashtags++;
-                wasHashtag=true;
-                if(hashtags>=5){
-                    hashtags=0;
-                    Intent adminIntent = new Intent(activity, AdminGUIActivity.class);
-                    activity.startActivity(adminIntent);
-                }
-            }
             if((c >= 'a') && (c <= 'z') && shiftStatus) {
                 c = Character.toUpperCase(c);
                 shiftStatus=false;
@@ -262,8 +249,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             }
             editable.insert(start, "" + c);
         }
-        if(!wasHashtag)
-            hashtags=0;
     }
 
     @Override
