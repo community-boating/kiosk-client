@@ -170,8 +170,9 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
 
     public void handleExitAppClick(View v){
         checkAdminReady();
-
+        this.stopLockTask();
         CBIKioskLauncherActivity.setKioskPolicies(this.getApplicationContext(), false);
+        System.exit(0);
         //System.exit(0);
     }
 
