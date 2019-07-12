@@ -26,13 +26,37 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class PrinterManager implements IConnectionCallback {
 
+    private PrinterErrorHandler errorHandler = new PrinterErrorHandler() {
+        @Override
+        public void handlePrintingError(StarIOPortException portException, boolean isFinal) {
+        }
+
+        @Override
+        public void handleFatalPrinterError(Throwable cause) {
+        }
+
+        @Override
+        public void handleConnectResult(ConnectResult result) {
+
+        }
+
+        @Override
+        public void handleDisconnect() {
+
+        }
+    };
+
     private StarIoExtManager extManager;
 
     //private static PrinterManager Instance;
 
     private List<SendCommandsThread> pendingCommands;
 
-    private Object lock;
+    //Lock for when we are modifying command buffer objects
+    final private Object pendingLock;
+
+    //Lock for when we are using the StarIO Printer API
+    final private Object sendingLock;
 
     private boolean printerConnected;
 
@@ -63,7 +87,8 @@ public class PrinterManager implements IConnectionCallback {
         printerConnected = false;
         sendingCommands = false;
         unrecoverableError = false;
-        lock = new Object();
+        pendingLock = new Object();
+        sendingLock = new Object();
         PortInfo info = null;
         try {
             List<PortInfo> portInfos = StarIOPort.searchPrinter("BT:");
@@ -89,54 +114,66 @@ public class PrinterManager implements IConnectionCallback {
     //    Instance.sendICommands(context, builder, callback);
     //}
 
+    public void setPrinterErrorHandler(PrinterErrorHandler errorHandler){
+        this.errorHandler = errorHandler;
+    }
+
     protected void sendICommands(ICommandBuilder builder, final SendCommandsCallback callback) {
         final byte[] commands = builder.getCommands();
         SendCommandsThread sendCommandsThread = new SendCommandsThread(builder.getCommands(), callback);
-        pendingCommands.add(sendCommandsThread);
+        synchronized (pendingLock) {
+            pendingCommands.add(sendCommandsThread);
+        }
         attemptSendCommands();
         //Communication.sendCommands(context, builder.getCommands(), bluetoothPort, printerSettings.getPortSettings(), 10000, context, callback);     // 10000mS!!!
+    }
+
+    public boolean hasConnectedPrinter(){
+        return printerConnected;
+    }
+
+    public boolean hasFatalConnectionError(){
+        StarIoExtManager.PrinterStatus status = this.extManager.getPrinterOnlineStatus();
+        Log.d("printer", "connected : " + this.printerConnected);
+        if(status == null)
+            return false;
+        else if(status==StarIoExtManager.PrinterStatus.Invalid || status==StarIoExtManager.PrinterStatus.Impossible)
+            return true;
+        return false;
+    }
+
+    public void reconnectToPrinter(){
     }
 
     public void connectToPrinter(){
         this.extManager.connect(this);
     }
 
-    private class AttemptSendCommandsThread extends Thread{
-        @Override
-        public void run(){
-            synchronized (PrinterManager.this.lock) {
-                if (pendingCommands.isEmpty() || sendingCommands)
-                    return;
-                if(!printerConnected){
-                    connectToPrinter();
-                    return;
-                }
-                sendingCommands = true;
-                SendCommandsThread currentThread = pendingCommands.get(0);
-                pendingCommands.remove(0);
-                currentThread.start();
-            }
+    private void attemptSendCommands() {
+        synchronized (PrinterManager.this.pendingLock) {
+            if (pendingCommands.isEmpty() || sendingCommands)
+                return;
+        }
+        if(!hasConnectedPrinter()){
+            Log.d("printer", "attempting to connect to printer");
+            connectToPrinter();
+            return;
+        }
+        synchronized (pendingLock) {
+            SendCommandsThread currentThread = pendingCommands.get(0);
+            pendingCommands.remove(0);
+            currentThread.start();
         }
     }
 
-    private void attemptSendCommands(){
-        AttemptSendCommandsThread sendCommandsThread = new AttemptSendCommandsThread();
-        sendCommandsThread.start();
-    }
+    final static long PRINT_CONNECT_MAX_WAIT=100000;
 
     @Override
     public void onConnected(ConnectResult connectResult) {
-        printerConnected = connectResult==ConnectResult.Success || connectResult==ConnectResult.AlreadyConnected;
-        attemptSendCommands();
-        if(connectResult == ConnectResult.Failure)
-            unrecoverableError=true;
         Log.d("printer", "connected : " + connectResult.name());
-        //Log.d("printer", "connected" + this.extManager.getPrinterOnlineStatus());
-        /*try {
-            printAllVariables(this.extManager.getPort().retreiveStatus());
-        }catch(Throwable t){
-            t.printStackTrace();
-        }*/
+            printerConnected = connectResult != ConnectResult.Failure;
+        attemptSendCommands();
+        errorHandler.handleConnectResult(connectResult);
     }
 
     public void printAllVariables(StarPrinterStatus status){
@@ -154,6 +191,7 @@ public class PrinterManager implements IConnectionCallback {
     public void onDisconnected() {
         Log.d("printer", "disconnected");
         printerConnected = false;
+        errorHandler.handleDisconnect();
     }
 
     public static interface SendCommandsCallback{
@@ -175,9 +213,18 @@ public class PrinterManager implements IConnectionCallback {
 
         @Override
         public void run() {
-            synchronized (PrinterManager.this.lock) {
+            synchronized (PrinterManager.this.sendingLock) {
+                PrinterManager.this.sendingCommands=true;
+                long waitStart = System.currentTimeMillis();
+                while(PrinterManager.this.extManager.getPrinterOnlineStatus()!=StarIoExtManager.PrinterStatus.Online && ((System.currentTimeMillis()-waitStart)<PRINT_CONNECT_MAX_WAIT)) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 int attempts = 0;
-                while(true) {
+                while (true) {
                     attempts++;
                     try {
                         attemptPrint();
@@ -186,20 +233,26 @@ public class PrinterManager implements IConnectionCallback {
                     } catch (StarIOPortException e) {
                         Log.d("printer", "error printing...");
                         e.printStackTrace();
-                        if(!callback.shouldContinue(e, attempts)){
+                        if (!callback.shouldContinue(e, attempts)) {
                             callback.handleError(e);
+                            errorHandler.handlePrintingError(e, true);
                             break;
+                        }else{
+                            errorHandler.handlePrintingError(e, false);
                         }
                     }
                 }
                 PrinterManager.this.sendingCommands=false;
-                PrinterManager.this.attemptSendCommands();
             }
+            PrinterManager.this.attemptSendCommands();
         }
 
-        private void attemptPrint() throws StarIOPortException{
+        private void attemptPrint() throws StarIOPortException {
+            Log.d("printer", "port port : " + PrinterManager.this.extManager.getPrinterOnlineStatus());
             StarIOPort port = PrinterManager.this.extManager.getPort();
             Log.d("printer", "started port attempt");
+            if (port == null)
+                throw new StarIOPortException("Port invalid or device not connected");
             StarPrinterStatus status = port.beginCheckedBlock();
             if (status.offline)
                 throw new StarIOPortException("Printer is offline");
@@ -227,6 +280,13 @@ public class PrinterManager implements IConnectionCallback {
 
     public void destroy(){
         extManager.disconnect(this);
+    }
+
+    public static interface PrinterErrorHandler{
+        public void handlePrintingError(StarIOPortException portException, boolean isFinal);
+        public void handleFatalPrinterError(Throwable cause);
+        public void handleConnectResult(ConnectResult result);
+        public void handleDisconnect();
     }
 
 }

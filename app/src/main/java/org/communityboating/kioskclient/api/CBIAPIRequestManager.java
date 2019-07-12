@@ -73,8 +73,7 @@ public class CBIAPIRequestManager {
 
     public RequestQueue getRequestQueue(){
         if(requestQueue == null) {
-            //TODO remove this
-            NukeSSLCerts.nuke();
+            //NukeSSLCerts.nuke();
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
         }
         return requestQueue;

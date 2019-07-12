@@ -2,6 +2,7 @@ package org.communityboating.kioskclient.activity.newguest;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,7 +15,7 @@ import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestB
 import java.io.File;
 import java.util.Scanner;
 
-public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBegin> implements View.OnClickListener, View.OnLongClickListener {
+public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBegin> implements View.OnClickListener, View.OnTouchListener {
 
     Button beginButton;
 
@@ -26,7 +27,7 @@ public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBeg
         setContentView(R.layout.activity_test);
         beginButton=findViewById(R.id.new_guest_begin_button_begin);
         beginButton.setOnClickListener(this);
-        beginButton.setOnLongClickListener(this);
+        beginButton.setOnTouchListener(this);
     }
 
     @Override
@@ -44,9 +45,14 @@ public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBeg
     }
 
     @Override
-    public boolean onLongClick(View v) {
-        displayFragment(new DialogFragmentAdminTooltip());
-        return true;
+    public boolean onTouch(View v, MotionEvent event) {
+        if(v.isPressed() && event.getAction() == MotionEvent.ACTION_UP){
+            long duration = event.getEventTime() - event.getDownTime();
+            if(duration > 3000){
+                displayFragment(new DialogFragmentAdminTooltip());
+                return true;
+            }
+        }
+        return false;
     }
-
 }

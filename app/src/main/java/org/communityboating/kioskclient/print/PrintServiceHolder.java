@@ -4,8 +4,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
+import android.util.Printer;
+import android.widget.Toast;
+
+import com.starmicronics.stario.StarIOPortException;
+import com.starmicronics.starioextension.ICommandBuilder;
+import com.starmicronics.starioextension.IConnectionCallback;
 
 public class PrintServiceHolder {
 
@@ -13,12 +21,17 @@ public class PrintServiceHolder {
 
     private ServiceConnection connection;
 
+    private final Object lock = new Object();
+
     public void createPrintService(Context context){
         Intent intent = new Intent(context, PrintService.class);
         connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                printerService = (PrintService.PrinterServiceBinder)service;
+                synchronized (lock) {
+                    printerService = (PrintService.PrinterServiceBinder) service;
+                    lock.notifyAll();
+                }
                 Log.d("printer", "Service connected");
             }
 
@@ -31,16 +44,73 @@ public class PrintServiceHolder {
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
-    public void waitOnPrinterService(){
-        int count = 0;
-        while(printerService==null && count < 1000){
-            count++;
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public void waitForService(){
+        synchronized (lock) {
+            while (printerService == null) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    public void setVerbosePrinterErrorHandler(final Context context){
+
+        final PrinterManager.PrinterErrorHandler verboseErrorHandler = new PrinterManager.PrinterErrorHandler() {
+            @Override
+            public void handlePrintingError(StarIOPortException portException, boolean isFinal) {
+                Log.e("Printer error", "cause : " + portException.getCause() + " final : " + isFinal);
+                portException.printStackTrace();
+            }
+
+            @Override
+            public void handleFatalPrinterError(Throwable cause) {
+                Log.e("Printer error", "cause : " + cause.getCause());
+                cause.printStackTrace();
+                final Throwable causeF = cause;
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "Printer Error: please use the button to notify the front office", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void handleConnectResult(IConnectionCallback.ConnectResult result) {
+                Log.d("Printer connected", "status : " + result.name());
+            }
+
+            @Override
+            public void handleDisconnect() {
+                Log.d("Printer disconnected", "disconnected");
+            }
+        };
+        setPrinterErrorHandler(verboseErrorHandler);
+    }
+
+    public void setPrinterErrorHandler(final PrinterManager.PrinterErrorHandler errorHandler){
+        final Thread waitThread = new Thread(){
+            @Override
+            public void run(){
+                PrintServiceHolder.this.waitForService();
+                PrintServiceHolder.this.printerService.setPrinterErrorHandler(errorHandler);
+            }
+        };
+        waitThread.start();
+    }
+
+    public void waitAndSendCommands(final ICommandBuilder commandBuilder, final PrinterManager.SendCommandsCallback callback){
+        final Thread waitThread = new Thread(){
+            @Override
+            public void run(){
+                PrintServiceHolder.this.waitForService();
+                PrintServiceHolder.this.printerService.sendCommands(commandBuilder, callback);
+            }
+        };
+        waitThread.start();
     }
 
     public PrintService.PrinterServiceBinder getPrinterService(){

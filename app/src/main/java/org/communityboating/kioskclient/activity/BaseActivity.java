@@ -2,6 +2,7 @@ package org.communityboating.kioskclient.activity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -16,6 +18,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -137,6 +141,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         printService.createPrintService(this);
+        printService.setVerbosePrinterErrorHandler(this);
         PackageManager pm = getPackageManager();
         Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
         //this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -196,6 +201,11 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
                 BaseActivity.this.handleTimeoutExpire();
             }
         }, PAGE_TIMEOUT_DIALOG_DURATION);
+    }
+
+    public void lockDevice(){
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+        devicePolicyManager.lockNow();
     }
 
     public void handleTimeoutExpire(){
@@ -365,6 +375,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         View v = this.getWindow().getDecorView();
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN |
         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void changeFragment(Fragment targetFragment){

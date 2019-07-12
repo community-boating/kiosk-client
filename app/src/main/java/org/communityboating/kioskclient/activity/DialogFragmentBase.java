@@ -53,6 +53,8 @@ public class DialogFragmentBase extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-
+        if(v.getTag() != null && v.getTag().equals(getContext().getString(R.string.dialog_fragment_button_close_tag))){
+            this.removeDialog();
+        }
     }
 }

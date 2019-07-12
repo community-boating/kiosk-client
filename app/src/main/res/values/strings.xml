@@ -17,6 +17,8 @@
     <string name="act_11_finish_desc">Submitting...</string>
     <string name="act_11_finish_detail">Your ticket will print below. Grab it and have a great time on the water!</string>
 
+    <string name="dialog_fragment_button_close_tag">dialog_fragment_button_close_tag</string>
+
     <string name="act_title_ec">Emergency Contact</string>
     <string name="act_ec_name_desc">Emergency Contact Type:</string>
     <array name="act_ec_contact_options">

@@ -43,6 +43,10 @@ public class PrintService extends Service {
             printerManager.sendICommands(builder, callback);
         }
 
+        public void setPrinterErrorHandler(PrinterManager.PrinterErrorHandler errorHandler){
+            printerManager.setPrinterErrorHandler(errorHandler);
+        }
+
     }
 
 }
