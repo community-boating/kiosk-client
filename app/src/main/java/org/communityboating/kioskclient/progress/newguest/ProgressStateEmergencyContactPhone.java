@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress.newguest;
 import android.app.Activity;
 
 import org.communityboating.kioskclient.activity.newguest.EmergencyContactPhoneActivity;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 
 public class ProgressStateEmergencyContactPhone extends ProgressStateGenericPhone {
@@ -21,7 +22,7 @@ public class ProgressStateEmergencyContactPhone extends ProgressStateGenericPhon
     }
 
     @Override
-    public ProgressState createNextProgressState(){
+    public ProgressState createNextProgressState(Progress progress){
         return new ProgressStateNewGuestWaiver();
     }
 

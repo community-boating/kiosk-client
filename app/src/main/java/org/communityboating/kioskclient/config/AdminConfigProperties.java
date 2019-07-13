@@ -29,6 +29,14 @@ public abstract class AdminConfigProperties {
 
     public static final String PROPERTY_CBI_ENABLE_LAUNCHER="cbi.app.launcher.enabled";
 
+    public static final String PROPERTY_CBI_MAX_PRINT_ATTEMPTS="cbi.printer.max.attempts";
+
+    public static final String PROPERTY_CBI_PRINT_CHECKED_BLOCK_TIMEOUT="cbi.printer.checked.block.timeout";
+
+    public static final String PROPERTY_CBI_PRINT_STAR_IO_PORT_TIMEOUT="cbi.printer.star.io.port.timeout";
+
+    public static final String PROPERTY_CBI_PRINT_STAR_IO_PORT_SETTINGS="cbi.printer.star.io.port.settings";
+
     private static Properties adminProperties;
 
     private static boolean hasProperties=false;
@@ -44,6 +52,10 @@ public abstract class AdminConfigProperties {
             put(PROPERTY_CBI_IDLE_TIMEOUT, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, 20000l));
             put(PROPERTY_CBI_DURATION_DIALOG_TIMEOUT, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, 10000l));
             put(PROPERTY_CBI_ENABLE_LAUNCHER, new DefaultAdminConfigProperty(new Boolean(false)));
+            put(PROPERTY_CBI_MAX_PRINT_ATTEMPTS, new DefaultAdminConfigProperty(new Integer(0)));
+            put(PROPERTY_CBI_PRINT_CHECKED_BLOCK_TIMEOUT, new DefaultAdminConfigProperty(new Integer(30000)));
+            put(PROPERTY_CBI_PRINT_STAR_IO_PORT_TIMEOUT, new DefaultAdminConfigProperty(new Integer(20000)));
+            put(PROPERTY_CBI_PRINT_STAR_IO_PORT_SETTINGS, new DefaultAdminConfigProperty(new String()));
         }
     };
 
@@ -149,7 +161,13 @@ public abstract class AdminConfigProperties {
         }
 
         private DefaultAdminConfigProperty(Object defaultValue){
-            this.editTextType=InputType.TYPE_CLASS_TEXT;
+            this.editTextType=InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS;
+            if(defaultValue instanceof Double || defaultValue instanceof Float)
+                this.editTextType=InputType.TYPE_NUMBER_FLAG_DECIMAL;
+            else if(defaultValue instanceof Integer || defaultValue instanceof Long || defaultValue instanceof Short)
+                this.editTextType=InputType.TYPE_NUMBER_FLAG_SIGNED;
+            else if(defaultValue instanceof Number)
+                this.editTextType=InputType.TYPE_NUMBER_VARIATION_NORMAL;
             this.defaultValue=defaultValue;
         }
 
@@ -202,6 +220,38 @@ public abstract class AdminConfigProperties {
 
     public static void setCBILauncherEnabled(Boolean enabled){
         set(PROPERTY_CBI_ENABLE_LAUNCHER, enabled);
+    }
+
+    public static Integer getMaxPrintAttempts(){
+        return getInteger(PROPERTY_CBI_MAX_PRINT_ATTEMPTS);
+    }
+
+    public static void setMaxPrintAttempts(Integer maxPrintAttempts){
+        set(PROPERTY_CBI_MAX_PRINT_ATTEMPTS, maxPrintAttempts);
+    }
+
+    public static Integer getCheckedBlockTimeout(){
+        return getInteger(PROPERTY_CBI_PRINT_CHECKED_BLOCK_TIMEOUT);
+    }
+
+    public static void setCheckedBlockTimeout(Integer checkedBlockTimeout){
+        set(PROPERTY_CBI_PRINT_CHECKED_BLOCK_TIMEOUT, checkedBlockTimeout);
+    }
+
+    public static Integer getStarIOPortTimeout(){
+        return getInteger(PROPERTY_CBI_PRINT_STAR_IO_PORT_TIMEOUT);
+    }
+
+    public static void setStarIOPortTimeout(Integer starIOPortTimeout){
+        set(PROPERTY_CBI_PRINT_STAR_IO_PORT_TIMEOUT, starIOPortTimeout);
+    }
+
+    public static String getStarIOPortSettings(){
+        return get(PROPERTY_CBI_PRINT_STAR_IO_PORT_SETTINGS);
+    }
+
+    public static void setStarIOPortSettings(String starIOPortSettings){
+        set(PROPERTY_CBI_PRINT_STAR_IO_PORT_SETTINGS, starIOPortSettings);
     }
 
     public static int getInputType(String key){

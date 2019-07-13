@@ -117,7 +117,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
             setPasswordText("Enter Admin password");
         }
 
-        /*customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_FULL, R.id.custom_keyboard_view_admin_gui);
+        customKeyboard = new CustomKeyboard(this, CustomKeyboard.KEYBOARD_MODE_FULL, R.id.custom_keyboard_view_admin_gui);
         //customKeyboard.addTextView(emailText);
         //customKeyboard.addTextViewsFromCustomInputManager();
         customKeyboard.setEnterListener(this);
@@ -125,11 +125,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         customKeyboard.showCustomKeyboard();
         customKeyboard.setTextViewFocuses();
 
-        customKeyboard.updatePreventSoftwareKeyboard(false);*/
-        setContentView(R.layout.layout_admin_gui_main);
-        hasValidPassword=true;
-        getMainComponents();
-        initMainComponents();
+        customKeyboard.updatePreventSoftwareKeyboard(false);
     }
 
     int presses=0;
@@ -159,10 +155,6 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
                     Log.d("printer", "presses : " + presses + " responses : " + responses);
                 }
 
-                @Override
-                public boolean shouldContinue(StarIOPortException e, int attempts) {
-                    return attempts <= 2;
-                }
             });
         }catch(Throwable t){
             t.printStackTrace();

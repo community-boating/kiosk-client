@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress.newguest;
 import android.app.Activity;
 
 import org.communityboating.kioskclient.activity.newguest.NewGuestEmailActivity;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateEmailValueValidator;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
@@ -31,7 +32,7 @@ public class ProgressStateNewGuestEmail extends ProgressState {
     public Class<? extends Activity> getActivityClass(){ return NewGuestEmailActivity.class; }
 
     @Override
-    public ProgressState createNextProgressState() {
+    public ProgressState createNextProgressState(Progress progress) {
         return new ProgressStateEmergencyContactName();
     }
 

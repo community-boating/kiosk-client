@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress.newguest;
 import android.app.Activity;
 
 import org.communityboating.kioskclient.activity.newguest.NewGuestWaiverActivity;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateNotBlankValueValidator;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
@@ -32,7 +33,7 @@ public class ProgressStateNewGuestWaiver extends ProgressState {
     public Class<? extends Activity> getActivityClass(){ return NewGuestWaiverActivity.class; }
 
     @Override
-    public ProgressState createNextProgressState() {
+    public ProgressState createNextProgressState(Progress progress) {
         return new ProgressStateNewGuestSignature();
     }
 

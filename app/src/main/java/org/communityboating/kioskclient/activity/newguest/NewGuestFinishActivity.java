@@ -37,6 +37,7 @@ import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt;
 import com.starmicronics.starprntsdk.Communication;
 
+import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestReturning;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,6 +97,19 @@ public class NewGuestFinishActivity extends BaseActivity {
         ICommandBuilder builder = //PrinterManager.getCommandBuilder();
                 StarIoExt.createCommandBuilder(StarIoExt.Emulation.StarPRNT);
         ReciptCommandGenerator.generatePrintReciptCommands(this, builder, fullName, Long.toString(cardNumber, 10));
+        printService.waitAndSendCommands(builder, new PrinterManager.SendCommandsCallback() {
+            @Override
+            public void handleSuccess() {
+                resetHandler.postDelayed(resetProgressHandler, 3000);
+                Log.d("printer", "done printing");
+            }
+
+            @Override
+            public void handleError(StarIOPortException e) {
+                resetHandler.postDelayed(resetProgressHandler, 3000);
+                Log.e("printer", "printing failure", e);
+            }
+        });
         /*try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
                 @Override
@@ -119,8 +133,11 @@ public class NewGuestFinishActivity extends BaseActivity {
         builder.beginDocument();
         builder.append("Please take this ticket to the front office".getBytes());
         StringBuilder stringBuilder = new StringBuilder();
+        ProgressStateNewGuestReturning newGuestReturning = this.progress.findByProgressStateType(ProgressStateNewGuestReturning.class);
+        stringBuilder.append("ReturningGuest:");
+        stringBuilder.append(newGuestReturning.getReturningMember());
         ProgressStateNewGuestName newGuestName = this.progress.findByProgressStateType(ProgressStateNewGuestName.class);
-        stringBuilder.append("FirstName:");
+        stringBuilder.append("\nFirstName:");
         stringBuilder.append(newGuestName.getFirstName());
         stringBuilder.append("\nLastName:");
         stringBuilder.append(newGuestName.getLastName());
@@ -131,26 +148,42 @@ public class NewGuestFinishActivity extends BaseActivity {
         stringBuilder.append(newGuestDOB.getDOBMonth());
         stringBuilder.append("\nDOBYear:");
         stringBuilder.append(newGuestDOB.getDOBYear());
-        ProgressStateNewGuestEmail newGuestEmail = this.progress.findByProgressStateType(ProgressStateNewGuestEmail.class);
-        stringBuilder.append("\nEmail:");
-        stringBuilder.append(newGuestEmail.getEmail());
         ProgressStateNewGuestPhone newGuestPhone = this.progress.findByProgressStateType(ProgressStateNewGuestPhone.class);
         stringBuilder.append("\nPhoneNumber:");
         stringBuilder.append(newGuestPhone.getPhoneNumber());
-        ProgressStateEmergencyContactName emergencyContactName = this.progress.findByProgressStateType(ProgressStateEmergencyContactName.class);
-        stringBuilder.append("\nEmerg1Name:");
-        stringBuilder.append(emergencyContactName.getECFirstName());
-        stringBuilder.append(" ");
-        stringBuilder.append(emergencyContactName.getECLastName());
-        ProgressStateEmergencyContactPhone emergencyContactPhone = this.progress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
-        stringBuilder.append("\nEmerg1Phone:");
-        stringBuilder.append(emergencyContactPhone.getPhoneNumber());
+        if(!newGuestReturning.getReturningMember()) {
+            ProgressStateNewGuestEmail newGuestEmail = this.progress.findByProgressStateType(ProgressStateNewGuestEmail.class);
+            stringBuilder.append("\nEmail:");
+            stringBuilder.append(newGuestEmail.getEmail());
+            ProgressStateEmergencyContactName emergencyContactName = this.progress.findByProgressStateType(ProgressStateEmergencyContactName.class);
+            stringBuilder.append("\nEmerg1Name:");
+            stringBuilder.append(emergencyContactName.getECFirstName());
+            stringBuilder.append(" ");
+            stringBuilder.append(emergencyContactName.getECLastName());
+            ProgressStateEmergencyContactPhone emergencyContactPhone = this.progress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
+            stringBuilder.append("\nEmerg1Phone:");
+            stringBuilder.append(emergencyContactPhone.getPhoneNumber());
+        }
         builder.appendQrCode(stringBuilder.toString().getBytes(), ICommandBuilder.QrCodeModel.No2, ICommandBuilder.QrCodeLevel.M, 4);
         //builder.appendPdf417WithAlignment(data, 0, 1, ICommandBuilder.Pdf417Level.ECC0, 1, 1, ICommandBuilder.AlignmentPosition.Left);
 
         //builder.appendUnitFeed(32);
         builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
         builder.endDocument();
+
+        printService.waitAndSendCommands(builder, new PrinterManager.SendCommandsCallback() {
+            @Override
+            public void handleSuccess() {
+                resetHandler.postDelayed(resetProgressHandler, 3000);
+                Log.d("printer", "done printing");
+            }
+
+            @Override
+            public void handleError(StarIOPortException e) {
+                resetHandler.postDelayed(resetProgressHandler, 3000);
+                Log.e("printer", "printing failure", e);
+            }
+        });
 
         /*try {
             PrinterManager.sendCommands(this, builder, new Communication.SendCallback() {
@@ -175,7 +208,9 @@ public class NewGuestFinishActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d("card status", "card failed", error);
                 handleCardError(error);
+                error.printStackTrace();
             }
         };
         final Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
@@ -183,6 +218,7 @@ public class NewGuestFinishActivity extends BaseActivity {
             @Override
             public void onResponse(JSONObject response) {
                 handleCardCreated(response);
+                Log.d("card status", "card created");
             }
         };
         Log.d("derp", "about to start creating card");
@@ -197,6 +233,7 @@ public class NewGuestFinishActivity extends BaseActivity {
     public void handleCardCreated(JSONObject response) {
         ProgressStateNewGuestName guestName = this.progress.findByProgressStateType(ProgressStateNewGuestName.class);
         String fullName = guestName.getFirstName() + " " + guestName.getLastName();
+        Log.d("card status", "card created");
         try {
             Long cardNumber = response.getLong("cardNumber");
             doPrintReceipt(cardNumber, fullName);

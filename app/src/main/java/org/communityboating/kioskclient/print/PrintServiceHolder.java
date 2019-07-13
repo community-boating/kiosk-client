@@ -61,13 +61,13 @@ public class PrintServiceHolder {
         final PrinterManager.PrinterErrorHandler verboseErrorHandler = new PrinterManager.PrinterErrorHandler() {
             @Override
             public void handlePrintingError(StarIOPortException portException, boolean isFinal) {
-                Log.e("Printer error", "cause : " + portException.getCause() + " final : " + isFinal);
+                Log.e("Printer error", "cause : " + portException.getCause() + " final : " + isFinal, portException);
                 portException.printStackTrace();
             }
 
             @Override
             public void handleFatalPrinterError(Throwable cause) {
-                Log.e("Printer error", "cause : " + cause.getCause());
+                Log.e("Printer error", "cause : " + cause.getCause(), cause);
                 cause.printStackTrace();
                 final Throwable causeF = cause;
                 new Handler(Looper.getMainLooper()).post(new Runnable() {

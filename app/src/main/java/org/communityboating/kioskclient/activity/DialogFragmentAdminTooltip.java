@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
+import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt;
@@ -46,7 +47,9 @@ public class DialogFragmentAdminTooltip extends DialogFragmentBase {
         BaseActivity baseActivity = this.getBaseActivity();
         ICommandBuilder builder = StarIoExt.createCommandBuilder(ModelCapability.getEmulation(ModelCapability.SM_S230I));
         builder.beginDocument();
-        builder.append(("Test print here" + testPrintCount).getBytes());
+        for(int i = 0; i < 30; i++) {
+            builder.append(("Test print here" + testPrintCount).getBytes());
+        }
         testPrintCount++;
         builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
         builder.endDocument();
@@ -58,13 +61,8 @@ public class DialogFragmentAdminTooltip extends DialogFragmentBase {
 
             @Override
             public void handleError(StarIOPortException e) {
-                Log.d("printer", "printer error : " + e.getMessage());
+                Log.d("printer", "printer error : ", e);
                 e.printStackTrace();
-            }
-
-            @Override
-            public boolean shouldContinue(StarIOPortException e, int attempts) {
-                return attempts <= 2;
             }
         });
     }

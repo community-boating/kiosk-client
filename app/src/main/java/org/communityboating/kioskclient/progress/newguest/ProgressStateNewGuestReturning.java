@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress.newguest;
 import android.app.Activity;
 
 import org.communityboating.kioskclient.activity.newguest.NewGuestReturningActivity;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateNotBlankValueValidator;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
@@ -24,7 +25,7 @@ public class ProgressStateNewGuestReturning extends ProgressState {
     }
 
     @Override
-    public ProgressState createNextProgressState(){
+    public ProgressState createNextProgressState(Progress progress){
         return new ProgressStateNewGuestName();
     }
 

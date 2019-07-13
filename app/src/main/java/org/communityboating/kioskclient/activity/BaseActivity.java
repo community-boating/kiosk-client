@@ -375,7 +375,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         View v = this.getWindow().getDecorView();
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN |
         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void changeFragment(Fragment targetFragment){

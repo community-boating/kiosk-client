@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress.newguest;
 import android.app.Activity;
 
 import org.communityboating.kioskclient.activity.newguest.NewGuestDOBActivity;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateDOBDayValueValidator;
 import org.communityboating.kioskclient.progress.validator.ProgressStateDOBMonthValueValidator;
@@ -76,7 +77,7 @@ public class ProgressStateNewGuestDOB extends ProgressState {
     public Class<? extends Activity> getActivityClass(){ return NewGuestDOBActivity.class; }
 
     @Override
-    public ProgressState createNextProgressState() {
+    public ProgressState createNextProgressState(Progress progress) {
         return new ProgressStateNewGuestPhone();
     }
 

@@ -51,7 +51,7 @@ public class Progress implements Parcelable {
     public void nextState(){
         ProgressState currentState = this.getCurrentProgressState();
         if(this.currentState == this.states.size() - 1) {
-            ProgressState nextState = currentState.createNextProgressState();
+            ProgressState nextState = currentState.createNextProgressState(this);
 
             if (nextState != null) {
                 this.currentState = states.size();

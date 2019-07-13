@@ -92,11 +92,11 @@ public class CBIAPIRequestManager {
 
     public static JSONObject getCreateNewUserJSONObject(Progress completeUserProgress) throws JSONException {
         JSONObject requestObject = new JSONObject();
+        ProgressStateNewGuestReturning progressStateNewGuestReturning = completeUserProgress.findByProgressStateType(ProgressStateNewGuestReturning.class);
+        requestObject.put("previousMember", progressStateNewGuestReturning.getReturningMember().booleanValue());
         ProgressStateNewGuestName progressStateNewGuestName = completeUserProgress.findByProgressStateType(ProgressStateNewGuestName.class);
         requestObject.put("firstName", progressStateNewGuestName.getFirstName());
         requestObject.put("lastName", progressStateNewGuestName.getLastName());
-        ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
-        requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
 
         Calendar calendar = progressStateNewGuestDOB.getCalendarDOB();
@@ -108,16 +108,23 @@ public class CBIAPIRequestManager {
         ProgressStateNewGuestPhone progressStateNewGuestPhone = completeUserProgress.findByProgressStateType(ProgressStateNewGuestPhone.class);
         String phoneString = progressStateNewGuestPhone.getPhoneNumber();
         requestObject.put("phonePrimary", phoneString);
-        ProgressStateEmergencyContactName progressStateEmergencyContactName = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactName.class);
-        String emerg1NameString = progressStateEmergencyContactName.getECFirstName() + " " + progressStateNewGuestName.getLastName();
-        requestObject.put("emerg1Name", emerg1NameString);
-        ProgressStateEmergencyContactPhone progressStateEmergencyContactPhone = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
-        String emerg1PhoneString = progressStateEmergencyContactPhone.getPhoneNumber();
-        requestObject.put("emerg1PhonePrimary", emerg1PhoneString);
+        final String returningFillString="N/A";
+        if(progressStateNewGuestReturning.getReturningMember()){
+            requestObject.put("emailAddress", returningFillString);
+            requestObject.put("emerg1Name", returningFillString);
+            requestObject.put("emerg1PhonePrimary", returningFillString);
+        }else {
+            ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
+            requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
+            ProgressStateEmergencyContactName progressStateEmergencyContactName = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactName.class);
+            String emerg1NameString = progressStateEmergencyContactName.getECFirstName() + " " + progressStateNewGuestName.getLastName();
+            requestObject.put("emerg1Name", emerg1NameString);
+            ProgressStateEmergencyContactPhone progressStateEmergencyContactPhone = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
+            String emerg1PhoneString = progressStateEmergencyContactPhone.getPhoneNumber();
+            requestObject.put("emerg1PhonePrimary", emerg1PhoneString);
+        }
         //String ecType = progressStateEmergencyContactName.getECType();
         //requestObject.put("emerg1Relation", ecType == null ? JSONObject.NULL : ecType);
-        ProgressStateNewGuestReturning progressStateNewGuestReturning = completeUserProgress.findByProgressStateType(ProgressStateNewGuestReturning.class);
-        requestObject.put("previousMember", progressStateNewGuestReturning.getReturningMember().booleanValue());
         return requestObject;
     }
 
