@@ -1,6 +1,7 @@
 package org.communityboating.kioskclient.admin;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -81,6 +82,7 @@ public class CBIKioskLauncherActivity extends Activity {
         //dpm.setStatusBarDisabled(admin, enabled);
 
         dpm.setLockTaskPackages(admin, enabled?new String[]{context.getPackageName()}:new String[0]);
+        //dpm.setLockTaskFeatures(admin, DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD);
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_MAIN);
         filter.addCategory(Intent.CATEGORY_HOME);

@@ -125,7 +125,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         customKeyboard.showCustomKeyboard();
         customKeyboard.setTextViewFocuses();
 
-        customKeyboard.updatePreventSoftwareKeyboard(false);
+        customKeyboard.updatePreventSoftwareKeyboard(true);
     }
 
     int presses=0;

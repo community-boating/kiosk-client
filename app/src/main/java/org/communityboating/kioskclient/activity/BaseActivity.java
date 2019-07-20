@@ -2,7 +2,9 @@ package org.communityboating.kioskclient.activity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
+import android.bluetooth.BluetoothClass;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -143,7 +145,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         printService.createPrintService(this);
         printService.setVerbosePrinterErrorHandler(this);
         PackageManager pm = getPackageManager();
-        Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
+        //Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
         //this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
         //Log.d("bbbb", ""  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
         eventConfiguration();
@@ -204,6 +206,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     public void lockDevice(){
+        this.stopLockTask();
         DevicePolicyManager devicePolicyManager = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
         devicePolicyManager.lockNow();
     }
@@ -241,6 +244,12 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     @Override
+    public void onDestroy(){
+        super.onDestroy();
+        printService.destroyPrintService(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         //displayPopup(new DialogFragmentTimeout());
@@ -250,7 +259,6 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         //dpm.setLockTaskPackages(cbiAdminDeviceSample, new String[]{"com.example.alexbanks.cbiapp"});
         //Log.d("bbbb", "aff" + dpm.isDeviceOwnerApp(getApplicationContext().getPackageName()));
         hideStatusNavBar();
-        //dpm.setLockTaskFeatures(cbiAdminDeviceSample, DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD);
         this.checkProgress();
         ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         if(CBIKioskLauncherActivity.getDPM(this).isLockTaskPermitted(getApplicationContext().getPackageName()) && !manager.isInLockTaskMode()){

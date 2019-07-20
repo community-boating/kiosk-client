@@ -5,6 +5,11 @@ import android.util.Log;
 import android.util.Printer;
 
 import org.communityboating.kioskclient.config.AdminConfigProperties;
+import org.communityboating.kioskclient.print.event.PrinterManagerEvent;
+import org.communityboating.kioskclient.print.event.PrinterManagerEventHandler;
+import org.communityboating.kioskclient.print.event.PrinterManagerStarIOExtConnectionEvent;
+import org.communityboating.kioskclient.print.event.PrinterManagerStarIOExtDisconnectEvent;
+
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
@@ -58,16 +63,17 @@ public class PrinterManager implements IConnectionCallback {
 
     private boolean printerConnected;
 
+    private PrinterConnectionAttempt connectionAttempt;
+
     private boolean sendingCommands;
 
     private boolean unrecoverableError;
 
-    private int maxPrintAttempts;
-    private String portSettings;
-    private int portTimeout;
-    private int checkedBlockTimeout;
+    private PrinterManagerEventHandler eventHandler;
 
-    private static PrinterSettings printerSettings = new PrinterSettings(
+    private PrinterManagerSettings printerSettings;
+
+    /*private static PrinterSettings printerSettings = new PrinterSettings(
             ModelCapability.TSP650II,
                     "BT:00:12:F3:24:FA:F2",
                     "",
@@ -75,7 +81,7 @@ public class PrinterManager implements IConnectionCallback {
                     "Star Micronics",
                     true,
                     384
-    );
+    );*/
 
     /*public static void init(Context context){
         if(Instance==null) {
@@ -87,12 +93,9 @@ public class PrinterManager implements IConnectionCallback {
     private boolean printerOnline=false;
 
     public PrinterManager(Context context){
-        AdminConfigProperties.loadPropertiesIfRequired(context);
-        maxPrintAttempts=AdminConfigProperties.getMaxPrintAttempts();
-        portSettings=AdminConfigProperties.getStarIOPortSettings();
-        portTimeout=AdminConfigProperties.getStarIOPortTimeout();
-        checkedBlockTimeout=AdminConfigProperties.getCheckedBlockTimeout();
-        PrinterSettings settings = printerSettings;
+        loadConfigSettings(context);
+        eventHandler = new PrinterManagerEventHandler();
+        //PrinterSettings settings = printerSettings;
         pendingCommands = new Stack<>();
         printerConnected = false;
         sendingCommands = false;
@@ -111,7 +114,7 @@ public class PrinterManager implements IConnectionCallback {
         }catch(Exception e){
             e.printStackTrace();
         }
-        extManager = new StarIoExtManager(StarIoExtManager.Type.Standard, info.getPortName(), portSettings, portTimeout, context);
+        extManager = new StarIoExtManager(StarIoExtManager.Type.Standard, info.getPortName(), printerSettings.portSettings, printerSettings.portTimeout, context);
         PrinterManager.this.extManager.setListener(new StarIoExtManagerListener() {
             @Override
             public void onPrinterImpossible() {
@@ -226,6 +229,17 @@ public class PrinterManager implements IConnectionCallback {
         });
     }
 
+    private void loadConfigSettings(Context context){
+        AdminConfigProperties.loadPropertiesIfRequired(context);
+        printerSettings = new PrinterManagerSettings();
+        printerSettings.maxPrintAttempts=AdminConfigProperties.getMaxPrintAttempts();
+        printerSettings.portSettings=AdminConfigProperties.getStarIOPortSettings();
+        printerSettings.portName=AdminConfigProperties.getStarIOPortName();
+        printerSettings.portTimeout=AdminConfigProperties.getStarIOPortTimeout();
+        printerSettings.checkedBlockTimeout=AdminConfigProperties.getCheckedBlockTimeout();
+        printerSettings.maxExtConnectAttempts=AdminConfigProperties.getStarIOExtMaxConnectionAttempts();
+    }
+
     public static ICommandBuilder getCommandBuilder(){
         return StarIoExt.createCommandBuilder(StarIoExt.Emulation.EscPosMobile);
     }
@@ -263,12 +277,19 @@ public class PrinterManager implements IConnectionCallback {
         return false;
     }
 
-    public void reconnectToPrinter(){
+    public void connectToPrinter(){
+        this.connectionAttempt = new PrinterConnectionAttempt();
+        attemptPrinterReconnection();
     }
 
-    public void connectToPrinter(){
-        this.extManager.connect(this);
+    public void attemptPrinterReconnection(){
+        if(connectionAttempt.startConnectionAttemptIfRequired())
+            this.extManager.connect(this);
     }
+
+    //public void connectToPrinter(){
+    //    this.extManager.connect(this);
+    //}
 
     private void attemptSendCommands() {
         Log.d("printer", "printerprinter" + printerConnected);
@@ -292,10 +313,30 @@ public class PrinterManager implements IConnectionCallback {
 
     @Override
     public void onConnected(ConnectResult connectResult) {
-        Log.d("printer", "connected : " + connectResult.name());
-            printerConnected = connectResult != ConnectResult.Failure;
-        attemptSendCommands();
-        errorHandler.handleConnectResult(connectResult);
+        synchronized (this.connectionAttempt) {
+            connectionAttempt.handleConnectionResult(connectResult);
+            int connectionAttempts = connectionAttempt.connectionAttempts;
+            if (connectionAttempt.printerConnectionFailed) {
+                if (connectionAttempts < printerSettings.maxExtConnectAttempts) {
+                    PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_FAILED);
+                    eventHandler.dispatchEvent(event);
+                    attemptPrinterReconnection();
+                } else {
+                    PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_FAILURE_FINAL);
+                    eventHandler.dispatchEvent(event);
+                }
+            }else if(connectionAttempt.printerConnected){
+                PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_SUCCESSFUL);
+                eventHandler.dispatchEvent(event);
+                attemptSendCommands();
+            }else{
+                throw new RuntimeException("Invalid connection attempt, did not fail or succeed, bad logic somewhere");
+            }
+        }
+        //Log.d("printer", "connected : " + connectResult.name());
+        //    printerConnected = connectResult != ConnectResult.Failure;
+        //attemptSendCommands();
+        //errorHandler.handleConnectResult(connectResult);
     }
 
     public void printAllVariables(StarPrinterStatus status){
@@ -312,8 +353,11 @@ public class PrinterManager implements IConnectionCallback {
     @Override
     public void onDisconnected() {
         Log.d("printer", "disconnected");
-        printerConnected = false;
-        errorHandler.handleDisconnect();
+        //printerConnected = false;
+        connectionAttempt.disconnect();
+        PrinterManagerEvent event = new PrinterManagerStarIOExtDisconnectEvent();
+        eventHandler.dispatchEvent(event);
+        //errorHandler.handleDisconnect();
     }
 
     public static interface SendCommandsCallback{
@@ -355,7 +399,7 @@ public class PrinterManager implements IConnectionCallback {
                     } catch (StarIOPortException e) {
                         Log.d("printer", "error printing...");
                         e.printStackTrace();
-                        if (attempts >= maxPrintAttempts) {
+                        if (attempts >= printerSettings.maxPrintAttempts) {
                             callback.handleError(e);
                             errorHandler.handlePrintingError(e, true);
                             break;
@@ -383,7 +427,7 @@ public class PrinterManager implements IConnectionCallback {
 
             port.writePort(commands, 0, commands.length);
 
-            port.setEndCheckedBlockTimeoutMillis(checkedBlockTimeout);
+            port.setEndCheckedBlockTimeoutMillis(printerSettings.checkedBlockTimeout);
 
             Log.d("printer", "wrote data to printer");
 
@@ -405,11 +449,90 @@ public class PrinterManager implements IConnectionCallback {
         extManager.disconnect(this);
     }
 
-    public static interface PrinterErrorHandler{
+    public interface PrinterErrorHandler{
         public void handlePrintingError(StarIOPortException portException, boolean isFinal);
         public void handleFatalPrinterError(Throwable cause);
         public void handleConnectResult(ConnectResult result);
         public void handleDisconnect();
+    }
+
+    private class PrinterConnectionAttempt{
+        public boolean printerConnected;
+        public boolean printerConnectionFailed;
+        public boolean isConnecting;
+        public int connectionAttempts;
+        public PrinterConnectionAttempt(){
+            printerConnected=false;
+            printerConnectionFailed=false;
+            isConnecting=false;
+            connectionAttempts=0;
+        }
+        public boolean startConnectionAttemptIfRequired(){
+            synchronized (this) {
+                if (isConnecting || printerConnected)
+                    return false;
+                isConnecting=true;
+                return true;
+            }
+        }
+        public void startConnectionAttempt(){
+            synchronized (this) {
+                isConnecting = true;
+            }
+        }
+
+        public boolean isConnecting(){
+            synchronized (this){
+                return isConnecting;
+            }
+        }
+
+        public void disconnect(){
+            synchronized (this){
+                printerConnected=false;
+            }
+        }
+
+        public boolean isPrinterConnected(){
+            synchronized (this){
+                return printerConnected;
+            }
+        }
+
+        public boolean isPrinterConnectionFailed(){
+            synchronized (this){
+                return printerConnectionFailed;
+            }
+        }
+
+        public int getConnectionAttempts(){
+            synchronized (this){
+                return connectionAttempts;
+            }
+        }
+
+        public void handleConnectionResult(ConnectResult result){
+            //synchronized (this) {
+                if (result == ConnectResult.Failure) {
+                    printerConnected = false;
+                    printerConnectionFailed = true;
+                } else {
+                    printerConnected = true;
+                    printerConnectionFailed = false;
+                }
+                isConnecting = false;
+                connectionAttempts++;
+            //}
+        }
+    }
+
+    private class PrinterManagerSettings{
+        private int maxPrintAttempts;
+        private String portName;
+        private String portSettings;
+        private int portTimeout;
+        private int checkedBlockTimeout;
+        private int maxExtConnectAttempts;
     }
 
 }

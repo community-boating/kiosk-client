@@ -19,8 +19,6 @@ public abstract class AdminConfigProperties {
 
     public static final String PROPERTY_CBI_API_KEY="cbi.api.key";
 
-    public static final String PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS="cbi.printer.bluetooth.address";
-
     public static final String PROPERTY_CBI_DEV_MODE="cbi.app.devmode";
 
     public static final String PROPERTY_CBI_IDLE_TIMEOUT="cbi.page.timeout.idle";
@@ -35,7 +33,11 @@ public abstract class AdminConfigProperties {
 
     public static final String PROPERTY_CBI_PRINT_STAR_IO_PORT_TIMEOUT="cbi.printer.star.io.port.timeout";
 
+    public static final String PROPERTY_CBI_PRINT_STAR_IO_PORT_NAME="cbi.printer.star.io.port.name";
+
     public static final String PROPERTY_CBI_PRINT_STAR_IO_PORT_SETTINGS="cbi.printer.star.io.port.settings";
+
+    public static final String PROPERTY_CBI_PRINT_STAR_IO_EXT_MAX_CONNECTION_ATTEMPTS="cbi.printer.star.io.ext.connection.attempts.max";
 
     private static Properties adminProperties;
 
@@ -47,7 +49,6 @@ public abstract class AdminConfigProperties {
         {
             put(PROPERTY_CBI_API_KEY, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_TEXT));
             put(PROPERTY_CBI_API_URL, new DefaultAdminConfigProperty(InputType.TYPE_TEXT_VARIATION_URI, "https://api.community-boating.org/api"));
-            put(PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_TEXT));
             put(PROPERTY_CBI_DEV_MODE, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, new Integer(1)));
             put(PROPERTY_CBI_IDLE_TIMEOUT, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, 20000l));
             put(PROPERTY_CBI_DURATION_DIALOG_TIMEOUT, new DefaultAdminConfigProperty(InputType.TYPE_CLASS_NUMBER, 10000l));
@@ -55,7 +56,9 @@ public abstract class AdminConfigProperties {
             put(PROPERTY_CBI_MAX_PRINT_ATTEMPTS, new DefaultAdminConfigProperty(new Integer(0)));
             put(PROPERTY_CBI_PRINT_CHECKED_BLOCK_TIMEOUT, new DefaultAdminConfigProperty(new Integer(30000)));
             put(PROPERTY_CBI_PRINT_STAR_IO_PORT_TIMEOUT, new DefaultAdminConfigProperty(new Integer(20000)));
+            put(PROPERTY_CBI_PRINT_STAR_IO_PORT_NAME, new DefaultAdminConfigProperty(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS));
             put(PROPERTY_CBI_PRINT_STAR_IO_PORT_SETTINGS, new DefaultAdminConfigProperty(new String()));
+            put(PROPERTY_CBI_PRINT_STAR_IO_EXT_MAX_CONNECTION_ATTEMPTS, new DefaultAdminConfigProperty(new Integer(5)));
         }
     };
 
@@ -75,14 +78,6 @@ public abstract class AdminConfigProperties {
         checkAdminProperties();
         String defaultValue = defaultAdminConfigPropertyValues.get(name).defaultValue();
         return adminProperties.getProperty(name, defaultValue);
-    }
-
-    public static String getCBIPrinterBluetoothAddress(){
-        return get(PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS);
-    }
-
-    public static void setCBIPrinterBluetoothAddress(String printerBluetoothAddress){
-        setAdminConfigPropertyValue(PROPERTY_CBI_PRINTER_BLUETOOTH_ADDRESS, printerBluetoothAddress);
     }
 
     public static String getPropertyCbiApiUrl(){
@@ -256,6 +251,22 @@ public abstract class AdminConfigProperties {
 
     public static int getInputType(String key){
         return getDefaultProperties().get(key).editTextType;
+    }
+
+    public static String getStarIOPortName(){
+        return get(PROPERTY_CBI_PRINT_STAR_IO_PORT_NAME);
+    }
+
+    public static void setStarIOPortName(String portName){
+        set(PROPERTY_CBI_PRINT_STAR_IO_PORT_NAME, portName);
+    }
+
+    public static Integer getStarIOExtMaxConnectionAttempts(){
+        return getInteger(PROPERTY_CBI_PRINT_STAR_IO_EXT_MAX_CONNECTION_ATTEMPTS);
+    }
+
+    public static void setStarIOExtMaxConnectionAttempts(Integer maxConnectionAttempts){
+        set(PROPERTY_CBI_PRINT_STAR_IO_EXT_MAX_CONNECTION_ATTEMPTS, maxConnectionAttempts);
     }
 
 }

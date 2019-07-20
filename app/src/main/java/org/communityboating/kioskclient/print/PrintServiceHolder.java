@@ -44,6 +44,13 @@ public class PrintServiceHolder {
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
+    public void destroyPrintService(Context context){
+        if(connection != null) {
+            context.unbindService(connection);
+            connection = null;
+        }
+    }
+
     public void waitForService(){
         synchronized (lock) {
             while (printerService == null) {
