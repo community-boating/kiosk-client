@@ -44,9 +44,9 @@ public class CBIKioskLauncherActivity extends Activity {
             toast.setGravity(Gravity.TOP, 0, 0);
             toast.show();
         }
-        //Intent adminIntent = new Intent(this, AdminGUIActivity.class);
-        //this.startActivity(adminIntent);
-        startKioskActivity();
+        Intent adminIntent = new Intent(this, AdminGUIActivity.class);
+        this.startActivity(adminIntent);
+        //startKioskActivity();
     }
 
     @Override

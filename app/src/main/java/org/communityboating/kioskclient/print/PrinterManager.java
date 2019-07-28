@@ -2,33 +2,26 @@ package org.communityboating.kioskclient.print;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.Printer;
 
 import org.communityboating.kioskclient.config.AdminConfigProperties;
-import org.communityboating.kioskclient.print.event.PrinterManagerEvent;
-import org.communityboating.kioskclient.print.event.PrinterManagerEventHandler;
-import org.communityboating.kioskclient.print.event.PrinterManagerStarIOExtConnectionEvent;
-import org.communityboating.kioskclient.print.event.PrinterManagerStarIOExtDisconnectEvent;
+import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerEvent;
+import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerEventHandler;
+import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerStarIOExtConnectionEvent;
+import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerStarIOExtDisconnectEvent;
 
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.stario.StarPrinterStatus;
-import com.starmicronics.starioextension.ConnectionCallback;
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.IConnectionCallback;
 import com.starmicronics.starioextension.StarIoExt;
 import com.starmicronics.starioextension.StarIoExtManager;
 import com.starmicronics.starioextension.StarIoExtManagerListener;
-import com.starmicronics.starprntsdk.Communication;
-import com.starmicronics.starprntsdk.ModelCapability;
-import com.starmicronics.starprntsdk.PrinterSettings;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class PrinterManager implements IConnectionCallback {
 

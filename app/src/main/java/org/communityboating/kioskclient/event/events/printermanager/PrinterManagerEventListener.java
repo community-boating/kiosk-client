@@ -1,4 +1,4 @@
-package org.communityboating.kioskclient.print.event;
+package org.communityboating.kioskclient.event.events.printermanager;
 
 public interface PrinterManagerEventListener {
 

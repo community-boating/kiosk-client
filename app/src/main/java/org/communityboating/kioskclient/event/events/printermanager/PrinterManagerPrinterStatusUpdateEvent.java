@@ -1,6 +1,4 @@
-package org.communityboating.kioskclient.print.event;
-
-import com.starmicronics.starioextension.StarIoExtManagerListener;
+package org.communityboating.kioskclient.event.events.printermanager;
 
 public class PrinterManagerPrinterStatusUpdateEvent extends PrinterManagerEvent {
 

@@ -1,4 +1,4 @@
-package org.communityboating.kioskclient.print.event;
+package org.communityboating.kioskclient.event.events.printermanager;
 
 import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.starioextension.StarIoExtManager;

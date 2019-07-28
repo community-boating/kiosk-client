@@ -13,6 +13,8 @@ import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.EventLog;
 import android.util.Log;
 import android.util.Printer;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -35,6 +38,7 @@ import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIDeviceAdmin;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.config.AdminConfigProperties;
+import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
 import org.communityboating.kioskclient.keyboard.CustomKeyboardView;
 import org.communityboating.kioskclient.print.PrintServiceHolder;
@@ -93,9 +97,12 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
 
     Button clearPropertyButton;
 
+    RecyclerView eventList;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        CBIAPPEventManager.initiateIfRequired(this);
         AdminConfigProperties.loadProperties(this);
         this.setContentView(R.layout.layout_admin_gui);
         printService.createPrintService(this);
@@ -107,9 +114,13 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         passwordInput=findViewById(R.id.admin_gui_password_input);
         passwordText=findViewById(R.id.admin_gui_password_input_text);
 
-        //hasValidPassword=true;
-        //setContentView(R.layout.layout_admin_gui_main);
-        //getMainComponents();
+        hasValidPassword=true;
+        setContentView(R.layout.layout_admin_gui_main);
+        getMainComponents();
+        initMainComponents();
+
+        if(true)
+            return;
 
         if(!hasPasswordSet){
             setPasswordText("No Admin password set, enter one now to complete");
@@ -308,8 +319,68 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         getPropertyButton=findViewById(R.id.admin_gui_properties_editor_button_get);
         defaultPropertyButton=findViewById(R.id.admin_gui_properties_editor_button_default);
         clearPropertyButton=findViewById(R.id.admin_gui_properties_editor_button_clear);
+        eventList=findViewById(R.id.admin_gui_event_list);
         //cbiAPIKeyUpdateButton = (Button) findViewById(R.id.admin_gui_cbi_api_key_update_button);
     }
+
+    class ListThing extends RecyclerView.Adapter<EventViewHolder> {
+
+        int size;
+
+        ListThing(int size){
+            this.size=size;
+        }
+
+        private final View.OnClickListener eventViewClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView mainEventView=v.findViewById(R.id.admin_gui_event_message);
+                mainEventView.setVisibility(View.VISIBLE);
+                mainEventView.setText("HI IM AN EVENT MESSAGE");
+            }
+        };
+
+        @Override
+        public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_admin_gui_main_event, viewGroup, false);
+            view.setOnClickListener(eventViewClickListener);
+            return new EventViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(EventViewHolder viewHolder, int i) {
+            viewHolder.eventType.setText("Hello : " + i);
+            Log.d("ploob ooble", "plap blap : " + i);
+            viewHolder.eventMessage.setVisibility(View.GONE);
+            if(i%2==0)
+                viewHolder.itemView.setBackgroundColor(Color.RED);
+            else
+                viewHolder.itemView.setBackgroundColor(Color.BLUE);
+        }
+
+        @Override
+        public int getItemCount() {
+            return size;
+        }
+    }
+
+    class EventViewHolder extends RecyclerView.ViewHolder{
+
+        TextView eventType;
+        TextView eventTimeStamp;
+        TextView eventTitle;
+        TextView eventMessage;
+
+        public EventViewHolder(View itemView) {
+            super(itemView);
+            eventType=itemView.findViewById(R.id.admin_gui_event_type);
+            eventTimeStamp=itemView.findViewById(R.id.admin_gui_event_timestamp);
+            eventTitle=itemView.findViewById(R.id.admin_gui_event_title);
+            eventMessage=itemView.findViewById(R.id.admin_gui_event_message);
+        }
+    }
+
+    ListThing adaper;
 
     private void initMainComponents(){
         String rootPackage = BasePackageClass.class.getPackage().getName();
@@ -328,6 +399,16 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         getPropertyButton.setOnClickListener(this);
         defaultPropertyButton.setOnClickListener(this);
         clearPropertyButton.setOnClickListener(this);
+        eventList.setHasFixedSize(true);
+        eventList.setLayoutManager(new LinearLayoutManager(this));
+        adaper = new ListThing(1000);
+        eventList.setAdapter(adaper);
+    }
+
+    public void handleClickUp(View v){
+        adaper.size += 10;
+        adaper.notifyDataSetChanged();
+        eventList.scrollToPosition(adaper.getItemCount() - 1);
     }
 
     private void updateDeviceOwnerStatus(){

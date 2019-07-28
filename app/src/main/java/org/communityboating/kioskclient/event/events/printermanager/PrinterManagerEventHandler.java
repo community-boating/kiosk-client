@@ -1,11 +1,10 @@
-package org.communityboating.kioskclient.print.event;
+package org.communityboating.kioskclient.event.events.printermanager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.TreeSet;
 
 public class PrinterManagerEventHandler {
 
