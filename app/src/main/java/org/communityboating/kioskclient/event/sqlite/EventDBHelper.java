@@ -85,18 +85,17 @@ public class EventDBHelper extends SQLiteOpenHelper {
         return builder.toString();
     }
 
-    private List<String> getSelectionStringFromKnownPage(CBIAPPEventCollectionPage lastPage, CBIAPPEventSelection selection, StringBuilder builder, boolean reversed){
-        SQLiteEvent finalEvent = lastPage.getFinalEvent();
+    private List<String> getSelectionStringFromKnownPage(SQLiteEvent eventReference, CBIAPPEventSelection selection, StringBuilder builder, boolean reversed){
         List<String> selectionArgs = new ArrayList<>();
         String firstColumnName=selection.getFirstSortColumn();
         int firstColumnType=selection.getFirstSortColumnOrder(reversed);
-        String firstColumnValue=finalEvent.getValue(firstColumnName);
+        String firstColumnValue=eventReference.getValue(firstColumnName);
         String secondColumnName=selection.getSecondSortColumn();
         int secondColumnType=selection.getSecondSortColumnOrder(reversed);
-        String secondColumnValue=finalEvent.getValue(secondColumnName);
+        String secondColumnValue=eventReference.getValue(secondColumnName);
         String thirdColumnName=selection.getThirdSortColumn();
         int thirdColumnType=selection.getThirdSortColumnOrder(reversed);
-        String thirdColumnValue=finalEvent.getValue(thirdColumnName);
+        String thirdColumnValue=eventReference.getValue(thirdColumnName);
         if(selection.getEventType()!=null){
             builder.append(EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TYPE);
             builder.append(" = ? AND ");
@@ -112,23 +111,52 @@ public class EventDBHelper extends SQLiteOpenHelper {
                 builder.append(" < ?");
             selectionArgs.add(firstColumnValue);
         }else{
+            builder.append(firstColumnName);
+            if(firstColumnType==CBIAPPEventSelection.ASC)
+                builder.append(" >= ?");
+            if(firstColumnType==CBIAPPEventSelection.DESC)
+                builder.append(" <= ?");
+            selectionArgs.add(firstColumnValue);
             if(thirdColumnName==null){
-                builder.append(firstColumnName);
-                if(firstColumnType==CBIAPPEventSelection.ASC)
-                    builder.append(" >= ?");
-                if(firstColumnType==CBIAPPEventSelection.DESC)
-                    builder.append(" <= ?");
                 builder.append(" AND NOT (");
                 builder.append(firstColumnName);
                 builder.append(" = ? AND ");
+                selectionArgs.add(firstColumnValue);
                 builder.append(secondColumnName);
                 if(secondColumnType==CBIAPPEventSelection.ASC)
                     builder.append(" <= ?");
                 if(secondColumnType==CBIAPPEventSelection.DESC)
                     builder.append(" >= ?");
+                selectionArgs.add(secondColumnValue);
+                builder.append(")");
+            }else{
+                builder.append(" AND NOT (");
+                builder.append(firstColumnName);
+                builder.append(" = ? AND ");
+                selectionArgs.add(firstColumnValue);
+                builder.append(secondColumnName);
+                if(secondColumnType==CBIAPPEventSelection.ASC)
+                    builder.append(" < ?");
+                if(secondColumnType==CBIAPPEventSelection.DESC)
+                    builder.append(" > ?");
+                selectionArgs.add(secondColumnValue);
+                builder.append(") AND NOT (");
+                builder.append(firstColumnName);
+                builder.append(" = ? AND ");
+                selectionArgs.add(firstColumnValue);
+                builder.append(secondColumnName);
+                builder.append(" = ? AND ");
+                selectionArgs.add(secondColumnValue);
+                builder.append(thirdColumnName);
+                if(thirdColumnType==CBIAPPEventSelection.ASC)
+                    builder.append(" <= ?");
+                if(thirdColumnType==CBIAPPEventSelection.DESC)
+                    builder.append(" >= ?");
+                selectionArgs.add(thirdColumnValue);
+                builder.append(")");
             }
         }
-        return null;
+        return selectionArgs;
 
     }
 
@@ -143,9 +171,9 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String selectionString = builder.toString();
         String orderByString = getOrderStringFromSelection(selection, false);
         String limitString = "" + page.getPageSize();
-        Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, null);
+        Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.pagePopulated=true;
-        page.sqLiteEvents=getEventsFromCursor(cursor);
+        page.sqLiteEvents=getEventsFromCursor(cursor, false);
     }
 
     public void populateEventPageFromEnd(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection){
@@ -157,7 +185,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.pagePopulated=true;
-        page.sqLiteEvents=getEventsFromCursor(cursor);
+        page.sqLiteEvents=getEventsFromCursor(cursor, true);
     }
 
     public void populateEventPageFromMiddle(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection, int pageSize){
@@ -170,35 +198,61 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String limitString = offset + ", " + page.getPageSize();
         Cursor cursor=db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.pagePopulated=true;
-        page.sqLiteEvents=getEventsFromCursor(cursor);
+        page.sqLiteEvents=getEventsFromCursor(cursor, false);
     }
 
-    private void populateEventPageFromKnownBefore(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventSelection selection){
+    public void populateEventPageFromKnownAfter(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
         SQLiteDatabase db = this.getReadableDatabase();
         StringBuilder builder = new StringBuilder();
-        List<String> selectionArgsList = addClausesFromSelection(selection, builder, true, false);
+        SQLiteEvent lastEventFromPage=pageAfter.getFirstEvent();
+        List<String> selectionArgsList = getSelectionStringFromKnownPage(lastEventFromPage, selection, builder, true);
         String selectionString = builder.toString();
         String[] selectionArgs = selectionArgsList.toArray(new String[0]);
-        String orderByString = getOrderStringFromSelection(selection, false);
-        String limitString = "LIMIT " + page.getPageSize();
-        db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
+        int ii=0;
+        String orderByString = getOrderStringFromSelection(selection, true);
+        String limitString = "" + page.getPageSize();
+        Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
+        page.pagePopulated=true;
+        page.sqLiteEvents=getEventsFromCursor(cursor, true);
     }
 
-    public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
+    public void populateEventPageFromKnownBefore(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventSelection selection){
+        SQLiteDatabase db = this.getReadableDatabase();
+        StringBuilder builder = new StringBuilder();
+        SQLiteEvent lastEventFromPage=pageBefore.getFinalEvent();
+        List<String> selectionArgsList = getSelectionStringFromKnownPage(lastEventFromPage, selection, builder, false);
+        String selectionString = builder.toString();
+        Log.d("derpderp", selectionString);
+        for(String s : selectionArgsList){
+            Log.d("derpderp", s);
+        }
+        String[] selectionArgs = selectionArgsList.toArray(new String[0]);
+        int ii=0;
+        String orderByString = getOrderStringFromSelection(selection, false);
+        Log.d("derpderp", orderByString);
+        String limitString = "" + page.getPageSize();
+        Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
+        page.pagePopulated=true;
+        page.sqLiteEvents=getEventsFromCursor(cursor, false);
+    }
+
+    public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int collectionPageSize){
         if(pageBefore==null&&pageAfter!=null){
             //Load from start
+            populateEventPageFromStart(page, selection);
         }else if(pageAfter==null&&pageBefore!=null){
             //Load from end
+            populateEventPageFromEnd(page, selection);
         }else if(pageAfter!=null&&pageBefore!=null){
             if(pageBefore.isPagePopulated()){
-
+                populateEventPageFromKnownBefore(page, pageBefore, selection);
             }else if(pageAfter.isPagePopulated()){
-
+                populateEventPageFromKnownAfter(page, pageAfter, selection);
             }else{
-
+                populateEventPageFromMiddle(page, selection, collectionPageSize);
             }
         }else{
-            throw new RuntimeException("Page before and after were null, this should never happen");
+            populateEventPageFromMiddle(page, selection, collectionPageSize);
         }
     }
 
@@ -214,7 +268,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
         return event;
     }
 
-    public List<SQLiteEvent> getEventsFromCursor(Cursor cursor){
+    public List<SQLiteEvent> getEventsFromCursor(Cursor cursor, boolean reversed){
         List<SQLiteEvent> sqLiteEvents = new ArrayList<>(cursor.getCount());
         int indexID = cursor.getColumnIndexOrThrow(EventReaderContract.EventEntry.COLUMN_NAME_ID);
         int indexEventType = cursor.getColumnIndexOrThrow(EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TYPE);
@@ -228,7 +282,10 @@ public class EventDBHelper extends SQLiteOpenHelper {
             event.setEventTitle(cursor.getString(indexEventTitle));
             event.setEventMessage(cursor.getString(indexEventMessage));
             event.setEventTimestamp(cursor.getLong(indexEventTimeStamp));
-            sqLiteEvents.add(event);
+            if(reversed)
+                sqLiteEvents.add(0, event);
+            else
+                sqLiteEvents.add(event);
         }
         cursor.close();
         return sqLiteEvents;
@@ -248,8 +305,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 sortOrder);
-        Log.d("derpderp", "herper : " + cursor.getCount());
-        return getEventsFromCursor(cursor);
+        return getEventsFromCursor(cursor, false);
     };
 
     private String getSortOrder(CBIAPPEventSelection selection){

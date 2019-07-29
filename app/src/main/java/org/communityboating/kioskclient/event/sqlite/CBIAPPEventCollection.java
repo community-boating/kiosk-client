@@ -49,16 +49,25 @@ public class CBIAPPEventCollection {
     public SQLiteEvent getEvent(int index){
         int page = getPageFromIndex(index);
         int pageOffset = getPageOffsetFromIndex(index);
-        SQLiteEvent event;
         CBIAPPEventCollectionPage eventPage = getCollectionPage(page);
         CBIAPPEventCollectionPage pageBefore = getCollectionPageBefore(page);
         CBIAPPEventCollectionPage pageAfter = getCollectionPageAfter(page);
-        if(eventPage.isPagePopulated()){
-            event = eventPage.getSQLiteEvent(pageOffset);
-        }else{
-
+        if(!eventPage.isPagePopulated()){
+            dbHelper.populateEventPage(eventPage, pageBefore, pageAfter, selection, getPageEntrySize());
         }
-        return null;
+        if(pageBefore!=null&&!pageBefore.isPagePopulated()){
+            CBIAPPEventCollectionPage pageBeforePageBefore = getCollectionPageBefore(page - 1);
+            dbHelper.populateEventPage(pageBefore, pageBeforePageBefore, eventPage, selection, getPageEntrySize());
+        }
+        if(pageAfter!=null&&!pageAfter.isPagePopulated()){
+            CBIAPPEventCollectionPage pageAfterPageAfter = getCollectionPageAfter(page + 1);
+            dbHelper.populateEventPage(pageAfter, eventPage, pageAfterPageAfter, selection, getPageEntrySize());
+        }
+        return eventPage.getSQLiteEvent(pageOffset);
+    }
+
+    public int getPageEntrySize(){
+        return pageEntrySize;
     }
 
     private CBIAPPEventCollectionPage getCollectionPageBefore(int page){

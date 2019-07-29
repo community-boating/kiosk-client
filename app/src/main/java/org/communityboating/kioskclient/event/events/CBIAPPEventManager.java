@@ -40,35 +40,36 @@ public class CBIAPPEventManager {
         //long size1 = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM " + EventReaderContract.EventEntry.TABLE_NAME + " WHERE (" + EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TIMESTAMP + ") >= (1000)", new String[0]);
         long afterFirst = System.currentTimeMillis();
         CBIAPPEventSelection selection = new CBIAPPEventSelection();
-        selection.setEndTimeStamp(35000l);
+        selection.setEndTimeStamp(45000l);
         selection.setStartTimeStamp(5l);
+        //selection.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
         selection.setSortType(CBIAPPEventSelection.SORT_TYPE_EVENT_TYPE);
-        selection.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
+        //selection.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
         //long size2 = dbHelper.getSelectionSize(selection);
         CBIAPPEventCollection collection = new CBIAPPEventCollection(dbHelper);
         collection.updateSelection(selection);
         int numPages = collection.getNumberOfPages();
         CBIAPPEventCollectionPage pageFirst = collection.getCollectionPage(0);
-        CBIAPPEventCollectionPage pageSecond = collection.getCollectionPage(1);
+        CBIAPPEventCollectionPage pageSecondLast = collection.getCollectionPage(numPages - 2);
         CBIAPPEventCollectionPage pageLast = collection.getCollectionPage(numPages - 1);
         List<SQLiteEvent> sqLiteEvents = dbHelper.getEventsFromSelection(selection);
-        dbHelper.populateEventPageFromStart(pageFirst, selection);
-        dbHelper.populateEventPageFromEnd(pageLast, selection);
-        dbHelper.populateEventPageFromMiddle(pageSecond, selection, 50);
+        boolean hasError = false;
+        int counted = 0;
+        for(; counted < sqLiteEvents.size(); counted++){
+            SQLiteEvent event1 = sqLiteEvents.get(counted);
+            SQLiteEvent event2 = collection.getEvent(counted);
+            //Log.d("derpderp", "aaaa : " + event1.getEventType() + " : " + event2.getEventType());
+            if(!event1.equals(event2)) {
+                Log.d("derpderp", "issue what is this : " + counted + " : " + event1.getEventID() + " : " + event2.getEventID());
+                hasError=true;
+            }
+        }
+        if (hasError)
+            Log.d("derpderp", "we had an error : " + counted);
+        else
+            Log.d("derpderp", "we have no error : " + counted);
+        //dbHelper.populateEventPageFromMiddle(pageSecond, selection, 50);
         //int size2 = dbHelper.populateEventPageFromStart(page, selection);
-        long afterSecond = System.currentTimeMillis();
-        for(int i = 0; i < pageSecond.getPageSize(); i++){
-            SQLiteEvent event1 = pageSecond.getSQLiteEvent(i);
-            SQLiteEvent event2 = sqLiteEvents.get(i + 50);
-            if(!event1.equals(event2))
-                Log.d("derpderp", "event issue: " + event1.getEventID() + " : " + event2.getEventID());
-        }
-        for(int i = 0; i < pageLast.getPageSize(); i++){
-            SQLiteEvent event1 = pageLast.getSQLiteEvent(i);
-            SQLiteEvent event2 = sqLiteEvents.get(sqLiteEvents.size() - 1 - i);
-            if(!event1.equals(event2))
-                Log.d("derpderp", "event issue: " + event1.getEventID() + " : " + event2.getEventID());
-        }
         //Log.d("derpderpaherp", "time1 : " + (afterFirst-systemStart) + " time 2 : " + (afterSecond-afterFirst));
         //Log.d("derpderp", "derpderpaherp + : " + size1 + " : " + size2);
         Log.d("derpderp", "derp : " + sqLiteEvents.size() + " : " + pageFirst.getPageSize() + " : " + pageLast.getPageSize());

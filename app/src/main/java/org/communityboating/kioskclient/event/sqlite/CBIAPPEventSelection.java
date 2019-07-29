@@ -68,9 +68,9 @@ public class CBIAPPEventSelection {
 
     public int getFirstSortColumnOrder(boolean reversed){
         if(eventType != null || sortType == SORT_TYPE_TIMESTAMP || sortType == SORT_TYPE_EVENT_TYPE)
-            return getDESC(reversed);
-        if(sortType == SORT_TYPE_TIMESTAMP_REVERSE)
             return getASC(reversed);
+        if(sortType == SORT_TYPE_TIMESTAMP_REVERSE)
+            return getDESC(reversed);
         return DESC;
     }
 
@@ -83,7 +83,7 @@ public class CBIAPPEventSelection {
     }
 
     public int getSecondSortColumnOrder(boolean reversed){
-        return getDESC(reversed);
+        return getASC(reversed);
     }
 
     public String getThirdSortColumn(){
@@ -95,7 +95,7 @@ public class CBIAPPEventSelection {
     }
 
     public int getThirdSortColumnOrder(boolean reversed){
-        return getDESC(reversed);
+        return getASC(reversed);
     }
 
 }

@@ -31,4 +31,9 @@ public class CBIAPPEventCollectionPage {
             return null;
         return sqLiteEvents.get(sqLiteEvents.size()-1);
     }
+    public SQLiteEvent getFirstEvent(){
+        if(sqLiteEvents.size()==0)
+            return null;
+        return sqLiteEvents.get(0);
+    }
 }
