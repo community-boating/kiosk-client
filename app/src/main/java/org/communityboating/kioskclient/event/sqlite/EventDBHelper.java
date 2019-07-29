@@ -96,11 +96,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String thirdColumnName=selection.getThirdSortColumn();
         int thirdColumnType=selection.getThirdSortColumnOrder(reversed);
         String thirdColumnValue=eventReference.getValue(thirdColumnName);
-        if(selection.getEventType()!=null){
-            builder.append(EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TYPE);
-            builder.append(" = ? AND ");
-            selectionArgs.add(Integer.toString(selection.getEventType().getEventTypeValue()));
-        }
+        addClausesFromSelection(selection, builder, selectionArgs, true, false);
         if(firstColumnName==null)
             return selectionArgs;
         if(secondColumnName==null){
@@ -222,14 +218,9 @@ public class EventDBHelper extends SQLiteOpenHelper {
         SQLiteEvent lastEventFromPage=pageBefore.getFinalEvent();
         List<String> selectionArgsList = getSelectionStringFromKnownPage(lastEventFromPage, selection, builder, false);
         String selectionString = builder.toString();
-        Log.d("derpderp", selectionString);
-        for(String s : selectionArgsList){
-            Log.d("derpderp", s);
-        }
         String[] selectionArgs = selectionArgsList.toArray(new String[0]);
         int ii=0;
         String orderByString = getOrderStringFromSelection(selection, false);
-        Log.d("derpderp", orderByString);
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.pagePopulated=true;
@@ -315,12 +306,13 @@ public class EventDBHelper extends SQLiteOpenHelper {
     }
 
     private String[] addClausesFromSelection(CBIAPPEventSelection selection, StringBuilder builder){
-        return addClausesFromSelection(selection, builder, false, false).toArray(new String[0]);
+        List<String> stringList = new ArrayList<>();
+        addClausesFromSelection(selection, builder, stringList, false, false);
+        return stringList.toArray(new String[0]);
     }
 
-    private List<String> addClausesFromSelection(CBIAPPEventSelection selection, StringBuilder builder, boolean finalAnd, boolean addWhere){
+    private void addClausesFromSelection(CBIAPPEventSelection selection, StringBuilder builder, List<String> stringList, boolean finalAnd, boolean addWhere){
         boolean hasLast=false;
-        List<String> stringList = new ArrayList<>();
         if(addWhere)
             builder.append("WHERE ");
         if(selection.getStartTimeStamp()!=null&&selection.getEndTimeStamp()!=null){
@@ -347,9 +339,10 @@ public class EventDBHelper extends SQLiteOpenHelper {
             builder.append(" = ? ");
             stringList.add(Integer.toString(selection.getEventType().getEventTypeValue()));
         }
-        if(finalAnd && hasLast)
+        if(!hasLast)
+            builder.append("1 ");
+        if(finalAnd)
             builder.append("AND ");
-        return stringList;
     }
 
 }

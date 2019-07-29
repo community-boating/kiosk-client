@@ -21,7 +21,7 @@ public class CBIAPPEventCollection {
 
     int numberOfPages;
 
-    int pageEntrySize = 50;
+    int pageEntrySize = 100;
 
     Map<Integer, CBIAPPEventCollectionPage> collectionPages;
 

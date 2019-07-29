@@ -34,16 +34,32 @@ public class CBIAPPEventManager {
     private EventDBHelper dbHelper;
     private CBIAPPEventManager(Context context){
         dbHelper = new EventDBHelper(context);
+        /*int max = 1000000;
+        for(int i = 0; i < max; i += 10){
+            SQLiteEvent event = new SQLiteEvent();
+            event.setEventTitle("EVENT TITLE");
+            event.setEventMessage("EVENT MESSAGE");
+            if(i % 30  == 0)
+                event.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
+            if(i % 30 == 10)
+                event.setEventType(CBIAPPEventType.EVENT_TYPE_NETWORK);
+            if(i % 30 == 20)
+                event.setEventType(CBIAPPEventType.EVENT_TYPE_SYSTEM_INT);
+            event.setEventTimestamp((long)i);
+            dbHelper.insertEvent(event);
+            if(i % 100 == 0)
+                Log.d("derpderp", "status : " + i + "/" + max);
+        }*/
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         long systemStart = System.currentTimeMillis();
-        db.rawQuery("SELECT * FROM events WHERE event_timestamp > '100' GROUP BY event_timestamp, id", new String[0]).close();
+        //db.rawQuery("SELECT * FROM events WHERE event_timestamp > '100' GROUP BY event_timestamp, id", new String[0]).close();
         //long size1 = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM " + EventReaderContract.EventEntry.TABLE_NAME + " WHERE (" + EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TIMESTAMP + ") >= (1000)", new String[0]);
         long afterFirst = System.currentTimeMillis();
         CBIAPPEventSelection selection = new CBIAPPEventSelection();
-        selection.setEndTimeStamp(45000l);
-        selection.setStartTimeStamp(5l);
+        selection.setEndTimeStamp(6000l);
+        selection.setStartTimeStamp(1000l);
         //selection.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
-        selection.setSortType(CBIAPPEventSelection.SORT_TYPE_EVENT_TYPE);
+        selection.setSortType(CBIAPPEventSelection.SORT_TYPE_TIMESTAMP);
         //selection.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
         //long size2 = dbHelper.getSelectionSize(selection);
         CBIAPPEventCollection collection = new CBIAPPEventCollection(dbHelper);
@@ -55,7 +71,10 @@ public class CBIAPPEventManager {
         List<SQLiteEvent> sqLiteEvents = dbHelper.getEventsFromSelection(selection);
         boolean hasError = false;
         int counted = 0;
+        long averageTimeTotal = 0;
+        int countcount=0;
         for(; counted < sqLiteEvents.size(); counted++){
+            long startTime = System.currentTimeMillis();
             SQLiteEvent event1 = sqLiteEvents.get(counted);
             SQLiteEvent event2 = collection.getEvent(counted);
             //Log.d("derpderp", "aaaa : " + event1.getEventType() + " : " + event2.getEventType());
@@ -63,7 +82,17 @@ public class CBIAPPEventManager {
                 Log.d("derpderp", "issue what is this : " + counted + " : " + event1.getEventID() + " : " + event2.getEventID());
                 hasError=true;
             }
+            if((System.currentTimeMillis()-startTime) > 10) {
+                averageTimeTotal += (System.currentTimeMillis() - startTime);
+                countcount++;
+            }
+            if(counted % 1000 == 0)
+                Log.d("derpderp", "status : " + counted + "/" + sqLiteEvents.size());
         }
+        if(countcount==0)
+            countcount=1;
+        long averageTime = averageTimeTotal/countcount;
+        Log.d("derpderp", "average time : "  + averageTime + " : " + countcount);
         if (hasError)
             Log.d("derpderp", "we had an error : " + counted);
         else
