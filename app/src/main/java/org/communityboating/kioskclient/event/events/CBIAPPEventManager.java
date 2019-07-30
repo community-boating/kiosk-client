@@ -73,6 +73,7 @@ public class CBIAPPEventManager {
         int counted = 0;
         long averageTimeTotal = 0;
         int countcount=0;
+        Log.d("derpderp", "derp : " + sqLiteEvents.size() + " : " + pageFirst.getPageSize() + " : " + pageLast.getPageSize());
         for(; counted < sqLiteEvents.size(); counted++){
             long startTime = System.currentTimeMillis();
             SQLiteEvent event1 = sqLiteEvents.get(counted);
@@ -101,7 +102,6 @@ public class CBIAPPEventManager {
         //int size2 = dbHelper.populateEventPageFromStart(page, selection);
         //Log.d("derpderpaherp", "time1 : " + (afterFirst-systemStart) + " time 2 : " + (afterSecond-afterFirst));
         //Log.d("derpderp", "derpderpaherp + : " + size1 + " : " + size2);
-        Log.d("derpderp", "derp : " + sqLiteEvents.size() + " : " + pageFirst.getPageSize() + " : " + pageLast.getPageSize());
         //Log.d("derpderp", "derpderpaherp + ::: " + colPage.getPageSize() + " ::: " + numPages);
     }
 

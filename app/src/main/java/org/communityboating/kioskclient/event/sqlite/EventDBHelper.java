@@ -15,6 +15,8 @@ import org.communityboating.kioskclient.event.events.CBIAPPEventType;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class EventDBHelper extends SQLiteOpenHelper {
     public EventDBHelper(Context context) {
@@ -168,8 +170,8 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String orderByString = getOrderStringFromSelection(selection, false);
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
-        page.pagePopulated=true;
         page.sqLiteEvents=getEventsFromCursor(cursor, false);
+        page.pagePopulated=true;
     }
 
     public void populateEventPageFromEnd(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection){
@@ -180,8 +182,8 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String orderByString = getOrderStringFromSelection(selection, true);
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
-        page.pagePopulated=true;
         page.sqLiteEvents=getEventsFromCursor(cursor, true);
+        page.pagePopulated=true;
     }
 
     public void populateEventPageFromMiddle(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection, int pageSize){
@@ -193,8 +195,8 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String orderByString = getOrderStringFromSelection(selection, false);
         String limitString = offset + ", " + page.getPageSize();
         Cursor cursor=db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
-        page.pagePopulated=true;
         page.sqLiteEvents=getEventsFromCursor(cursor, false);
+        page.pagePopulated=true;
     }
 
     public void populateEventPageFromKnownAfter(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
@@ -223,8 +225,8 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String orderByString = getOrderStringFromSelection(selection, false);
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
-        page.pagePopulated=true;
         page.sqLiteEvents=getEventsFromCursor(cursor, false);
+        page.pagePopulated=true;
     }
 
     public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int collectionPageSize){

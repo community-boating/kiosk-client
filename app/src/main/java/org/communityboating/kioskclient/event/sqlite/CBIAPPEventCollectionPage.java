@@ -1,5 +1,7 @@
 package org.communityboating.kioskclient.event.sqlite;
 
+import android.util.Log;
+
 import java.util.LinkedList;
 import java.util.List;
 
