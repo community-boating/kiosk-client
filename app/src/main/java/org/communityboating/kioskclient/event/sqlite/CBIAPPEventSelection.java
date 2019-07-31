@@ -2,6 +2,8 @@ package org.communityboating.kioskclient.event.sqlite;
 
 import org.communityboating.kioskclient.event.events.CBIAPPEventType;
 
+import java.util.Comparator;
+
 public class CBIAPPEventSelection {
 
     public static final int SORT_TYPE_EVENT_TYPE=0;
@@ -96,6 +98,59 @@ public class CBIAPPEventSelection {
 
     public int getThirdSortColumnOrder(boolean reversed){
         return getASC(reversed);
+    }
+
+    public boolean isEventInSelection(SQLiteEvent event){
+        if(eventType!=null&&eventType!=event.getEventType())
+            return false;
+        if(startTimeStamp!=null&&event.getEventTimestamp()<startTimeStamp)
+            return false;
+        if(endTimeStamp!=null&&event.getEventTimestamp()>endTimeStamp)
+            return false;
+        return true;
+    }
+
+    private SelectionComparator selectionComparator = new SelectionComparator();
+
+    public Comparator<SQLiteEvent> getSelectionComparator(){
+        return selectionComparator;
+    }
+
+    private class SelectionComparator implements Comparator<SQLiteEvent>{
+
+        @Override
+        public int compare(SQLiteEvent event1, SQLiteEvent event2) {
+            if(eventType!=null||sortType==SORT_TYPE_TIMESTAMP){
+                if(event1.getEventTimestamp() > event2.getEventTimestamp())
+                    return 1;
+                else if(event1.getEventTimestamp() < event2.getEventTimestamp())
+                    return -1;
+                else
+                    return Long.compare(event1.getEventID(), event2.getEventID());
+            }else if(sortType==SORT_TYPE_TIMESTAMP_REVERSE){
+                if(event1.getEventTimestamp() > event2.getEventTimestamp())
+                    return -1;
+                else if(event1.getEventTimestamp() < event2.getEventTimestamp())
+                    return 1;
+                else
+                    return Long.compare(event1.getEventID(), event2.getEventID());
+            }else if(sortType==SORT_TYPE_EVENT_TYPE){
+                if(event1.getEventType().getEventTypeValue() > event2.getEventType().getEventTypeValue())
+                    return 1;
+                else if(event1.getEventType().getEventTypeValue() < event2.getEventType().getEventTypeValue())
+                    return -1;
+                else
+                    if(event1.getEventTimestamp() > event2.getEventTimestamp())
+                        return 1;
+                    else if(event1.getEventTimestamp() < event2.getEventTimestamp())
+                        return -1;
+                    else
+                        return Long.compare(event1.getEventID(), event2.getEventID());
+            }else{
+                throw new RuntimeException("Invalid selection!");
+            }
+        }
+
     }
 
 }

@@ -14,6 +14,9 @@ import org.communityboating.kioskclient.event.sqlite.EventDBHelper;
 import org.communityboating.kioskclient.event.sqlite.EventReaderContract;
 import org.communityboating.kioskclient.event.sqlite.SQLiteEvent;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -44,40 +47,45 @@ public class CBIAPPEventManager {
             if(i % 30 == 10)
                 event.setEventType(CBIAPPEventType.EVENT_TYPE_NETWORK);
             if(i % 30 == 20)
-                event.setEventType(CBIAPPEventType.EVENT_TYPE_SYSTEM_INT);
+                 event.setEventType(CBIAPPEventType.EVENT_TYPE_SYSTEM_INT);
             event.setEventTimestamp((long)i);
             dbHelper.insertEvent(event);
             if(i % 100 == 0)
                 Log.d("derpderp", "status : " + i + "/" + max);
         }*/
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        /*SQLiteDatabase db = dbHelper.getReadableDatabase();
         long systemStart = System.currentTimeMillis();
         //db.rawQuery("SELECT * FROM events WHERE event_timestamp > '100' GROUP BY event_timestamp, id", new String[0]).close();
         //long size1 = DatabaseUtils.longForQuery(db, "SELECT COUNT(*) FROM " + EventReaderContract.EventEntry.TABLE_NAME + " WHERE (" + EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TIMESTAMP + ") >= (1000)", new String[0]);
         long afterFirst = System.currentTimeMillis();
         CBIAPPEventSelection selection = new CBIAPPEventSelection();
-        selection.setEndTimeStamp(6000l);
+        selection.setEndTimeStamp(60000l);
         selection.setStartTimeStamp(1000l);
         //selection.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
-        selection.setSortType(CBIAPPEventSelection.SORT_TYPE_TIMESTAMP);
+        selection.setSortType(CBIAPPEventSelection.SORT_TYPE_EVENT_TYPE);
         //selection.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
         //long size2 = dbHelper.getSelectionSize(selection);
-        CBIAPPEventCollection collection = new CBIAPPEventCollection(dbHelper);
+        CBIAPPEventCollection collection = dbHelper.getCollection();
         collection.updateSelection(selection);
         int numPages = collection.getNumberOfPages();
-        CBIAPPEventCollectionPage pageFirst = collection.getCollectionPage(0);
-        CBIAPPEventCollectionPage pageSecondLast = collection.getCollectionPage(numPages - 2);
-        CBIAPPEventCollectionPage pageLast = collection.getCollectionPage(numPages - 1);
+        //CBIAPPEventCollectionPage pageFirst = collection.getCollectionPage(0);
+        //CBIAPPEventCollectionPage pageSecondLast = collection.getCollectionPage(numPages - 2);
+        //CBIAPPEventCollectionPage pageLast = collection.getCollectionPage(numPages - 1);
         List<SQLiteEvent> sqLiteEvents = dbHelper.getEventsFromSelection(selection);
+        List<SQLiteEvent> eventsSorted = new ArrayList<>(sqLiteEvents.size());
+        eventsSorted.addAll(sqLiteEvents);
+        Comparator<SQLiteEvent> comparator = selection.getSelectionComparator();
+        Collections.sort(eventsSorted, comparator);
         boolean hasError = false;
         int counted = 0;
         long averageTimeTotal = 0;
         int countcount=0;
-        Log.d("derpderp", "derp : " + sqLiteEvents.size() + " : " + pageFirst.getPageSize() + " : " + pageLast.getPageSize());
-        for(; counted < sqLiteEvents.size(); counted++){
+        long startTime__ = System.currentTimeMillis();
+        //Log.d("derpderp", "derp : " + sqLiteEvents.size() + " : " + pageFirst.getPageSize() + " : " + pageLast.getPageSize());
+        for(; counted < sqLiteEvents.size()*3/30; counted++){
             long startTime = System.currentTimeMillis();
             SQLiteEvent event1 = sqLiteEvents.get(counted);
-            SQLiteEvent event2 = collection.getEvent(counted);
+            SQLiteEvent event2 = collection.getEvent(counted);//collection.getEvent(counted);
             //Log.d("derpderp", "aaaa : " + event1.getEventType() + " : " + event2.getEventType());
             if(!event1.equals(event2)) {
                 Log.d("derpderp", "issue what is this : " + counted + " : " + event1.getEventID() + " : " + event2.getEventID());
@@ -90,6 +98,7 @@ public class CBIAPPEventManager {
             if(counted % 1000 == 0)
                 Log.d("derpderp", "status : " + counted + "/" + sqLiteEvents.size());
         }
+        Log.d("derpderp", "total count time : " + (System.currentTimeMillis()-startTime__));
         if(countcount==0)
             countcount=1;
         long averageTime = averageTimeTotal/countcount;
@@ -98,11 +107,45 @@ public class CBIAPPEventManager {
             Log.d("derpderp", "we had an error : " + counted);
         else
             Log.d("derpderp", "we have no error : " + counted);
+        Log.d("derpderp", "started insertion");
+        SQLiteEvent event = new SQLiteEvent();
+        event.setEventMessage("LOOK AT THIS EVENT!!!");
+        event.setEventTitle("GERPA???");
+        event.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
+        event.setEventTimestamp(5000l);
+        dbHelper.insertEvent(event);
+        int lastSize = sqLiteEvents.size();
+        sqLiteEvents = dbHelper.getEventsFromSelection(selection);
+        if(sqLiteEvents.size()==lastSize)
+            throw new RuntimeException("Still same size, this is good i guess for my code at least...");
+        Log.d("derpderp", "derpderp inserted");
+        hasError=false;
+        for(counted=0; counted < sqLiteEvents.size(); counted++){
+            long startTime = System.currentTimeMillis();
+            SQLiteEvent event1 = sqLiteEvents.get(counted);
+            SQLiteEvent event2 = collection.getEvent(counted);//collection.getEvent(counted);
+            //Log.d("derpderp", "aaaa : " + event1.getEventType() + " : " + event2.getEventType());
+            if(!event1.equals(event2)) {
+                Log.d("derpderp", "issue what is this : " + counted + " : " + event1.getEventID() + " : " + event2.getEventID());
+                hasError=true;
+            }
+            if((System.currentTimeMillis()-startTime) > 10) {
+                averageTimeTotal += (System.currentTimeMillis() - startTime);
+                countcount++;
+            }
+            if(counted % 1000 == 0)
+                Log.d("derpderp", "status : " + counted + "/" + sqLiteEvents.size());
+        }
+        if (hasError)
+            Log.d("derpderp", "we had an error : " + counted);
+        else
+            Log.d("derpderp", "we have no error : " + counted);
         //dbHelper.populateEventPageFromMiddle(pageSecond, selection, 50);
         //int size2 = dbHelper.populateEventPageFromStart(page, selection);
         //Log.d("derpderpaherp", "time1 : " + (afterFirst-systemStart) + " time 2 : " + (afterSecond-afterFirst));
         //Log.d("derpderp", "derpderpaherp + : " + size1 + " : " + size2);
-        //Log.d("derpderp", "derpderpaherp + ::: " + colPage.getPageSize() + " ::: " + numPages);
+        //Log.d("derpderp", "derpderpaherp + ::: " + colPage.getPageSize() + " ::: " + numPages);*/
+
     }
 
     private void dispatchEvent(CBIAPPEvent event){

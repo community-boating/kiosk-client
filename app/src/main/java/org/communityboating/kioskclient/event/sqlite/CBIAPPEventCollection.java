@@ -2,18 +2,21 @@ package org.communityboating.kioskclient.event.sqlite;
 
 import android.util.Log;
 
+import org.communityboating.kioskclient.event.admingui.EventCollectionAdapter;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class CBIAPPEventCollection {
 
-
-
     public CBIAPPEventCollection(EventDBHelper dbHelper){
         this.dbHelper = dbHelper;
-        this.collectionPages = new TreeMap<>();
     }
+
+    public EventCollectionAdapter adapterToNotifyOnChange;
 
     EventDBHelper dbHelper;
 
@@ -25,7 +28,10 @@ public class CBIAPPEventCollection {
 
     int pageEntrySize = 100;
 
-    Map<Integer, CBIAPPEventCollectionPage> collectionPages;
+    //Map<Integer, Integer> indexPageMapping;
+    List<CBIAPPEventCollectionPage> collectionPages;
+    //Map<Integer, CBIAPPEventCollectionPage> collectionPagesNormalSizes;
+    //Map<Integer, CBIAPPEventCollectionPage> collectionPagesUnusualSizes;
 
     Object updateSizeLock = new Object();
     boolean isUpdatingSize=false;
@@ -34,16 +40,86 @@ public class CBIAPPEventCollection {
         return selection;
     }
 
-    private int getPageFromIndex(int index){
+    private CBIAPPEventCollectionPage getPageFromPageNumber(int pageNumber){
+        return collectionPages.get(pageNumber);
+    }
+
+    private CBIAPPEventCollectionPage getPageFromIndex(int index){
         if(index >= selectionSize)
             index = selectionSize - 1;
         if(index < 0)
             index = 0;
-        return index/pageEntrySize;
+        int maxPageIndex=collectionPages.size()-1;
+        int highIndex=maxPageIndex;
+        int lowIndex=0;
+        CBIAPPEventCollectionPage foundPage = null;
+        while(true){
+            int middleIndex = (highIndex + lowIndex) / 2;
+            CBIAPPEventCollectionPage middlePage = getPageFromPageNumber(middleIndex);
+            if(index < middlePage.getPageFirstIndex()){
+                if(middleIndex-1 < 0){
+                    foundPage=middlePage;
+                    break;
+                }else {
+                    highIndex = middleIndex - 1;
+                    continue;
+                }
+            }else{
+                if(middleIndex + 1 > maxPageIndex){
+                    foundPage=middlePage;
+                    break;
+                }else{
+                    CBIAPPEventCollectionPage pageNext = getPageFromPageNumber(middleIndex + 1);
+                    if(index < pageNext.getPageFirstIndex()){
+                        foundPage=middlePage;
+                        break;
+                    }else{
+                        lowIndex=middleIndex+1;
+                        continue;
+                    }
+                }
+            }
+        }
+        if(foundPage==null)
+            throw new RuntimeException("Could not find page from index : " + index);
+        return foundPage;
     }
 
-    private int getPageOffsetFromIndex(int index){
-        return index%pageEntrySize;
+    public void insertEvent(SQLiteEvent event){
+        Comparator<SQLiteEvent> comparator = getSelection().getSelectionComparator();
+        CBIAPPEventCollectionPage foundPage = null;
+        CBIAPPEventCollectionPage closestPopulated=null;
+        for(CBIAPPEventCollectionPage page : collectionPages){
+            if(page.isPagePopulated()){
+                SQLiteEvent eventFirst = page.getFirstEvent();
+                SQLiteEvent eventFinal = page.getFinalEvent();
+                if(comparator.compare(event, eventFirst) < 0){
+                    if(closestPopulated==null || closestPopulated.getPageNumber() > page.getPageNumber()) {
+                        closestPopulated = page;
+                        continue;
+                    }
+                }else if(comparator.compare(event, eventFinal) <= 0 || page.getPageNumber() + 1 >= collectionPages.size()){
+                    foundPage=page;
+                    break;
+                }
+            }
+        }
+        CBIAPPEventCollectionPage increaseAfterPage=null;
+        if(foundPage != null) {
+            increaseAfterPage = foundPage;
+            foundPage.addEvent(event, getSelection());
+        }else {
+            if(closestPopulated != null)
+                increaseAfterPage = getCollectionPageBefore(closestPopulated.getPageNumber());
+            else
+                increaseAfterPage=getPageFromPageNumber(collectionPages.size() - 1);
+            increaseAfterPage.increasePageSizeBy(1);
+        }
+        for(int i = increaseAfterPage.getPageNumber() + 1; i < collectionPages.size(); i++){
+            CBIAPPEventCollectionPage pageAfterFoundPage=getPageFromPageNumber(i);
+            pageAfterFoundPage.increaseFirstIndexBy(1);
+        }
+        selectionSize++;
     }
 
     public void updateSelectionSize(){
@@ -52,6 +128,14 @@ public class CBIAPPEventCollection {
         }
         selectionSize = dbHelper.getSelectionSize(this.selection);
         numberOfPages = (selectionSize + pageEntrySize - 1) / pageEntrySize;
+        collectionPages = new ArrayList<>(numberOfPages);
+        for(int i = 0; i < numberOfPages; i++){
+            int pageSize = pageEntrySize;
+            if(i + 1 >= numberOfPages)
+                pageSize=selectionSize%pageEntrySize;
+            CBIAPPEventCollectionPage page = new CBIAPPEventCollectionPage(i, pageSize, i*pageEntrySize);
+            collectionPages.add(page);
+        }
         synchronized (updateSizeLock) {
             isUpdatingSize = false;
             updateSizeLock.notifyAll();
@@ -83,7 +167,6 @@ public class CBIAPPEventCollection {
     }
 
     private void populateEventPageAsync(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int collectionPageSize){
-        Log.d("derpderp", "page async load : " + page.getPageNumber());
         synchronized (asyncPopulatingPages){
             if(asyncPopulatingPages.containsKey(page.getPageNumber()))
                 return; //Page already loading
@@ -133,9 +216,9 @@ public class CBIAPPEventCollection {
                 }
             }
         }
-        int page = getPageFromIndex(index);
-        int pageOffset = getPageOffsetFromIndex(index);
-        CBIAPPEventCollectionPage eventPage = getCollectionPage(page);
+        CBIAPPEventCollectionPage eventPage = getPageFromIndex(index);
+        int pageOffset = eventPage.getPageOffset(index);
+        int page=eventPage.getPageNumber();
         CBIAPPEventCollectionPage pageBefore = getCollectionPageBefore(page);
         CBIAPPEventCollectionPage pageAfter = getCollectionPageAfter(page);
         if(!eventPage.isPagePopulated()){
@@ -162,19 +245,19 @@ public class CBIAPPEventCollection {
 
     private CBIAPPEventCollectionPage getCollectionPageBefore(int page){
         if(page > 0 && page - 1 < numberOfPages)
-            return getCollectionPage(page - 1);
+            return getPageFromPageNumber(page - 1);
         else
             return null;
     }
 
     private CBIAPPEventCollectionPage getCollectionPageAfter(int page){
         if(page + 1 < numberOfPages && page + 1 > 0)
-            return getCollectionPage(page + 1);
+            return getPageFromPageNumber(page + 1);
         else
             return null;
     }
 
-    public CBIAPPEventCollectionPage getCollectionPage(int page){
+    /*public CBIAPPEventCollectionPage getCollectionPage(int page){
         if(collectionPages.containsKey(page)){
             return collectionPages.get(page);
         }else{
@@ -185,7 +268,7 @@ public class CBIAPPEventCollection {
             collectionPages.put(page, collectionPage);
             return collectionPage;
         }
-    }
+    }*/
 
     /*public List<SQLiteEvent> getSQLiteEvents() {
         return SQLiteEvents;
@@ -198,6 +281,10 @@ public class CBIAPPEventCollection {
 
     public int getNumberOfPages(){
         return numberOfPages;
+    }
+
+    public int getSelectionSize(){
+        return selectionSize;
     }
 
     /*public void setSQLiteEvents(List<SQLiteEvent> SQLiteEvents) {

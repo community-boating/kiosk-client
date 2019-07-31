@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
 import android.util.EventLog;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.util.Log;
 import org.communityboating.kioskclient.event.events.CBIAPPEventType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +40,8 @@ public class EventDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + EventReaderContract.EventEntry.TABLE_NAME;
 
+    private List<CBIAPPEventCollection> activeCollections = new ArrayList<>();
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
@@ -47,6 +52,18 @@ public class EventDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+    }
+
+    private Object insertingLock = new Object();
+    private int insertingLockCount = 0;
+
+    private Object fetchingLock = new Object();
+    private int fetchingLockCount = 0;
+
+    public CBIAPPEventCollection getCollection(){
+        CBIAPPEventCollection newCollection = new CBIAPPEventCollection(this);
+        activeCollections.add(newCollection);
+        return newCollection;
     }
 
     public int getSelectionSize(CBIAPPEventSelection selection){
@@ -187,7 +204,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
     }
 
     public void populateEventPageFromMiddle(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection, int pageSize){
-        int offset = page.getPageNumber() * pageSize;
+        int offset = page.getPageFirstIndex();
         SQLiteDatabase db = this.getReadableDatabase();
         StringBuilder builder = new StringBuilder();
         String[] selectionArgs = addClausesFromSelection(selection, builder);
@@ -210,8 +227,8 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String orderByString = getOrderStringFromSelection(selection, true);
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
-        page.pagePopulated=true;
         page.sqLiteEvents=getEventsFromCursor(cursor, true);
+        page.pagePopulated=true;
     }
 
     public void populateEventPageFromKnownBefore(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventSelection selection){
@@ -229,7 +246,30 @@ public class EventDBHelper extends SQLiteOpenHelper {
         page.pagePopulated=true;
     }
 
+    private void startDBFetchLock(){
+        synchronized (insertingLock){
+            try{
+                while(insertingLockCount > 0){
+                    insertingLock.wait();
+                }
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+        synchronized (fetchingLock){
+            fetchingLockCount+=1;
+        }
+    }
+
+    private void stopDBFetchLock(){
+        synchronized (fetchingLock){
+            fetchingLockCount-=1;
+            fetchingLock.notifyAll();
+        }
+    }
+
     public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int collectionPageSize){
+        startDBFetchLock();
         if(pageBefore==null&&pageAfter!=null){
             //Load from start
             populateEventPageFromStart(page, selection);
@@ -247,9 +287,32 @@ public class EventDBHelper extends SQLiteOpenHelper {
         }else{
             populateEventPageFromMiddle(page, selection, collectionPageSize);
         }
+        stopDBFetchLock();
+    }
+
+    public void insertEventAsync(final SQLiteEvent event){
+        Thread thread = new Thread(){
+            @Override
+            public void run(){
+                insertEvent(event);
+            }
+        };
+        thread.start();
     }
 
     public SQLiteEvent insertEvent(SQLiteEvent event){
+        synchronized (fetchingLock){
+            try {
+                while (fetchingLockCount > 0) {
+                    fetchingLock.wait();
+                }
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+        synchronized (insertingLock){
+            insertingLockCount+=1;
+        }
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TYPE, event.getEventType().getEventTypeValue());
@@ -258,6 +321,22 @@ public class EventDBHelper extends SQLiteOpenHelper {
         contentValues.put(EventReaderContract.EventEntry.COLUMN_NAME_EVENT_MESSAGE, event.getEventMessage());
         long id = db.insert(EventReaderContract.EventEntry.TABLE_NAME, null, contentValues);
         event.setEventID(id);
+        for(final CBIAPPEventCollection activeCollection : activeCollections){
+            if(activeCollection.getSelection()!=null&&activeCollection.getSelection().isEventInSelection(event)) {
+                activeCollection.insertEvent(event);
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(activeCollection.adapterToNotifyOnChange!=null)
+                        activeCollection.adapterToNotifyOnChange.notifyDataSetChanged();
+                    }
+                });
+            }
+        }
+        synchronized (insertingLock){
+            insertingLockCount-=1;
+            insertingLock.notifyAll();
+        }
         return event;
     }
 
@@ -285,6 +364,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
     }
 
     public List<SQLiteEvent> getEventsFromSelection(CBIAPPEventSelection selection){
+        startDBFetchLock();
         SQLiteDatabase db = this.getReadableDatabase();
         StringBuilder builder = new StringBuilder();
         String[] selectionArgs = addClausesFromSelection(selection, builder);
@@ -298,7 +378,9 @@ public class EventDBHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 sortOrder);
-        return getEventsFromCursor(cursor, false);
+        List<SQLiteEvent> events = getEventsFromCursor(cursor, false);
+        stopDBFetchLock();
+        return events;
     };
 
     private String getSortOrder(CBIAPPEventSelection selection){

@@ -52,16 +52,23 @@ public class SQLiteEvent {
         this.eventTimestamp = eventTimestamp;
     }
 
-    public String getValue(String columnName){
+    public Number getValueNumber(String columnName){
         if(columnName==null)
             return null;
         if(columnName.equals(EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TIMESTAMP))
-            return getEventTimestamp().toString();
+            return getEventTimestamp();
         if(columnName.equals(EventReaderContract.EventEntry.COLUMN_NAME_EVENT_TYPE))
-            return Integer.toString(getEventType().getEventTypeValue());
+            return getEventType().getEventTypeValue();
         if(columnName.equals(EventReaderContract.EventEntry.COLUMN_NAME_ID))
-            return getEventID().toString();
+            return getEventID();
         return null;
+    }
+
+    public String getValue(String columnName){
+        Number value = getValueNumber(columnName);
+        if(value==null)
+            return null;
+        return value.toString();
     }
 
     @Override

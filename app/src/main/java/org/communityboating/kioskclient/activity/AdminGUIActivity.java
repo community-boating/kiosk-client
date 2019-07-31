@@ -38,7 +38,12 @@ import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIDeviceAdmin;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.config.AdminConfigProperties;
+import org.communityboating.kioskclient.event.admingui.EventCollectionAdapter;
 import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
+import org.communityboating.kioskclient.event.events.CBIAPPEventType;
+import org.communityboating.kioskclient.event.sqlite.CBIAPPEventCollection;
+import org.communityboating.kioskclient.event.sqlite.CBIAPPEventSelection;
+import org.communityboating.kioskclient.event.sqlite.SQLiteEvent;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
 import org.communityboating.kioskclient.keyboard.CustomKeyboardView;
 import org.communityboating.kioskclient.print.PrintServiceHolder;
@@ -98,6 +103,8 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     Button clearPropertyButton;
 
     RecyclerView eventList;
+
+    EventCollectionAdapter eventAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -323,65 +330,6 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         //cbiAPIKeyUpdateButton = (Button) findViewById(R.id.admin_gui_cbi_api_key_update_button);
     }
 
-    class ListThing extends RecyclerView.Adapter<EventViewHolder> {
-
-        int size;
-
-        ListThing(int size){
-            this.size=size;
-        }
-
-        private final View.OnClickListener eventViewClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView mainEventView=v.findViewById(R.id.admin_gui_event_message);
-                mainEventView.setVisibility(View.VISIBLE);
-                mainEventView.setText("HI IM AN EVENT MESSAGE");
-            }
-        };
-
-        @Override
-        public EventViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_admin_gui_main_event, viewGroup, false);
-            view.setOnClickListener(eventViewClickListener);
-            return new EventViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(EventViewHolder viewHolder, int i) {
-            viewHolder.eventType.setText("Hello : " + i);
-            Log.d("ploob ooble", "plap blap : " + i);
-            viewHolder.eventMessage.setVisibility(View.GONE);
-            if(i%2==0)
-                viewHolder.itemView.setBackgroundColor(Color.RED);
-            else
-                viewHolder.itemView.setBackgroundColor(Color.BLUE);
-        }
-
-        @Override
-        public int getItemCount() {
-            return size;
-        }
-    }
-
-    class EventViewHolder extends RecyclerView.ViewHolder{
-
-        TextView eventType;
-        TextView eventTimeStamp;
-        TextView eventTitle;
-        TextView eventMessage;
-
-        public EventViewHolder(View itemView) {
-            super(itemView);
-            eventType=itemView.findViewById(R.id.admin_gui_event_type);
-            eventTimeStamp=itemView.findViewById(R.id.admin_gui_event_timestamp);
-            eventTitle=itemView.findViewById(R.id.admin_gui_event_title);
-            eventMessage=itemView.findViewById(R.id.admin_gui_event_message);
-        }
-    }
-
-    ListThing adaper;
-
     private void initMainComponents(){
         String rootPackage = BasePackageClass.class.getPackage().getName();
         String fullClassName = CBIDeviceAdmin.class.getName();
@@ -401,14 +349,28 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         clearPropertyButton.setOnClickListener(this);
         eventList.setHasFixedSize(true);
         eventList.setLayoutManager(new LinearLayoutManager(this));
-        adaper = new ListThing(1000);
-        eventList.setAdapter(adaper);
+        CBIAPPEventCollection collection = CBIAPPEventManager.getDBHelper().getCollection();
+        CBIAPPEventSelection selection = new CBIAPPEventSelection();
+        selection.setEndTimeStamp(10000l);
+        selection.setStartTimeStamp(1000l);
+        selection.setSortType(CBIAPPEventSelection.SORT_TYPE_TIMESTAMP);
+        collection.updateSelection(selection);
+        eventAdapter=new EventCollectionAdapter(collection);
+        collection.adapterToNotifyOnChange=eventAdapter;
+        eventList.setAdapter(eventAdapter);
+    }
+
+    public void handleClickAddEvent(View v){
+        SQLiteEvent event = new SQLiteEvent();
+        event.setEventTimestamp(10000l);
+        event.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
+        event.setEventTitle("WOOP WOOP");
+        event.setEventMessage("AN EVENT");
+        CBIAPPEventManager.getDBHelper().insertEventAsync(event);
     }
 
     public void handleClickUp(View v){
-        adaper.size += 10;
-        adaper.notifyDataSetChanged();
-        eventList.scrollToPosition(adaper.getItemCount() - 1);
+        eventList.scrollToPosition(eventAdapter.getItemCount() - 1);
     }
 
     private void updateDeviceOwnerStatus(){
