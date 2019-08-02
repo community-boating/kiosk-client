@@ -1,35 +1,28 @@
-package org.communityboating.kioskclient.activity;
+package org.communityboating.kioskclient.activity.admingui;
 
 import android.app.Activity;
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.graphics.Color;
-import android.media.MediaMuxer;
-import android.media.tv.TvView;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.EventLog;
 import android.util.Log;
-import android.util.Printer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.starioextension.ICommandBuilder;
-import com.starmicronics.starioextension.IConnectionCallback;
 import com.starmicronics.starioextension.StarIoExt;
 import com.starmicronics.starprntsdk.ModelCapability;
 
@@ -38,19 +31,16 @@ import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIDeviceAdmin;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.config.AdminConfigProperties;
-import org.communityboating.kioskclient.event.admingui.EventCollectionAdapter;
 import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
 import org.communityboating.kioskclient.event.events.CBIAPPEventType;
+import org.communityboating.kioskclient.event.handler.CBIAPPEventCollectionUpdateHandler;
 import org.communityboating.kioskclient.event.sqlite.CBIAPPEventCollection;
 import org.communityboating.kioskclient.event.sqlite.CBIAPPEventSelection;
 import org.communityboating.kioskclient.event.sqlite.SQLiteEvent;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
-import org.communityboating.kioskclient.keyboard.CustomKeyboardView;
 import org.communityboating.kioskclient.print.PrintServiceHolder;
 import org.communityboating.kioskclient.print.PrinterManager;
-import org.w3c.dom.Text;
 
-import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -58,12 +48,16 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
-import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
@@ -105,6 +99,24 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     RecyclerView eventList;
 
     EventCollectionAdapter eventAdapter;
+
+    Spinner eventTypeSpinner;
+    Spinner eventSortSpinner;
+    ArrayAdapter<EventTypeAdapterItem> eventTypeAdapter;
+    ArrayAdapter<SortTypeAdapterItem> sortTypeAdapter;
+    EditText eventDateStart;
+    EditText eventTimeStart;
+    EditText eventDateEnd;
+    EditText eventTimeEnd;
+    Button eventTime1Hr;
+    Button eventTime5Hr;
+    Button eventTime1Day;
+    Button eventTime5Day;
+    Button eventSearch;
+    CheckBox eventAutoscroll;
+
+    CBIAPPEventCollection eventCollection;
+    CBIAPPEventSelection eventSelection;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -182,15 +194,32 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
 
     @Override
     public void onClick(View v) {
-        if(selectedProperty == null)
+        switch (v.getId()) {
+            case R.id.admin_gui_button_event_time_1hr:
+                eventTimePreselect(1);
+                break;
+            case R.id.admin_gui_button_event_time_5hr:
+                eventTimePreselect(5);
+                break;
+            case R.id.admin_gui_button_event_time_1day:
+                eventTimePreselect(24);
+                break;
+            case R.id.admin_gui_button_event_time_5day:
+                eventTimePreselect(5 * 24);
+                break;
+            case R.id.admin_gui_button_event_search:
+                searchEvents();
+                break;
+        }
+        if (selectedProperty == null)
             return;
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.admin_gui_properties_editor_button_get:
                 updatePropertyGUI(true);
                 break;
             case R.id.admin_gui_properties_editor_button_set:
                 String currentValue = propertyInputEditText.getText().toString();
-                if(currentValue==null)
+                if (currentValue == null)
                     currentValue = new String();
                 AdminConfigProperties.setAdminConfigPropertyValue(selectedProperty, currentValue);
                 AdminConfigProperties.storeProperties(this);
@@ -207,6 +236,92 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
             case R.id.admin_gui_properties_editor_button_clear:
                 propertyInputEditText.getText().clear();
                 break;
+        }
+    }
+
+    private void searchEvents(){
+        try{
+            Date date = dateFormat.parse(eventDateStart.getText().toString());
+            Date time = timeFormat.parse(eventTimeStart.getText().toString());
+            eventSelection.setStartTimeStamp(makeTime(date, time));
+            Log.d("derpderp", "derpderp : " + date.getTime() + " : " + time.getTime());
+        }catch (ParseException e){
+            eventSelection.setStartTimeStamp(null);
+        }
+        try{
+            Date date = dateFormat.parse(eventDateEnd.getText().toString());
+            Date time = timeFormat.parse(eventTimeEnd.getText().toString());
+            eventSelection.setEndTimeStamp(makeTime(date, time));
+        }catch (ParseException e){
+            eventSelection.setEndTimeStamp(null);
+        }
+        int sortType = sortTypeAdapter.getItem(eventSortSpinner.getSelectedItemPosition()).getSortTypeValue();
+        eventSelection.setSortType(sortType);
+        CBIAPPEventType eventType = eventTypeAdapter.getItem(eventTypeSpinner.getSelectedItemPosition()).getEventType();
+        eventSelection.setEventType(eventType);
+        eventCollection.updateSelection(eventSelection);
+    }
+
+    public long makeTime(Date date, Date time){
+        Calendar calendarDate = Calendar.getInstance();
+        calendarDate.setTime(date);
+        Calendar calendarTime = Calendar.getInstance();
+        calendarTime.setTime(time);
+        calendarDate.set(Calendar.HOUR_OF_DAY, calendarTime.get(Calendar.HOUR_OF_DAY));
+        calendarDate.set(Calendar.MINUTE, calendarTime.get(Calendar.MINUTE));
+        calendarDate.set(Calendar.SECOND, calendarTime.get(Calendar.SECOND));
+        calendarDate.set(Calendar.MILLISECOND, calendarTime.get(Calendar.MILLISECOND));
+        return calendarDate.getTimeInMillis();
+    }
+
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
+    public void eventTimePreselect(int hours){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, -hours);
+        eventSelection.setEndTimeStamp(null);
+        eventSelection.setStartTimeStamp(calendar.getTimeInMillis());
+        Log.d("derpderp", "what what ?");
+        updateInputsFromSelection();
+    }
+
+    public void updateInputsFromSelection(){
+        int sortType = eventSelection.getSortType();
+        CBIAPPEventType eventType = eventSelection.getEventType();
+        for(int i = 0; i < sortTypeAdapter.getCount(); i++){
+            SortTypeAdapterItem item = sortTypeAdapter.getItem(i);
+            if(item.getSortTypeValue() == sortType){
+                eventSortSpinner.setSelection(i);
+                break;
+            }
+        }
+        for(int i = 0; i < eventTypeAdapter.getCount(); i++){
+            EventTypeAdapterItem item = eventTypeAdapter.getItem(i);
+            if(item.getEventType() == eventType){
+                eventTypeSpinner.setSelection(i);
+                break;
+            }
+        }
+        if(eventSelection.getStartTimeStamp() == null){
+            eventDateStart.getText().clear();
+            eventTimeStart.getText().clear();
+        }else{
+            Date startDate = new Date(eventSelection.getStartTimeStamp());
+            String dateString = dateFormat.format(startDate);
+            String timeString = timeFormat.format(startDate);
+            eventDateStart.setText(dateString);
+            eventTimeStart.setText(timeString);
+        }
+        if(eventSelection.getEndTimeStamp() == null){
+            eventDateEnd.getText().clear();
+            eventTimeEnd.getText().clear();
+        }else{
+            Date endDate = new Date(eventSelection.getEndTimeStamp());
+            String dateString = dateFormat.format(endDate);
+            String timeString = timeFormat.format(endDate);
+            eventDateEnd.setText(dateString);
+            eventTimeEnd.setText(timeString);
         }
     }
 
@@ -327,6 +442,18 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         defaultPropertyButton=findViewById(R.id.admin_gui_properties_editor_button_default);
         clearPropertyButton=findViewById(R.id.admin_gui_properties_editor_button_clear);
         eventList=findViewById(R.id.admin_gui_event_list);
+        eventTypeSpinner=findViewById(R.id.admin_gui_spinner_event_type);
+        eventSortSpinner=findViewById(R.id.admin_gui_spinner_sort_type);
+        eventDateStart=findViewById(R.id.admin_gui_edit_text_date_start);
+        eventTimeStart=findViewById(R.id.admin_gui_edit_text_time_start);
+        eventDateEnd=findViewById(R.id.admin_gui_edit_text_date_end);
+        eventTimeEnd=findViewById(R.id.admin_gui_edit_text_time_end);
+        eventTime1Hr=findViewById(R.id.admin_gui_button_event_time_1hr);
+        eventTime5Hr=findViewById(R.id.admin_gui_button_event_time_5hr);
+        eventTime1Day=findViewById(R.id.admin_gui_button_event_time_1day);
+        eventTime5Day=findViewById(R.id.admin_gui_button_event_time_5day);
+        eventSearch=findViewById(R.id.admin_gui_button_event_search);
+        eventAutoscroll=findViewById(R.id.admin_gui_checkbox_autoscroll);
         //cbiAPIKeyUpdateButton = (Button) findViewById(R.id.admin_gui_cbi_api_key_update_button);
     }
 
@@ -349,20 +476,78 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         clearPropertyButton.setOnClickListener(this);
         eventList.setHasFixedSize(true);
         eventList.setLayoutManager(new LinearLayoutManager(this));
-        CBIAPPEventCollection collection = CBIAPPEventManager.getDBHelper().getCollection();
-        CBIAPPEventSelection selection = new CBIAPPEventSelection();
-        selection.setEndTimeStamp(10000l);
-        selection.setStartTimeStamp(1000l);
-        selection.setSortType(CBIAPPEventSelection.SORT_TYPE_TIMESTAMP);
-        collection.updateSelection(selection);
-        eventAdapter=new EventCollectionAdapter(collection);
-        collection.adapterToNotifyOnChange=eventAdapter;
+        eventCollection = CBIAPPEventManager.getDBHelper().getCollection();
+        eventSelection = new CBIAPPEventSelection();
+        eventAdapter=new EventCollectionAdapter(eventCollection);
+        eventCollection.setCollectionUpdateHandler(new CBIAPPEventCollectionUpdateHandler() {
+            @Override
+            public void handleCollectionUpdate() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
         eventList.setAdapter(eventAdapter);
+        EventTypeAdapterItem[] eventTypeItems = new EventTypeAdapterItem[CBIAPPEventType.values().length + 1];
+        eventTypeItems[0] = new EventTypeAdapterItem(null);
+        for(int i = 1; i < eventTypeItems.length; i++){
+            eventTypeItems[i] = new EventTypeAdapterItem(CBIAPPEventType.values()[i - 1]);
+        }
+        eventTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventTypeItems);
+        eventTypeSpinner.setAdapter(eventTypeAdapter);
+        SortTypeAdapterItem[] sortTypeItems = new SortTypeAdapterItem[]{
+                new SortTypeAdapterItem("Event Type", CBIAPPEventSelection.SORT_TYPE_EVENT_TYPE),
+                new SortTypeAdapterItem("Event Timestamp", CBIAPPEventSelection.SORT_TYPE_TIMESTAMP),
+                new SortTypeAdapterItem("Event Timestamp (rev)", CBIAPPEventSelection.SORT_TYPE_TIMESTAMP_REVERSE)
+        };
+        sortTypeAdapter = new ArrayAdapter<SortTypeAdapterItem>(this, android.R.layout.simple_spinner_item, sortTypeItems);
+        eventSortSpinner.setAdapter(sortTypeAdapter);
+        eventTime1Hr.setOnClickListener(this);
+        eventTime5Hr.setOnClickListener(this);
+        eventTime1Day.setOnClickListener(this);
+        eventTime5Day.setOnClickListener(this);
+        eventSearch.setOnClickListener(this);
+    }
+
+    public static class EventTypeAdapterItem{
+        CBIAPPEventType eventType;
+        private EventTypeAdapterItem(CBIAPPEventType eventType){
+            this.eventType=eventType;
+        }
+        public CBIAPPEventType getEventType(){
+            return eventType;
+        }
+        @Override
+        public String toString(){
+            if(eventType==null)
+                return "None";
+            else
+                return eventType.name();
+        }
+    }
+
+    public static class SortTypeAdapterItem{
+        String sortTypeName;
+        int sortTypeValue;
+        private SortTypeAdapterItem(String sortTypeName, int sortTypeValue){
+            this.sortTypeName = sortTypeName;
+            this.sortTypeValue = sortTypeValue;
+        }
+        public int getSortTypeValue(){
+            return sortTypeValue;
+        }
+        @Override
+        public String toString(){
+            return sortTypeName;
+        }
     }
 
     public void handleClickAddEvent(View v){
         SQLiteEvent event = new SQLiteEvent();
-        event.setEventTimestamp(10000l);
+        event.setEventTimestamp(new Date().getTime());
         event.setEventType(CBIAPPEventType.EVENT_TYPE_PRINTER);
         event.setEventTitle("WOOP WOOP");
         event.setEventMessage("AN EVENT");

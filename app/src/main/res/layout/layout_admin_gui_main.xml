@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -48,12 +49,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="76dp"
                 android:onClick="handleExitAppClick"
                 android:text="Exit Kiosk"
                 app:layout_constraintBottom_toBottomOf="@+id/button6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.216"
+                app:layout_constraintEnd_toStartOf="@+id/button5"
                 app:layout_constraintStart_toEndOf="@+id/button6"
                 app:layout_constraintTop_toTopOf="@+id/button6"
                 app:layout_constraintVertical_bias="0.0" />
@@ -65,7 +65,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:layout_constraintTop_toBottomOf="@+id/textView12">
+
+            </android.support.v7.widget.RecyclerView>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="500dp"
@@ -159,57 +161,224 @@
                     app:layout_constraintTop_toTopOf="@+id/admin_gui_properties_editor_button_default" />
             </android.support.constraint.ConstraintLayout>
 
-            <Button
-                android:id="@+id/admin_gui_button_test_print"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="198dp"
-                android:layout_marginTop="128dp"
-                android:layout_marginEnd="994dp"
-                android:layout_marginBottom="383dp"
-                android:onClick="handlePrintClick"
-                android:text="Test Print"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_list" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/admin_gui_event_list"
-                android:layout_width="match_parent"
+                android:layout_width="700dp"
                 android:layout_height="300dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_list" />
+                app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_list">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="500dp"
+                android:layout_height="300dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/admin_gui_event_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/admin_gui_event_list"
+                app:layout_constraintTop_toTopOf="@+id/admin_gui_event_list"
+                app:layout_constraintVertical_bias="0.0">
+
+                <Spinner
+                    android:id="@+id/admin_gui_spinner_event_type"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_edit_text_date_start"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_spinner_sort_type"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/admin_gui_spinner_sort_type"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_spinner_event_type"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_spinner_event_type"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_spinner_event_type" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_date_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:ems="10"
+                    android:hint="Start Date"
+                    android:inputType="date"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_edit_text_date_end"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_edit_text_time_start"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_spinner_event_type" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_time_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="Start Time"
+                    android:inputType="time"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_edit_text_date_start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_edit_text_date_start"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_edit_text_date_start" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_date_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:ems="10"
+                    android:hint="End Date"
+                    android:inputType="date"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_button_event_time_1hr"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_edit_text_time_end"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_edit_text_date_start" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_time_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="End Time"
+                    android:inputType="time"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_edit_text_date_end"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_edit_text_date_end"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_edit_text_date_end" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_1hr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="1 Hr"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_time_5hr"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_edit_text_date_end"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_checkbox_autoscroll"/>
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_5hr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="5 Hr"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_1hr"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_time_1day"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_1hr"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_1hr" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_1day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="1 Day"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_5hr"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_time_5day"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_5hr"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_5hr" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_5day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="5 Day"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_1day"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_search"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_1day"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_1day" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Search"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_5day"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_5day"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_5day" />
+
+                <CheckBox
+                    android:id="@+id/admin_gui_checkbox_autoscroll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Auto Scroll"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_button_event_time_1hr" />
+            </android.support.constraint.ConstraintLayout>
 
             <Button
                 android:id="@+id/dobutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
+                android:layout_marginStart="154dp"
+                android:layout_marginEnd="228dp"
                 android:onClick="handleClickUp"
                 android:text="UpButton"
-                app:layout_constraintBottom_toBottomOf="@+id/button12"
-                app:layout_constraintStart_toEndOf="@+id/button12"
-                app:layout_constraintTop_toTopOf="@+id/button12" />
+                app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_test_print"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/admin_gui_button_test_print"
+                app:layout_constraintTop_toTopOf="@+id/admin_gui_button_test_print" />
+
+            <Button
+                android:id="@+id/admin_gui_button_test_print"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginStart="116dp"
+                android:layout_marginEnd="448dp"
+                android:onClick="handlePrintClick"
+                android:text="Test Print"
+                app:layout_constraintBottom_toBottomOf="@+id/button5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/button5"
+                app:layout_constraintTop_toTopOf="@+id/button5" />
 
             <Button
                 android:id="@+id/button5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="271dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginEnd="52dp"
-                android:layout_marginBottom="14dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:onClick="handleClickAddEvent"
                 android:text="Add event"
-                app:layout_constraintBottom_toTopOf="@+id/dobutton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/admin_gui_event_list" />
+                app:layout_constraintBottom_toBottomOf="@+id/button12"
+                app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_test_print"
+                app:layout_constraintStart_toEndOf="@+id/button12"
+                app:layout_constraintTop_toTopOf="@+id/button12"
+                app:layout_constraintVertical_bias="0.0" />
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
 </LinearLayout>

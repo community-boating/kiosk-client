@@ -11,6 +11,7 @@ public class CBIAPPEventCollectionPage {
     boolean pagePopulated;
     int pageNumber;
     int pageSize;
+    int populationIndex;
     int pageFirstIndex;
     public CBIAPPEventCollectionPage(int pageNumber, int pageSize, int pageFirstIndex){
         pagePopulated=false;
@@ -46,6 +47,7 @@ public class CBIAPPEventCollectionPage {
         sqLiteEvents.add(event);
         Log.d("derpderp", "event added!");
         Collections.sort(sqLiteEvents, selection.getSelectionComparator());
+        pageSize = sqLiteEvents.size();
     }
     public void increaseFirstIndexBy(int amount){
         this.pageFirstIndex += amount;
@@ -53,7 +55,13 @@ public class CBIAPPEventCollectionPage {
     public int getPageOffset(int index){
         return index-getPageFirstIndex();
     }
+    public int getPopulationIndex(){
+        return populationIndex;
+    }
     public void increasePageSizeBy(int amount){
         pageSize+=amount;
+    }
+    protected List<SQLiteEvent> getSqLiteEvents(){
+        return sqLiteEvents;
     }
 }

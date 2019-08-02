@@ -2,7 +2,8 @@ package org.communityboating.kioskclient.event.sqlite;
 
 import android.util.Log;
 
-import org.communityboating.kioskclient.event.admingui.EventCollectionAdapter;
+import org.communityboating.kioskclient.activity.admingui.EventCollectionAdapter;
+import org.communityboating.kioskclient.event.handler.CBIAPPEventCollectionUpdateHandler;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,7 +17,7 @@ public class CBIAPPEventCollection {
         this.dbHelper = dbHelper;
     }
 
-    public EventCollectionAdapter adapterToNotifyOnChange;
+    CBIAPPEventCollectionUpdateHandler collectionUpdateHandler;
 
     EventDBHelper dbHelper;
 
@@ -26,7 +27,11 @@ public class CBIAPPEventCollection {
 
     int numberOfPages;
 
-    int pageEntrySize = 100;
+    int pageEntrySize = 50;
+
+    int maxPagesPopulated = 5;
+
+    int populationCounter;
 
     //Map<Integer, Integer> indexPageMapping;
     List<CBIAPPEventCollectionPage> collectionPages;
@@ -85,6 +90,32 @@ public class CBIAPPEventCollection {
         return foundPage;
     }
 
+    private void splitPageIfNeeded(CBIAPPEventCollectionPage page){
+        if(page.getPageSize() >= pageEntrySize * 2) {
+            splitPage(page, pageEntrySize);
+        }
+    }
+
+    private void splitPage(CBIAPPEventCollectionPage page, int splitIndex){
+        List<SQLiteEvent> sqLiteEvents = page.getSqLiteEvents();
+        List<SQLiteEvent> newPageLowerSQLiteEvents = sqLiteEvents.subList(0, splitIndex);
+        List<SQLiteEvent> newPageUpperSQLiteEvents = sqLiteEvents.subList(splitIndex, sqLiteEvents.size());
+        page.sqLiteEvents = newPageLowerSQLiteEvents;
+        page.pageSize = newPageLowerSQLiteEvents.size();
+        int secondPageOffset = page.getPageNumber() + 1;
+        int secondPageIndex = page.getPageFirstIndex() + newPageLowerSQLiteEvents.size();
+        CBIAPPEventCollectionPage upperPage = new CBIAPPEventCollectionPage(secondPageOffset, newPageUpperSQLiteEvents.size(), secondPageIndex);
+        collectionPages.add(secondPageOffset, upperPage);
+        for(int i = secondPageOffset + 1; i < collectionPages.size(); i++){
+            CBIAPPEventCollectionPage pageAbove = collectionPages.get(i);
+            pageAbove.pageNumber = i;
+        }
+    }
+
+    public void unpopulatePage(CBIAPPEventCollectionPage page){
+        page.p
+    }
+
     public void insertEvent(SQLiteEvent event){
         Comparator<SQLiteEvent> comparator = getSelection().getSelectionComparator();
         CBIAPPEventCollectionPage foundPage = null;
@@ -119,6 +150,9 @@ public class CBIAPPEventCollection {
             CBIAPPEventCollectionPage pageAfterFoundPage=getPageFromPageNumber(i);
             pageAfterFoundPage.increaseFirstIndexBy(1);
         }
+        if(foundPage != null){
+            splitPageIfNeeded(foundPage);
+        }
         selectionSize++;
     }
 
@@ -129,10 +163,13 @@ public class CBIAPPEventCollection {
         selectionSize = dbHelper.getSelectionSize(this.selection);
         numberOfPages = (selectionSize + pageEntrySize - 1) / pageEntrySize;
         collectionPages = new ArrayList<>(numberOfPages);
+        populationCounter = 0;
+        if(numberOfPages == 0)
+            collectionPages.add(new CBIAPPEventCollectionPage(0, 0, 0));
         for(int i = 0; i < numberOfPages; i++){
             int pageSize = pageEntrySize;
             if(i + 1 >= numberOfPages)
-                pageSize=selectionSize%pageEntrySize;
+                pageSize=(selectionSize%pageEntrySize==0&&selectionSize>0)?pageEntrySize:(selectionSize%pageEntrySize);
             CBIAPPEventCollectionPage page = new CBIAPPEventCollectionPage(i, pageSize, i*pageEntrySize);
             collectionPages.add(page);
         }
@@ -166,12 +203,12 @@ public class CBIAPPEventCollection {
         }
     }
 
-    private void populateEventPageAsync(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int collectionPageSize){
+    private void populateEventPageAsync(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
         synchronized (asyncPopulatingPages){
             if(asyncPopulatingPages.containsKey(page.getPageNumber()))
                 return; //Page already loading
         }
-        PopulateEventPageAsyncThread thread = new PopulateEventPageAsyncThread(page, pageBefore, pageAfter, selection, collectionPageSize);
+        PopulateEventPageAsyncThread thread = new PopulateEventPageAsyncThread(page, pageBefore, pageAfter, selection);
         synchronized (asyncPopulatingPages){
             asyncPopulatingPages.put(page.getPageNumber(), thread);
         }
@@ -191,17 +228,15 @@ public class CBIAPPEventCollection {
         Object asyncPopulationLock = new Object();
         CBIAPPEventCollectionPage page, pageBefore, pageAfter;
         CBIAPPEventSelection selection;
-        int collectionPageSize;
-        private PopulateEventPageAsyncThread(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int collectionPageSize){
+        private PopulateEventPageAsyncThread(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
             this.page=page;
             this.pageBefore=pageBefore;
             this.pageAfter=pageAfter;
             this.selection=selection;
-            this.collectionPageSize=collectionPageSize;
         }
         @Override
         public void run(){
-            dbHelper.populateEventPage(page, pageBefore, pageAfter, selection, collectionPageSize);
+            populateEventPage(page, pageBefore, pageAfter, selection);
             populateEventPageAsyncFinish(this);
         }
     }
@@ -225,18 +260,26 @@ public class CBIAPPEventCollection {
             if(isPageAsyncPopulating(eventPage))
                 waitForPageAsyncPopulating(eventPage);
             else
-                dbHelper.populateEventPage(eventPage, pageBefore, pageAfter, selection, getPageEntrySize());
+                populateEventPage(eventPage, pageBefore, pageAfter, selection);
 
         }
         if(pageBefore!=null&&!pageBefore.isPagePopulated()){
             CBIAPPEventCollectionPage pageBeforePageBefore = getCollectionPageBefore(page - 1);
-            populateEventPageAsync(pageBefore, pageBeforePageBefore, eventPage, selection, getPageEntrySize());
+            populateEventPageAsync(pageBefore, pageBeforePageBefore, eventPage, selection);
         }
         if(pageAfter!=null&&!pageAfter.isPagePopulated()){
             CBIAPPEventCollectionPage pageAfterPageAfter = getCollectionPageAfter(page + 1);
-            populateEventPageAsync(pageAfter, eventPage, pageAfterPageAfter, selection, getPageEntrySize());
+            populateEventPageAsync(pageAfter, eventPage, pageAfterPageAfter, selection);
         }
         return eventPage.getSQLiteEvent(pageOffset);
+    }
+
+    private void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
+        dbHelper.populateEventPage(page, pageBefore, pageAfter, selection, populationCounter++);
+    }
+
+    public void setCollectionUpdateHandler(CBIAPPEventCollectionUpdateHandler collectionUpdateHandler){
+        this.collectionUpdateHandler = collectionUpdateHandler;
     }
 
     public int getPageEntrySize(){
@@ -277,6 +320,7 @@ public class CBIAPPEventCollection {
     public void updateSelection(CBIAPPEventSelection selection) {
         this.selection = selection;
         updateSelectionSize();
+        collectionUpdateHandler.handleCollectionUpdate();
     }
 
     public int getNumberOfPages(){

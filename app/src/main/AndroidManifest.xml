@@ -29,7 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name="org.communityboating.kioskclient.print.PrintService" />
-        <activity android:name="org.communityboating.kioskclient.activity.AdminGUIActivity" android:windowSoftInputMode="adjustNothing">
+        <activity android:name="org.communityboating.kioskclient.activity.admingui.AdminGUIActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity android:name="org.communityboating.kioskclient.admin.CBIKioskLauncherActivity"
             android:launchMode="singleInstance"

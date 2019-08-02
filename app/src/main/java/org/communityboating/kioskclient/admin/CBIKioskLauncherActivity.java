@@ -1,7 +1,6 @@
 package org.communityboating.kioskclient.admin;
 
 import android.app.Activity;
-import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -16,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.communityboating.kioskclient.R;
-import org.communityboating.kioskclient.activity.AdminGUIActivity;
+import org.communityboating.kioskclient.activity.admingui.AdminGUIActivity;
 import org.communityboating.kioskclient.activity.BaseActivity;
 import org.communityboating.kioskclient.progress.Progress;
 

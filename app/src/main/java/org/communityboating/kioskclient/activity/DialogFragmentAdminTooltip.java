@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
-import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt;
 import com.starmicronics.starprntsdk.ModelCapability;
 
 import org.communityboating.kioskclient.R;
+import org.communityboating.kioskclient.activity.admingui.AdminGUIActivity;
 import org.communityboating.kioskclient.print.PrinterManager;
 
 public class DialogFragmentAdminTooltip extends DialogFragmentBase {

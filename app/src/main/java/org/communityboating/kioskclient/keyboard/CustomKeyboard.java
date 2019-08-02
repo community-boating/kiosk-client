@@ -2,35 +2,25 @@ package org.communityboating.kioskclient.keyboard;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
-import android.media.AudioAttributes;
 import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextDirectionHeuristic;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import org.communityboating.kioskclient.R;
-import org.communityboating.kioskclient.activity.AdminGUIActivity;
 import org.communityboating.kioskclient.activity.BaseActivity;
 import org.communityboating.kioskclient.input.CustomInputManager;
 import org.communityboating.kioskclient.input.listener.CustomInputProgressStateListener;
 import org.communityboating.kioskclient.input.listener.CustomInputTextWatcherListener;
-import org.communityboating.kioskclient.progress.validator.ProgressStateValueValidator;
 
 import java.util.Collection;
 import java.util.LinkedList;

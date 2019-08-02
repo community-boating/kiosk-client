@@ -1,6 +1,5 @@
-package org.communityboating.kioskclient.event.admingui;
+package org.communityboating.kioskclient.activity.admingui;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.event.sqlite.CBIAPPEventCollection;
-import org.communityboating.kioskclient.event.sqlite.CBIAPPEventCollectionPage;
 
 
 public class EventCollectionAdapter extends RecyclerView.Adapter<EventViewHolder> {

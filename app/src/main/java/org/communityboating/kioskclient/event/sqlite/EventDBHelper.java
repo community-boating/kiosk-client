@@ -203,7 +203,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
         page.pagePopulated=true;
     }
 
-    public void populateEventPageFromMiddle(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection, int pageSize){
+    public void populateEventPageFromMiddle(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection){
         int offset = page.getPageFirstIndex();
         SQLiteDatabase db = this.getReadableDatabase();
         StringBuilder builder = new StringBuilder();
@@ -268,7 +268,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int collectionPageSize){
+    public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int populationIndex){
         startDBFetchLock();
         if(pageBefore==null&&pageAfter!=null){
             //Load from start
@@ -282,11 +282,12 @@ public class EventDBHelper extends SQLiteOpenHelper {
             }else if(pageAfter.isPagePopulated()){
                 populateEventPageFromKnownAfter(page, pageAfter, selection);
             }else{
-                populateEventPageFromMiddle(page, selection, collectionPageSize);
+                populateEventPageFromMiddle(page, selection);
             }
         }else{
-            populateEventPageFromMiddle(page, selection, collectionPageSize);
+            populateEventPageFromMiddle(page, selection);
         }
+        page.populationIndex = populationIndex;
         stopDBFetchLock();
     }
 
@@ -327,8 +328,8 @@ public class EventDBHelper extends SQLiteOpenHelper {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        if(activeCollection.adapterToNotifyOnChange!=null)
-                        activeCollection.adapterToNotifyOnChange.notifyDataSetChanged();
+                        if(activeCollection.collectionUpdateHandler!=null)
+                        activeCollection.collectionUpdateHandler.handleCollectionUpdate();
                     }
                 });
             }

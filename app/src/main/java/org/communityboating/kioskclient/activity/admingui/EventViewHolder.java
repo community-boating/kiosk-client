@@ -1,4 +1,4 @@
-package org.communityboating.kioskclient.event.admingui;
+package org.communityboating.kioskclient.activity.admingui;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.EventLog;
