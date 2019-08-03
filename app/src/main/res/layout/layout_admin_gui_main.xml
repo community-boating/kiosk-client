@@ -165,23 +165,21 @@
                 android:id="@+id/admin_gui_event_list"
                 android:layout_width="700dp"
                 android:layout_height="300dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_list">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
             </android.support.v7.widget.RecyclerView>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout2"
                 android:layout_width="500dp"
-                android:layout_height="300dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/admin_gui_event_list"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/admin_gui_event_list"
-                app:layout_constraintTop_toTopOf="@+id/admin_gui_event_list"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout3">
 
                 <Spinner
                     android:id="@+id/admin_gui_spinner_event_type"
@@ -275,10 +273,10 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="4dp"
                     android:text="1 Hr"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_checkbox_autoscroll"
                     app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_time_5hr"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_edit_text_date_end"
-                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_checkbox_autoscroll"/>
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_edit_text_date_end" />
 
                 <Button
                     android:id="@+id/admin_gui_button_event_time_5hr"
@@ -377,6 +375,58 @@
                 app:layout_constraintStart_toEndOf="@+id/button12"
                 app:layout_constraintTop_toTopOf="@+id/button12"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="700dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="3dp"
+                app:layout_constraintBottom_toTopOf="@+id/admin_gui_event_list"
+                app:layout_constraintEnd_toEndOf="@+id/admin_gui_event_list"
+                app:layout_constraintStart_toStartOf="@+id/admin_gui_event_list"
+                app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_list">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Event Type"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView18"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Event Timestamp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView22"
+                    app:layout_constraintStart_toEndOf="@+id/textView17"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Event Title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import org.communityboating.kioskclient.config.AdminConfigProperties;
+import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
 import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerEvent;
-import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerEventHandler;
 import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerStarIOExtConnectionEvent;
 import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerStarIOExtDisconnectEvent;
 
@@ -20,6 +20,7 @@ import com.starmicronics.starioextension.StarIoExtManager;
 import com.starmicronics.starioextension.StarIoExtManagerListener;
 
 import java.lang.reflect.Field;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -62,8 +63,6 @@ public class PrinterManager implements IConnectionCallback {
 
     private boolean unrecoverableError;
 
-    private PrinterManagerEventHandler eventHandler;
-
     private PrinterManagerSettings printerSettings;
 
     /*private static PrinterSettings printerSettings = new PrinterSettings(
@@ -87,7 +86,6 @@ public class PrinterManager implements IConnectionCallback {
 
     public PrinterManager(Context context){
         loadConfigSettings(context);
-        eventHandler = new PrinterManagerEventHandler();
         //PrinterSettings settings = printerSettings;
         pendingCommands = new Stack<>();
         printerConnected = false;
@@ -308,22 +306,22 @@ public class PrinterManager implements IConnectionCallback {
     public void onConnected(ConnectResult connectResult) {
         synchronized (this.connectionAttempt) {
             connectionAttempt.handleConnectionResult(connectResult);
-            int connectionAttempts = connectionAttempt.connectionAttempts;
-            if (connectionAttempt.printerConnectionFailed) {
-                if (connectionAttempts < printerSettings.maxExtConnectAttempts) {
-                    PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_FAILED);
-                    eventHandler.dispatchEvent(event);
-                    attemptPrinterReconnection();
-                } else {
+            int connectionAttempts = connectionAttempt.previousAttempts.size();
+            if(connectionAttempt.isComplete){
+                if (connectionAttempt.printerConnectionFailed) {
                     PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_FAILURE_FINAL);
-                    eventHandler.dispatchEvent(event);
+                    CBIAPPEventManager.dispatchEvent(event);
+                }else if(connectionAttempt.printerConnected){
+                    PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_SUCCESSFUL);
+                    CBIAPPEventManager.dispatchEvent(event);
+                    attemptSendCommands();
+                }else{
+                    throw new RuntimeException("Invalid connection attempt, did not fail or succeed, bad logic somewhere");
                 }
-            }else if(connectionAttempt.printerConnected){
-                PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_SUCCESSFUL);
-                eventHandler.dispatchEvent(event);
-                attemptSendCommands();
             }else{
-                throw new RuntimeException("Invalid connection attempt, did not fail or succeed, bad logic somewhere");
+                PrinterManagerEvent event = new PrinterManagerStarIOExtConnectionEvent(connectionAttempts, PrinterManagerStarIOExtConnectionEvent.EVENT_RESULT_FAILED);
+                CBIAPPEventManager.dispatchEvent(event);
+                attemptPrinterReconnection();
             }
         }
         //Log.d("printer", "connected : " + connectResult.name());
@@ -349,7 +347,7 @@ public class PrinterManager implements IConnectionCallback {
         //printerConnected = false;
         connectionAttempt.disconnect();
         PrinterManagerEvent event = new PrinterManagerStarIOExtDisconnectEvent();
-        eventHandler.dispatchEvent(event);
+        CBIAPPEventManager.dispatchEvent(event);
         //errorHandler.handleDisconnect();
     }
 
@@ -452,17 +450,19 @@ public class PrinterManager implements IConnectionCallback {
     private class PrinterConnectionAttempt{
         public boolean printerConnected;
         public boolean printerConnectionFailed;
+        public boolean isComplete;
         public boolean isConnecting;
-        public int connectionAttempts;
+        List<ConnectResult> previousAttempts;
         public PrinterConnectionAttempt(){
             printerConnected=false;
             printerConnectionFailed=false;
+            isComplete=false;
             isConnecting=false;
-            connectionAttempts=0;
+            previousAttempts = new LinkedList<>();
         }
         public boolean startConnectionAttemptIfRequired(){
             synchronized (this) {
-                if (isConnecting || printerConnected)
+                if (isConnecting || isComplete)
                     return false;
                 isConnecting=true;
                 return true;
@@ -500,12 +500,28 @@ public class PrinterManager implements IConnectionCallback {
 
         public int getConnectionAttempts(){
             synchronized (this){
-                return connectionAttempts;
+                return previousAttempts.size();
             }
         }
 
         public void handleConnectionResult(ConnectResult result){
-            //synchronized (this) {
+            Log.d("derpderp", "derpderp : " + result);
+            if(result == ConnectResult.Success){
+                printerConnected=true;
+                printerConnectionFailed=false;
+                isComplete=true;
+            }else {
+                if(previousAttempts.size() + 1 >= printerSettings.maxExtConnectAttempts){
+                    printerConnected=false;
+                    printerConnectionFailed=true;
+                    isComplete=true;
+                }else{
+                }
+            }
+            previousAttempts.add(result);
+            isConnecting=false;
+
+            /*//synchronized (this) {
                 if (result == ConnectResult.Failure) {
                     printerConnected = false;
                     printerConnectionFailed = true;
@@ -514,8 +530,7 @@ public class PrinterManager implements IConnectionCallback {
                     printerConnectionFailed = false;
                 }
                 isConnecting = false;
-                connectionAttempts++;
-            //}
+            //}*/
         }
     }
 

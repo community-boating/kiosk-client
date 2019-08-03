@@ -188,7 +188,6 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.sqLiteEvents=getEventsFromCursor(cursor, false);
-        page.pagePopulated=true;
     }
 
     public void populateEventPageFromEnd(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection){
@@ -200,7 +199,6 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.sqLiteEvents=getEventsFromCursor(cursor, true);
-        page.pagePopulated=true;
     }
 
     public void populateEventPageFromMiddle(CBIAPPEventCollectionPage page, CBIAPPEventSelection selection){
@@ -213,7 +211,6 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String limitString = offset + ", " + page.getPageSize();
         Cursor cursor=db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.sqLiteEvents=getEventsFromCursor(cursor, false);
-        page.pagePopulated=true;
     }
 
     public void populateEventPageFromKnownAfter(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
@@ -228,7 +225,6 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.sqLiteEvents=getEventsFromCursor(cursor, true);
-        page.pagePopulated=true;
     }
 
     public void populateEventPageFromKnownBefore(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventSelection selection){
@@ -243,7 +239,6 @@ public class EventDBHelper extends SQLiteOpenHelper {
         String limitString = "" + page.getPageSize();
         Cursor cursor = db.query(EventReaderContract.EventEntry.TABLE_NAME, null, selectionString, selectionArgs, null, null, orderByString, limitString);
         page.sqLiteEvents=getEventsFromCursor(cursor, false);
-        page.pagePopulated=true;
     }
 
     private void startDBFetchLock(){
@@ -268,7 +263,7 @@ public class EventDBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection, int populationIndex){
+    public void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
         startDBFetchLock();
         if(pageBefore==null&&pageAfter!=null){
             //Load from start
@@ -287,7 +282,6 @@ public class EventDBHelper extends SQLiteOpenHelper {
         }else{
             populateEventPageFromMiddle(page, selection);
         }
-        page.populationIndex = populationIndex;
         stopDBFetchLock();
     }
 

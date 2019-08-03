@@ -8,6 +8,8 @@ import android.widget.TextView;
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.event.sqlite.SQLiteEvent;
 
+import java.util.Date;
+
 public class EventViewHolder extends RecyclerView.ViewHolder {
 
     TextView eventType;
@@ -33,7 +35,9 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     }
     public void setEvent(SQLiteEvent event){
         eventType.setText(event.getEventType().name());
-        eventTimeStamp.setText(event.getEventTimestamp().toString());
+        Date eventDate = new Date(event.getEventTimestamp());
+        String timeString = AdminGUIActivity.dateFormat.format(eventDate) + " " + AdminGUIActivity.timeFormat.format(eventDate);
+        eventTimeStamp.setText(timeString);
         eventTitle.setText(event.getEventTitle());
         eventMessage.setText(event.getEventMessage());
         eventMessage.setVisibility(View.GONE);

@@ -17,6 +17,7 @@ import org.communityboating.kioskclient.event.sqlite.SQLiteEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,6 @@ public class CBIAPPEventManager {
 
     private List<CBIAPPEventHandler> eventHandlers = new LinkedList<>();
     private Map<Integer, List<CBIAPPEventHandler>> eventHandlersTyped = new TreeMap<>();
-    private List<CBIAPPEventCollection> activeCollections = new LinkedList<>();
 
     private EventDBHelper dbHelper;
     private CBIAPPEventManager(Context context){
@@ -148,15 +148,24 @@ public class CBIAPPEventManager {
 
     }
 
-    private void dispatchEvent(CBIAPPEvent event){
+    public static long getCurrentTime(){
+        return new Date().getTime();
+    }
+
+    public static void dispatchEvent(CBIAPPEvent event){
+        eventManagerInstance.dispatchEventI(event);
+    }
+
+    public void dispatchEventI(CBIAPPEvent event){
         SQLiteEvent sqLiteEvent = event.getSQLiteEvent();
-        dbHelper.insertEvent(sqLiteEvent);
+        dbHelper.insertEventAsync(sqLiteEvent);
         for(CBIAPPEventHandler eventHandler : eventHandlers){
             eventHandler.handleEvent(event);
         }
-        for(CBIAPPEventHandler eventHandler : eventHandlersTyped.get(event.getEventType().getEventTypeValue())){
-            eventHandler.handleEvent(event);
-        }
+        if(eventHandlersTyped.containsKey(event.getEventType().getEventTypeValue()))
+            for(CBIAPPEventHandler eventHandler : eventHandlersTyped.get(event.getEventType().getEventTypeValue())){
+                eventHandler.handleEvent(event);
+            }
     }
 
     private void addEventHandlerI(CBIAPPEventType type, CBIAPPEventHandler handler){

@@ -158,6 +158,12 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         customKeyboard.updatePreventSoftwareKeyboard(true);
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        CBIAPPEventManager.onClose();
+    }
+
     int presses=0;
     int responses=0;
 
@@ -274,8 +280,8 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         return calendarDate.getTimeInMillis();
     }
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    public static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
     public void eventTimePreselect(int hours){
         Calendar calendar = Calendar.getInstance();
@@ -486,6 +492,8 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
                     @Override
                     public void run() {
                         eventAdapter.notifyDataSetChanged();
+                        if(eventAutoscroll.isChecked())
+                            eventList.scrollToPosition(eventAdapter.getItemCount() - 1);
                     }
                 });
             }

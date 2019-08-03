@@ -1,23 +1,12 @@
 package org.communityboating.kioskclient.event.events.printermanager;
 
-public abstract class PrinterManagerEvent implements Comparable<PrinterManagerEvent>{
+import org.communityboating.kioskclient.event.events.CBIAPPEvent;
+import org.communityboating.kioskclient.event.events.CBIAPPEventType;
 
-    public long timeStamp;
-    public String eventType;
+public abstract class PrinterManagerEvent extends CBIAPPEvent {
 
-    public abstract String getEventMessage();
-
-    public PrinterManagerEvent(String eventType){
-        this.eventType = eventType;
-    }
-
-    public void setTimeStamp(long timeStamp){
-        this.timeStamp = timeStamp;
-    }
-
-    @Override
-    public int compareTo(PrinterManagerEvent event){
-        return event.timeStamp > this.timeStamp ? 1 : event.timeStamp < this.timeStamp ? -1 : 0;
+    public PrinterManagerEvent(String eventTitle){
+        super(eventTitle, CBIAPPEventType.EVENT_TYPE_PRINTER);
     }
 
 }

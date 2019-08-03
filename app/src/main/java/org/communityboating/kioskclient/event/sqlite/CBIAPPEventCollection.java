@@ -7,8 +7,12 @@ import org.communityboating.kioskclient.event.handler.CBIAPPEventCollectionUpdat
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.TreeMap;
 
 public class CBIAPPEventCollection {
@@ -29,12 +33,12 @@ public class CBIAPPEventCollection {
 
     int pageEntrySize = 50;
 
-    int maxPagesPopulated = 5;
-
-    int populationCounter;
+    int maxPagesPopulated = 20;
 
     //Map<Integer, Integer> indexPageMapping;
     List<CBIAPPEventCollectionPage> collectionPages;
+
+    Queue<CBIAPPEventCollectionPage> populatedPages;
     //Map<Integer, CBIAPPEventCollectionPage> collectionPagesNormalSizes;
     //Map<Integer, CBIAPPEventCollectionPage> collectionPagesUnusualSizes;
 
@@ -112,27 +116,23 @@ public class CBIAPPEventCollection {
         }
     }
 
-    public void unpopulatePage(CBIAPPEventCollectionPage page){
-        page.p
-    }
-
     public void insertEvent(SQLiteEvent event){
         Comparator<SQLiteEvent> comparator = getSelection().getSelectionComparator();
         CBIAPPEventCollectionPage foundPage = null;
         CBIAPPEventCollectionPage closestPopulated=null;
-        for(CBIAPPEventCollectionPage page : collectionPages){
-            if(page.isPagePopulated()){
-                SQLiteEvent eventFirst = page.getFirstEvent();
-                SQLiteEvent eventFinal = page.getFinalEvent();
-                if(comparator.compare(event, eventFirst) < 0){
-                    if(closestPopulated==null || closestPopulated.getPageNumber() > page.getPageNumber()) {
-                        closestPopulated = page;
-                        continue;
-                    }
-                }else if(comparator.compare(event, eventFinal) <= 0 || page.getPageNumber() + 1 >= collectionPages.size()){
-                    foundPage=page;
-                    break;
+        Iterator<CBIAPPEventCollectionPage> populatedPageIterator = populatedPages.iterator();
+        while(populatedPageIterator.hasNext()){
+            CBIAPPEventCollectionPage page = populatedPageIterator.next();
+            SQLiteEvent eventFirst = page.getFirstEvent();
+            SQLiteEvent eventFinal = page.getFinalEvent();
+            if(comparator.compare(event, eventFirst) < 0){
+                if(closestPopulated==null || closestPopulated.getPageNumber() > page.getPageNumber()) {
+                    closestPopulated = page;
+                    continue;
                 }
+            }else if(comparator.compare(event, eventFinal) <= 0 || page.getPageNumber() + 1 >= collectionPages.size()){
+                foundPage=page;
+                break;
             }
         }
         CBIAPPEventCollectionPage increaseAfterPage=null;
@@ -163,7 +163,7 @@ public class CBIAPPEventCollection {
         selectionSize = dbHelper.getSelectionSize(this.selection);
         numberOfPages = (selectionSize + pageEntrySize - 1) / pageEntrySize;
         collectionPages = new ArrayList<>(numberOfPages);
-        populationCounter = 0;
+        populatedPages = new LinkedList<>();
         if(numberOfPages == 0)
             collectionPages.add(new CBIAPPEventCollectionPage(0, 0, 0));
         for(int i = 0; i < numberOfPages; i++){
@@ -274,8 +274,22 @@ public class CBIAPPEventCollection {
         return eventPage.getSQLiteEvent(pageOffset);
     }
 
+    private void depopulatePagesOverMaximumPopulated(CBIAPPEventCollectionPage pageAdded){
+        while(populatedPages.size() > maxPagesPopulated){
+            CBIAPPEventCollectionPage oldestPage = populatedPages.poll();
+            if(!oldestPage.equals(pageAdded)) {
+                oldestPage.sqLiteEvents = null;
+                oldestPage.pagePopulated = false;
+                Log.d("derpderp", "page depopulated : " + oldestPage.pageNumber);
+            }
+        }
+    }
+
     private void populateEventPage(CBIAPPEventCollectionPage page, CBIAPPEventCollectionPage pageBefore, CBIAPPEventCollectionPage pageAfter, CBIAPPEventSelection selection){
-        dbHelper.populateEventPage(page, pageBefore, pageAfter, selection, populationCounter++);
+        dbHelper.populateEventPage(page, pageBefore, pageAfter, selection);
+        page.pagePopulated = true;
+        populatedPages.add(page);
+        depopulatePagesOverMaximumPopulated(page);
     }
 
     public void setCollectionUpdateHandler(CBIAPPEventCollectionUpdateHandler collectionUpdateHandler){

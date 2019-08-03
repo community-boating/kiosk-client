@@ -28,6 +28,7 @@ import android.widget.PopupWindow;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
+import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
 import org.communityboating.kioskclient.input.CustomInputManager;
 import org.communityboating.kioskclient.print.PrintService;
 import org.communityboating.kioskclient.print.PrintServiceHolder;
@@ -142,6 +143,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CBIAPPEventManager.initiateIfRequired(this);
         printService.createPrintService(this);
         printService.setVerbosePrinterErrorHandler(this);
         PackageManager pm = getPackageManager();
@@ -247,6 +249,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     public void onDestroy(){
         super.onDestroy();
         printService.destroyPrintService(this);
+        CBIAPPEventManager.onClose();
     }
 
     @Override

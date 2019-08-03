@@ -11,7 +11,6 @@ public class CBIAPPEventCollectionPage {
     boolean pagePopulated;
     int pageNumber;
     int pageSize;
-    int populationIndex;
     int pageFirstIndex;
     public CBIAPPEventCollectionPage(int pageNumber, int pageSize, int pageFirstIndex){
         pagePopulated=false;
@@ -54,9 +53,6 @@ public class CBIAPPEventCollectionPage {
     }
     public int getPageOffset(int index){
         return index-getPageFirstIndex();
-    }
-    public int getPopulationIndex(){
-        return populationIndex;
     }
     public void increasePageSizeBy(int amount){
         pageSize+=amount;
