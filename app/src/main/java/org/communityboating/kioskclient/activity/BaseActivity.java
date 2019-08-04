@@ -145,7 +145,6 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         super.onCreate(savedInstanceState);
         CBIAPPEventManager.initiateIfRequired(this);
         printService.createPrintService(this);
-        printService.setVerbosePrinterErrorHandler(this);
         PackageManager pm = getPackageManager();
         //Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
         //this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);

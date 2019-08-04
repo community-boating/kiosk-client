@@ -105,7 +105,7 @@ public class NewGuestFinishActivity extends BaseActivity {
             }
 
             @Override
-            public void handleError(StarIOPortException e) {
+            public void handleError(Exception e) {
                 resetHandler.postDelayed(resetProgressHandler, 3000);
                 Log.e("printer", "printing failure", e);
             }
@@ -179,7 +179,7 @@ public class NewGuestFinishActivity extends BaseActivity {
             }
 
             @Override
-            public void handleError(StarIOPortException e) {
+            public void handleError(Exception e) {
                 resetHandler.postDelayed(resetProgressHandler, 3000);
                 Log.e("printer", "printing failure", e);
             }

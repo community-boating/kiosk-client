@@ -4,14 +4,25 @@ public class PrinterManagerPrinterStatusUpdateEvent extends PrinterManagerEvent 
 
     PrinterStatusUpdateEventType eventType;
 
-    public PrinterManagerPrinterStatusUpdateEvent(PrinterStatusUpdateEventType eventType) {
+    private Object extraData;
+
+    public PrinterManagerPrinterStatusUpdateEvent(PrinterStatusUpdateEventType eventType, Object extraData) {
         super("Printer Status Update");
         this.eventType = eventType;
+        this.extraData = extraData;
     }
 
     @Override
     public String getEventMessage() {
         return "Printer Status Update : " + eventType.eventTypeDescription;
+    }
+
+    public void setExtraData(Object extraData){
+        this.extraData = extraData;
+    }
+
+    public Object getExtraData(){
+        return extraData;
     }
 
     public enum PrinterStatusUpdateEventType {

@@ -184,7 +184,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
                 }
 
                 @Override
-                public void handleError(StarIOPortException e) {
+                public void handleError(Exception e) {
                     Log.d("printer", "printer error : " + e.getMessage());
                     e.printStackTrace();
                     responses++;

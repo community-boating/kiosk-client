@@ -60,7 +60,7 @@ public class DialogFragmentAdminTooltip extends DialogFragmentBase {
             }
 
             @Override
-            public void handleError(StarIOPortException e) {
+            public void handleError(Exception e) {
                 Log.d("printer", "printer error : ", e);
                 e.printStackTrace();
             }

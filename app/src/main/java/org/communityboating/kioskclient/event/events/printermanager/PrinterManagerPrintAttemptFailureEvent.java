@@ -5,17 +5,19 @@ import com.starmicronics.starioextension.StarIoExtManager;
 
 public class PrinterManagerPrintAttemptFailureEvent extends PrinterManagerPrintAttemptEvent{
 
-    private StarIOPortException portException;
-    private StarIoExtManager.PrinterStatus printerStatus;
+    private Exception portException;
     private int printAttempt;
     boolean isFinalAttempt;
 
-    public PrinterManagerPrintAttemptFailureEvent(long printJobIndex) {
+    public PrinterManagerPrintAttemptFailureEvent(long printJobIndex, Exception portException, boolean isFinalAttempt, int printAttempt) {
         super("Print Attempt Event", printJobIndex);
+        this.portException = portException;
+        this.isFinalAttempt = isFinalAttempt;
+        this.printAttempt = printAttempt;
     }
 
     @Override
     public String getEventMessage() {
-        return null;
+        return "Print attempt failed, attempt: " + printAttempt + " final: " + isFinalAttempt + " message: " + portException.getMessage();
     }
 }
