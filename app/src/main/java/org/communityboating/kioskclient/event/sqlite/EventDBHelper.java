@@ -20,10 +20,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EventDBHelper extends SQLiteOpenHelper {
+
+    private ExecutorService eventInsertionExecutor;
+
     public EventDBHelper(Context context) {
         super(context, CBIAPPDBInfo.DB_NAME, null, CBIAPPDBInfo.DB_VERSION);
+        eventInsertionExecutor = Executors.newCachedThreadPool();
     }
 
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + EventReaderContract.EventEntry.TABLE_NAME + " (" +
@@ -286,13 +292,19 @@ public class EventDBHelper extends SQLiteOpenHelper {
     }
 
     public void insertEventAsync(final SQLiteEvent event){
-        Thread thread = new Thread(){
-            @Override
-            public void run(){
-                insertEvent(event);
-            }
-        };
-        thread.start();
+        InsertEventAsyncTask task = new InsertEventAsyncTask(event);
+        eventInsertionExecutor.execute(task);
+    }
+
+    private class InsertEventAsyncTask implements Runnable{
+        private SQLiteEvent event;
+        private InsertEventAsyncTask(SQLiteEvent event){
+            this.event = event;
+        }
+        @Override
+        public void run() {
+            insertEvent(event);
+        }
     }
 
     public SQLiteEvent insertEvent(SQLiteEvent event){

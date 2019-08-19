@@ -68,7 +68,18 @@ public class PrintServiceHolder {
             @Override
             public void run(){
                 PrintServiceHolder.this.waitForService();
-                PrintServiceHolder.this.printerService.sendCommands(commandBuilder, callback);
+                PrintServiceHolder.this.printerService.sendCommands(commandBuilder.getCommands(), callback);
+            }
+        };
+        waitThread.start();
+    }
+
+    public void waitAndGetPortStatus(final PrinterManager.RetrievePortStatusAsyncCallback callback){
+        final Thread waitThread = new Thread(){
+            @Override
+            public void run(){
+                PrintServiceHolder.this.waitForService();
+                PrintServiceHolder.this.printerService.getPortStatus(callback);
             }
         };
         waitThread.start();

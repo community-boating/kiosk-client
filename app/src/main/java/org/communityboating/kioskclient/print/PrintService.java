@@ -39,8 +39,12 @@ public class PrintService extends Service {
 
     public class PrinterServiceBinder extends Binder {
 
-        public void sendCommands(ICommandBuilder builder, final PrinterManager.SendCommandsCallback callback) {
-            printerManager.sendICommands(builder, callback);
+        public void sendCommands(byte[] data, final PrinterManager.SendCommandsCallback callback) {
+            printerManager.sendCommands(data, callback);
+        }
+
+        public void getPortStatus(PrinterManager.RetrievePortStatusAsyncCallback callback){
+            printerManager.retrievePortStatusAsync(callback);
         }
 
     }

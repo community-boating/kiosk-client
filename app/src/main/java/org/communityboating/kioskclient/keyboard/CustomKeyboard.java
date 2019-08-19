@@ -68,6 +68,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         initializeKeys();
     }
     public void updatePreventSoftwareKeyboard(boolean preventSoftwareKeyboard){
+        KeyboardView view;
         if(preventSoftwareKeyboard)
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         else
@@ -85,6 +86,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         keyboardView.setShifted(shiftStatus);
     }
     private void initializeKeys(){
+        Keyboard keyboard;
         StringBuffer buffer = new StringBuffer(2);
         for(Key k : this.getKeys()){
             if(k.codes == null)

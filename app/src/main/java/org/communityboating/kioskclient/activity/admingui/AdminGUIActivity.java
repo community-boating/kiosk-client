@@ -175,7 +175,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
         builder.endDocument();
         try {
-            printService.getPrinterService().sendCommands(builder, new PrinterManager.SendCommandsCallback() {
+            printService.getPrinterService().sendCommands(builder.getCommands(), new PrinterManager.SendCommandsCallback() {
                 @Override
                 public void handleSuccess() {
                     Log.d("printer", "done printing");

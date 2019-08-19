@@ -86,16 +86,9 @@
         <requestFocus></requestFocus>
     </org.communityboating.kioskclient.input.EditTextCustomInput>
 
-    <FrameLayout
-        android:id="@+id/layout_newguest"
-        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:tag="nav_fragment"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <include layout="@layout/layout_nav_fragment">
+
+    </include>
 
     <android.inputmethodservice.KeyboardView
         android:id="@+id/custom_keyboard_view_phone"

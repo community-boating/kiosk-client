@@ -2,19 +2,19 @@ package org.communityboating.kioskclient.event.events.printermanager;
 
 public class PrinterManagerPrinterStatusUpdateEvent extends PrinterManagerEvent {
 
-    PrinterStatusUpdateEventType eventType;
+    PrinterStatusUpdateEventType eventStatusType;
 
     private Object extraData;
 
-    public PrinterManagerPrinterStatusUpdateEvent(PrinterStatusUpdateEventType eventType, Object extraData) {
+    public PrinterManagerPrinterStatusUpdateEvent(PrinterStatusUpdateEventType eventStatusType, Object extraData) {
         super("Printer Status Update");
-        this.eventType = eventType;
+        this.eventStatusType = eventStatusType;
         this.extraData = extraData;
     }
 
     @Override
     public String getEventMessage() {
-        return "Printer Status Update : " + eventType.eventTypeDescription;
+        return "Printer Status Update : " + eventStatusType.eventTypeDescription;
     }
 
     public void setExtraData(Object extraData){
@@ -23,6 +23,10 @@ public class PrinterManagerPrinterStatusUpdateEvent extends PrinterManagerEvent 
 
     public Object getExtraData(){
         return extraData;
+    }
+
+    public PrinterStatusUpdateEventType getEventStatusType(){
+        return eventStatusType;
     }
 
     public enum PrinterStatusUpdateEventType {

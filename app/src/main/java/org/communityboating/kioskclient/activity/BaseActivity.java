@@ -28,7 +28,11 @@ import android.widget.PopupWindow;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
+import org.communityboating.kioskclient.event.events.CBIAPPEvent;
 import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
+import org.communityboating.kioskclient.event.events.CBIAPPEventType;
+import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerPrinterStatusUpdateEvent;
+import org.communityboating.kioskclient.event.handler.CBIAPPEventHandler;
 import org.communityboating.kioskclient.input.CustomInputManager;
 import org.communityboating.kioskclient.print.PrintService;
 import org.communityboating.kioskclient.print.PrintServiceHolder;
@@ -144,6 +148,17 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CBIAPPEventManager.initiateIfRequired(this);
+        CBIAPPEventManager.addEventHandler(CBIAPPEventType.EVENT_TYPE_PRINTER, new CBIAPPEventHandler() {
+            @Override
+            public void handleEvent(CBIAPPEvent event) {
+                if(event instanceof PrinterManagerPrinterStatusUpdateEvent){
+                    PrinterManagerPrinterStatusUpdateEvent updateEvent = (PrinterManagerPrinterStatusUpdateEvent)event;
+                    if(updateEvent.getEventStatusType() == PrinterManagerPrinterStatusUpdateEvent.PrinterStatusUpdateEventType.PRINTER_PAPER_EMPTY){
+
+                    }
+                }
+            }
+        });
         printService.createPrintService(this);
         PackageManager pm = getPackageManager();
         //Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
@@ -361,12 +376,12 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     private boolean hasNavFragment(){
-        return findViewById(R.id.layout_newguest) != null;
+        return findViewById(R.id.layout_nav_fragment) != null;
     }
 
     private void startNavFragment(){
         NavButtonGroupFragment navFragment = new NavButtonGroupFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_newguest, navFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_nav_fragment, navFragment).commit();
     }
 
     /* Setup some event callbacks here */

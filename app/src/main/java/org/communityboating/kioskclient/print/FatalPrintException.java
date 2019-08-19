@@ -6,4 +6,7 @@ public class FatalPrintException extends Exception {
     public FatalPrintException(String message){
         super(message);
     }
+    public FatalPrintException(Throwable t){
+        super(t);
+    }
 }
