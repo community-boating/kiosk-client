@@ -258,6 +258,10 @@ public class PrinterManager implements IConnectionCallback {
     }
 
     public void connectToPrinter(){
+        if(this.extManager == null){
+            Log.e("Printer Error", "No port, or other fatal error");
+            return;
+        }
         this.connectionAttempt = new PrinterConnectionAttempt();
         connectingLock.setLocked(true);
         attemptPrinterReconnection();

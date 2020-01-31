@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="false"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="400dp"
+        android:layout_height="700dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/shadowGray"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout3">
+        <TextView
+            android:id="@+id/text_view_register_guest_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register a Guest"
+            android:textAlignment="center"
+            android:textSize="60dp" />
+
+        <TextView
+            android:id="@+id/text_view_register_guest_blurb"
+            android:layout_width="match_parent"
+            android:layout_height="390dp"
+            android:text="Blurb"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/new_guest_register_guest_button"
+            style="@style/button_background_large"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:onClick="handleReturningButtonClick"
+            android:text="Guest Registration"
+            android:textSize="60sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="400dp"
+        android:layout_height="700dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/shadowGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/header_title_text">
+        <TextView
+            android:id="@+id/text_view_register_rent_boat_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Become a Member"
+            android:textAlignment="center"
+            android:textSize="60dp" />
+
+        <TextView
+            android:id="@+id/text_view_register_rent_boat_blurb"
+            android:layout_width="match_parent"
+            android:layout_height="390dp"
+            android:text="Blurb"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/new_guest_register_rent_boat_button"
+            style="@style/button_background_large"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:onClick="handleReturningButtonClick"
+            android:text="Rental Options"
+            android:textSize="60sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/header_title_text"
+        style="@style/text_title_primary_medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:includeFontPadding="false"
+        android:text="Welcome to Community Boating!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="400dp"
+        android:layout_height="700dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@color/shadowGray"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout3">
+
+        <TextView
+            android:id="@+id/text_view_register_membership_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Become a Member"
+            android:textAlignment="center"
+            android:textSize="60dp" />
+
+        <TextView
+            android:id="@+id/text_view_register_membership_blurb"
+            android:layout_width="match_parent"
+            android:layout_height="390dp"
+            android:text="Blurb"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/new_guest_register_membership_button"
+            style="@style/button_background_large"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:onClick="handleReturningButtonClick"
+            android:text="Explore Memberships"
+            android:textSize="60sp" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

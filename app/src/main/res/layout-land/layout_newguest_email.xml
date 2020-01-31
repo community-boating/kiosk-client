@@ -24,7 +24,7 @@
         app:layout_constraintTop_toBottomOf="@+id/custom_keyboard_view_email" />
 
     <TextView
-        android:id="@+id/newguest_email_title_text"
+        android:id="@+id/header_title_text"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +36,10 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include layout="@layout/layout_header_progress_indicator">
+
+    </include>
 
     <TextView
         android:id="@+id/newguest_email_desc_text"
@@ -50,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newguest_email_title_text" />
+        app:layout_constraintTop_toBottomOf="@+id/header_title_text" />
 
     <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_email"

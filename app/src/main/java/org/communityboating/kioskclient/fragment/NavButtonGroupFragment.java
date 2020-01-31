@@ -1,4 +1,4 @@
-package org.communityboating.kioskclient.activity;
+package org.communityboating.kioskclient.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import org.communityboating.kioskclient.R;
+import org.communityboating.kioskclient.activity.BaseActivity;
 
-public class NavButtonGroupFragment extends Fragment implements View.OnClickListener {
+public class NavButtonGroupFragment extends BaseActivityFragment implements View.OnClickListener {
 
     private static View view;
 
@@ -76,14 +77,6 @@ public class NavButtonGroupFragment extends Fragment implements View.OnClickList
                     baseActivity.handleNavButtonClickCancel();
                     break;
             }
-        }
-    }
-
-    public BaseActivity getBaseActivity(){
-        if(this.getActivity() instanceof BaseActivity){
-            return (BaseActivity)this.getActivity();
-        }else{
-            return null;
         }
     }
 

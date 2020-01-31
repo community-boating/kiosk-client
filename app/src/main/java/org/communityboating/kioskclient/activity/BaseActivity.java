@@ -2,29 +2,17 @@ package org.communityboating.kioskclient.activity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
 import android.app.admin.DevicePolicyManager;
-import android.bluetooth.BluetoothClass;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
@@ -33,10 +21,9 @@ import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
 import org.communityboating.kioskclient.event.events.CBIAPPEventType;
 import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerPrinterStatusUpdateEvent;
 import org.communityboating.kioskclient.event.handler.CBIAPPEventHandler;
+import org.communityboating.kioskclient.fragment.NavButtonGroupFragment;
 import org.communityboating.kioskclient.input.CustomInputManager;
-import org.communityboating.kioskclient.print.PrintService;
 import org.communityboating.kioskclient.print.PrintServiceHolder;
-import org.communityboating.kioskclient.print.PrinterManager;
 import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 
@@ -189,6 +176,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     public void displayFragment(Fragment fragment){
+
         //ViewGroup group = (ViewGroup)getWindow().getDecorView().getRootView();
         if(findViewById(R.id.root_layout) != null) {
             getSupportFragmentManager().beginTransaction().add(R.id.root_layout, fragment).commit();

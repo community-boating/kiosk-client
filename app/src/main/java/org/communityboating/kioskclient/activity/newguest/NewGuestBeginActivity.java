@@ -38,7 +38,8 @@ public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBeg
         @Override
         public void handlePortStatusError(Exception e) {
             Log.d("derpderp", "whatwhat", e);
-            displayPrinterWarningFragment(e.getMessage(), true);
+            //TODO fix this
+            //displayPrinterWarningFragment(e.getMessage(), true);
         }
 
         @Override

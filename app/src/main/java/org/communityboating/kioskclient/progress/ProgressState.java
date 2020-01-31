@@ -143,6 +143,10 @@ public class ProgressState implements Parcelable {
         return null;
     }
 
+    public int getCompletionCount(){
+        return 1;
+    }
+
     public ProgressState createNextProgressState(Progress progress){
         return null;
     }

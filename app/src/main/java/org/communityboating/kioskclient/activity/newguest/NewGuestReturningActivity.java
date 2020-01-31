@@ -19,12 +19,14 @@ public class NewGuestReturningActivity extends BaseActivity<ProgressStateNewGues
     public void handleNewButtonClick(View view){
         ProgressStateNewGuestReturning progressState = this.getProgressState();
         progressState.setReturningMember(false);
+        progress.setTotalCompletionCount(10);
         nextProgress();
     }
 
     public void handleReturningButtonClick(View view){
         ProgressStateNewGuestReturning progressState = this.getProgressState();
         progressState.setReturningMember(true);
+        progress.setTotalCompletionCount(3);
         nextProgress();
     }
 

@@ -2,9 +2,11 @@ package org.communityboating.kioskclient.progress;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestBegin;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestFinish;
+import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestRegistrationType;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
 import java.util.ArrayList;
@@ -15,13 +17,18 @@ public class Progress implements Parcelable {
     public List<ProgressState> states;
     int currentState;
 
+    int totalCompletionCount;
+    float previousCompletionPercentage;
+
     public static Creator<Progress> CREATOR = new Creator<Progress>(){
         @Override
         public Progress createFromParcel(Parcel source) {
             int currentState = source.readInt();
+            int totalCompletionCount = source.readInt();
+            float previousCompletionPercentage = source.readFloat();
             List<ProgressState> progressStates = new LinkedList<>();
             source.readTypedList(progressStates, ProgressState.CREATOR);
-            Progress progress = new Progress(progressStates, currentState);
+            Progress progress = new Progress(progressStates, currentState, totalCompletionCount, previousCompletionPercentage);
             return progress;
         }
 
@@ -32,9 +39,11 @@ public class Progress implements Parcelable {
 
     };
 
-    private Progress(List<ProgressState> states, int currentState){
+    private Progress(List<ProgressState> states, int currentState, int totalCompletionCount, float previousCompletionPercentage){
         this.states = states;
         this.currentState = currentState;
+        this.totalCompletionCount = totalCompletionCount;
+        this.previousCompletionPercentage = previousCompletionPercentage;
     }
 
     public Progress(){
@@ -48,6 +57,10 @@ public class Progress implements Parcelable {
         states.add(firstState);
     }
 
+    public void setTotalCompletionCount(int totalCompletionCount){
+        this.totalCompletionCount = totalCompletionCount;
+    }
+
     public void nextState(){
         ProgressState currentState = this.getCurrentProgressState();
         if(this.currentState == this.states.size() - 1) {
@@ -56,6 +69,10 @@ public class Progress implements Parcelable {
             if (nextState != null) {
                 this.currentState = states.size();
                 this.states.add(nextState);
+                Log.d("derpderp", "adding : " +  this.currentState + " : " + this.states.size());
+            }
+            else{
+                Log.d("derpderp", "well isn't this unpleasant");
             }
             //TODO not handled currently, end of progress
         }else{
@@ -74,13 +91,34 @@ public class Progress implements Parcelable {
     }
 
     public int checkPreviousProgressStates(){
-        for(int i = 0; i <= this.currentState; i++){
+        for(int i = 0; i <= this.currentState && i < this.states.size(); i++){
             ProgressState progressState = this.states.get(i);
             if(!ProgressStateValidatorManager.isProgressStateValid(progressState)){
                 return i;
             }
         }
         return -1;
+    }
+
+    public float getPreviousCompletionPercentage(){
+        return previousCompletionPercentage;
+    }
+
+    public float computeCompletionPercentage(){
+        int completionCount = 0;
+        for(int i = 0; i < this.states.size() && i < this.currentState; i++){
+            ProgressState progressState = this.states.get(i);
+            if(ProgressStateValidatorManager.isProgressStateValid(progressState)){
+                completionCount += progressState.getCompletionCount();
+            }
+        }
+        float percentage = ((float)completionCount) / ((float)getTotalCompletionCount());
+        previousCompletionPercentage = percentage;
+        return percentage;
+    }
+
+    public int getTotalCompletionCount(){
+        return totalCompletionCount;
     }
 
     public int checkAllProgressStates(){
@@ -108,7 +146,7 @@ public class Progress implements Parcelable {
     }
 
     public static Progress createNewGuestProgress(){
-        return new Progress(new ProgressStateNewGuestBegin());
+        return new Progress(new ProgressStateNewGuestRegistrationType());
         //return new Progress(new ProgressStateNewGuestFinish());
     }
 
@@ -120,6 +158,8 @@ public class Progress implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.currentState);
+        dest.writeInt(this.totalCompletionCount);
+        dest.writeFloat(this.previousCompletionPercentage);
         dest.writeTypedList(this.states);
     }
 }

@@ -9,7 +9,7 @@ public class ProgressStateEmailValueValidator implements ProgressStateValueValid
 
     @Override
     public String isValueValid(String value) {
-        if(value == null | value.isEmpty())
+        if(value == null || value.isEmpty())
             return "Email should not be empty";
         if(!VALID_EMAIL_REGEX.matcher(value).find())
             return "Email is not valid";

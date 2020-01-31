@@ -8,7 +8,7 @@
     android:fitsSystemWindows="false">
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/header_title_text"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:background="@color/shadowGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/header_title_text" />
 
     <CheckBox
         android:id="@+id/checkBox2"
@@ -60,7 +60,7 @@
 
     <FrameLayout
         android:id="@+id/layout_newguest"
-        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
+        class="org.communityboating.kioskclient.fragment.NavButtonGroupFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"

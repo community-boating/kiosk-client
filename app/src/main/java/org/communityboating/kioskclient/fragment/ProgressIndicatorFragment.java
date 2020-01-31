@@ -1,18 +1,36 @@
 package org.communityboating.kioskclient.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.communityboating.kioskclient.R;
+import org.communityboating.kioskclient.view.ProgressIndicatorView;
 
-public class ProgressIndicatorFragment extends Fragment {
+public class ProgressIndicatorFragment extends BaseActivityFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.layout_progress_indicator_fragment, container, false);
+        ProgressIndicatorView view = new ProgressIndicatorView(getContext());
+        view.setOnClickListener(view);
+        Log.d("derpderp", "not attached");
+        return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        ProgressIndicatorView view = (ProgressIndicatorView)getView();
+        float previousProgress = getBaseActivity().progress.getPreviousCompletionPercentage();
+        float currentProgress = getBaseActivity().progress.computeCompletionPercentage();
+        Log.d("derpderp", "derpa : " + previousProgress + " : " + currentProgress);
+        view.animateTo(previousProgress, currentProgress);
+        Log.d("derpderp", "derpa : " + getBaseActivity().progress.getPreviousCompletionPercentage());
     }
 
 }
