@@ -365,6 +365,10 @@ public class PrinterManager implements IConnectionCallback {
         @Override
         public void run() {
             connectingLock.waitOnLock();
+            if(connectionAttempt == null){
+                callback.handlePortStatusError(new FatalPrintException("ConnectionAttempt NULL"));
+                return;
+            }
             if(connectionAttempt.isPrinterFailed()){
                 FatalPrintException exception = new FatalPrintException("Printer connection failed");
                 callback.handlePortStatusError(exception);

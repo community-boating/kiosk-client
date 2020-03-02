@@ -58,4 +58,59 @@
     <string name="cbi_admin_description">Allows the CBI kiosk app to perform COSU functions.</string>
     <string name="cbi_admin_add_admin_extra_text">Allow CBI kiosk app to administrate this device. Required to allow the COSU policies for this kiosk to be established.</string>
     <string name="cbi_kiosk_profile_name">CBI Kiosk Profile</string>
+
+    <string name="rental_boat_type_option_paddle_title">Paddle</string>
+    <string name="rental_boat_type_option_paddle_desc">Fun and easy way to enjoy time on the water with gorgeous views of Boston’s Back Bay
+
+Kayaks and Stand Up Paddleboards
+
+Paddling is limited to the basin between the Mass Ave. bridge and the Longfellow bridge.
+
+Lifejackets are provided and MUST be worn at all times
+
+Available options accomodate 1-2 people</string>
+    <string name="rental_boat_type_option_paddle_specific_page_header">Paddle Rental</string>
+    <string name="rental_boat_type_option_sailboat_title">Sail</string>
+    <string name="rental_boat_type_option_sailboat_desc">Your group leader must have sailing experience to rent a sailboat.
+
+16 and 19 foot keeled dinghy sailboats
+
+Sailing is limited to the basin between the Mass Ave. bridge and the Longfellow bridge.
+
+Lifejackets are provided and MUST be worn at all times
+
+Available options accomodate 1-5 people</string>
+    <string name="rental_boat_type_option_sailboat_specific_page_header">Sailboat Rental</string>
+    <string name="rental_boat_specific_option_kayak_title">Kayak</string>
+    <string name="rental_boat_specific_option_kayak_desc">Daily flat rate of $45 - No hourly rate
+
+Due back 1/2 hour before sunset.
+
+Rental valid all day - come and go as you please
+
+Seats 1-2</string>
+    <string name="rental_boat_specific_option_kayak_desc_secondary">You must return your rental 1/2 hour before sunset.</string>
+    <string name="rental_boat_specific_option_standuppaddleboard_title">Stand Up Paddleboard</string>
+    <string name="rental_boat_specific_option_standuppaddleboard_desc">Daily flat rate of $45 - No hourly rate
+
+    Due back 1/2 hour before sunset.
+
+    Rental valid all day - come and go as you please
+
+    Seats 1-2</string>
+    <string name="rental_boat_specific_option_standuppaddleboard_desc_secondary">You must return your rental 1/2 hour before sunset.</string>
+    <string name="rental_boat_specific_option_mercury16_title">Mercury 16</string>
+    <string name="rental_boat_specific_option_mercury16_desc">16 foot keeled dinghy
+
+    Due back at sunset
+
+        Seats 1-4</string>
+    <string name="rental_boat_specific_option_mercury16_desc_secondary">You must have sailing experience to rent.</string>
+    <string name="rental_boat_specific_option_rhodes19_title">Rhodes 19</string>
+    <string name="rental_boat_specific_option_rhodes19_desc">19 foot keeled daysailer
+
+    Due back 1/2 hour before sunset.
+
+        Seats 2-5</string>
+    <string name="rental_boat_specific_option_rhodes19_desc_secondary">You must have sailing experience to rent.</string>
 </resources>

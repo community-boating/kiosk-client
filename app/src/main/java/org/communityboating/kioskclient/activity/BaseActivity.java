@@ -1,5 +1,6 @@
 package org.communityboating.kioskclient.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
@@ -7,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -146,6 +149,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
                 }
             }
         });
+        //checkLocationPermission();
         printService.createPrintService(this);
         PackageManager pm = getPackageManager();
         //Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
@@ -168,6 +172,24 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         //    Log.d("h", "xxxx: dpc now done");
         //}
         //Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
+    }
+
+    private static final int REQUEST_CODE_LOCATION=10;
+
+    private void checkLocationPermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE_LOCATION && grantResults.length > 0
+                && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            throw new RuntimeException("Location services are not granted");
+        }
     }
 
     @Override
