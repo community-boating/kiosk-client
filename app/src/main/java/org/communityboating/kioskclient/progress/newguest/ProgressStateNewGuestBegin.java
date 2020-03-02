@@ -16,7 +16,7 @@ public class ProgressStateNewGuestBegin extends ProgressState {
 
     @Override
     public ProgressState createNextProgressState(Progress progress){
-        return new ProgressStateNewGuestReturning();
+        return new ProgressStateNewGuestRegistrationType();
     }
 
 }

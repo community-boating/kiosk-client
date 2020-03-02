@@ -131,13 +131,21 @@ public class Progress implements Parcelable {
         return -1;
     }
 
-    public <T extends ProgressState> T findByProgressStateType(Class<T> progressStateType){
+    public <T extends ProgressState> T findByProgressStateType(Class<T> progressStateType, int offset){
+        int count = 0;
         for(int i = 0; i < this.states.size(); i++){
             ProgressState progressState = this.states.get(i);
             if(progressState.getClass().equals(progressStateType))
-                return (T)progressState;
+                if(count >= offset)
+                    return (T)progressState;
+                else
+                    count++;
         }
         return null;
+    }
+
+    public <T extends ProgressState> T findByProgressStateType(Class<T> progressStateType){
+        return findByProgressStateType(progressStateType, 0);
     }
 
 

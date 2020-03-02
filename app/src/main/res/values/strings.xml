@@ -3,7 +3,7 @@
     <string name="act1_title">Welcome To Community Boating</string>
     <string name="act1_subtitle">Sailing Here for All</string>
     <string name="act1_help">Touch To Begin</string>
-    <string name="act1_desc">Guest Registration</string>
+    <string name="act1_desc">Registration</string>
     <string name="act3_name_first">First Name</string>
     <string name="act3_name_last">Last Name</string>
     <string name="act3_desc">Tell us about yourself</string>
@@ -113,4 +113,23 @@ Seats 1-2</string>
 
         Seats 2-5</string>
     <string name="rental_boat_specific_option_rhodes19_desc_secondary">You must have sailing experience to rent.</string>
+
+
+
+
+
+    <string name="registration_type_member_title">Become a Member</string>
+    <string name="registration_type_rent_title">Rent a Boat</string>
+    <string name="registration_type_guest_title">Register a Guest</string>
+    <string name="registration_type_member_blurb">CBI’s Adult Program offers sailing, windsurfing, paddleboarding, and kayaking to adults 18 years and older. The Adult Program runs from April 1 to October 31, seven days per week. Membership includes instruction (formal classes and informal on-water instruction), access to the dock and boats, a ratings system, and unlimited use of boats during Adult Program hours.
+
+For Junior Program memberships;
+ see the Front Office</string>
+    <string name="registration_type_rent_blurb">Experience Boston from the scenic Charles River. Rentals are a daily flat rate so you can come and go as you please. Options for everyone, even if you’ve never been on the water before!</string>
+    <string name="registration_type_guest_blurb">To go out sailing with a member you must be registered as a guest. We do this for your safety, so we can account for everyone, on every boat, every time.
+
+If you have already registered as a guest online or on a previous visit you can print out the confirmation email and skip the kiosk, or click returning guest on the next page.</string>
+    <string name="registration_type_explore_memberships">Explore Memberships</string>
+    <string name="registration_type_rental_options">Rental Options</string>
+    <string name="registration_type_guest_registration">Guest Registration</string>
 </resources>

@@ -26,7 +26,6 @@ public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBeg
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("aaaa", "ffff");
         setContentView(R.layout.layout_newguest_begin);
         beginButton=findViewById(R.id.new_guest_begin_button_begin);
         beginButton.setOnClickListener(this);
