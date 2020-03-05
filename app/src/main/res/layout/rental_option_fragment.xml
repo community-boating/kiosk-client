@@ -1,65 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/rental_fragment_constraint"
     android:layout_width="1000dp"
-    android:layout_weight="1"
     android:layout_height="match_parent"
+    android:layout_weight="1"
     android:background="@color/shadowGray">
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/textView7"
+        android:id="@+id/rental_fragment_title_text"
         style="@style/text_title_secondary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/textView8"
+        android:id="@+id/rental_fragment_description_text"
         style="@style/text_blurb_black"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="TextView"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="314dp" />
+        app:layout_constraintTop_toBottomOf="@+id/rental_fragment_title_text" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/textView15"
+        android:id="@+id/rental_fragment_description_text_secondary"
         style="@style/text_blurb_secondary_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
-        android:text="TextView"
+        android:layout_marginTop="16dp"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/rental_fragment_description_text" />
 
     <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="297dp"
-        android:layout_height="335dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@drawable/icon_rental_head_silh"
-        tools:layout_editor_absoluteX="76dp" />
+        android:id="@+id/rental_fragment_head_icon_image"
+        style="@style/rental_fragment_head_icon_image"
+        android:src="@drawable/icon_rental_head_silh"
+        app:layout_constraintEnd_toStartOf="@+id/rental_fragment_clock_icon_image"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/rental_fragment_info_price_text"
+        />
 
     <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="268dp"
-        android:layout_height="345dp"
-        android:layout_marginBottom="16dp"
+        android:id="@+id/rental_fragment_clock_icon_image"
+        style="@style/rental_fragment_clock_icon_image"
+        app:layout_constraintBottom_toBottomOf="@+id/rental_fragment_head_icon_image"
+        app:layout_constraintEnd_toStartOf="@+id/rental_fragment_money_icon_text"
+        app:layout_constraintStart_toEndOf="@+id/rental_fragment_head_icon_image"
+        app:layout_constraintTop_toTopOf="@+id/rental_fragment_head_icon_image"
+        android:src="@drawable/icon_rental_clock_silh" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/rental_fragment_money_icon_text"
+        style="@style/rental_fragment_money_icon_text"
+        android:layout_height="wrap_content"
+        android:text="$"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/rental_fragment_head_icon_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rental_fragment_clock_icon_image"
+        app:layout_constraintTop_toTopOf="@+id/rental_fragment_head_icon_image" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/rental_fragment_info_person_count_text"
+        style="@style/rental_fragment_info_text_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/rental_fragment_head_icon_image"
+        app:layout_constraintStart_toStartOf="@+id/rental_fragment_head_icon_image"
+        app:layout_constraintTop_toTopOf="@+id/rental_fragment_info_price_text" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/rental_fragment_info_sunset_text"
+        style="@style/rental_fragment_info_text_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/rental_fragment_clock_icon_image"
+        app:layout_constraintStart_toStartOf="@+id/rental_fragment_clock_icon_image"
+        app:layout_constraintTop_toTopOf="@+id/rental_fragment_info_price_text" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/rental_fragment_info_price_text"
+        style="@style/rental_fragment_info_text_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@drawable/icon_rental_clock_silh"
-        tools:layout_editor_absoluteX="384dp" />
+        app:layout_constraintEnd_toEndOf="@+id/rental_fragment_money_icon_text"
+        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintStart_toStartOf="@+id/rental_fragment_money_icon_text" />
 </android.support.constraint.ConstraintLayout>

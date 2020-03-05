@@ -23,4 +23,32 @@ public enum RentalBoatTypeOptions {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
     }
+
+    public int getTitle_str_res_id() {
+        return title_str_res_id;
+    }
+
+    public int getDesc_str_res_id() {
+        return desc_str_res_id;
+    }
+
+    public int getSpecific_boat_page_header_str_red_id() {
+        return specific_boat_page_header_str_red_id;
+    }
+
+    public int getMinPersons() {
+        return minPersons;
+    }
+
+    public int getMaxPersons() {
+        return maxPersons;
+    }
+
+    public int getMinPrice() {
+        return minPrice;
+    }
+
+    public int getMaxPrice() {
+        return maxPrice;
+    }
 }
