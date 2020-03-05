@@ -7,6 +7,7 @@ import android.util.Log;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestBegin;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestFinish;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestRegistrationType;
+import org.communityboating.kioskclient.progress.newguest.ProgressStateRentalBoatTypeChoose;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
 import java.util.ArrayList;
@@ -86,6 +87,10 @@ public class Progress implements Parcelable {
         }
     }
 
+    public void clearAfterActiveProgressState(){
+        this.states = states.subList(0, currentState + 1);
+    }
+
     public void setCurrentProgressState(int currentState){
         this.currentState = currentState;
     }
@@ -154,8 +159,8 @@ public class Progress implements Parcelable {
     }
 
     public static Progress createNewGuestProgress(){
-        //return new Progress(new ProgressStateNewGuestRegistrationType());
-        return new Progress(new ProgressStateNewGuestBegin());
+        return new Progress(new ProgressStateRentalBoatTypeChoose());
+        //return new Progress(new ProgressStateNewGuestBegin());
     }
 
     @Override

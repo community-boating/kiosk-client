@@ -60,6 +60,8 @@
         </activity>
         <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestFinishActivity" android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.BoatTypeRentalOptionActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
         <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestDOBActivity" android:windowSoftInputMode="adjustResize|stateHidden">
 
         </activity>

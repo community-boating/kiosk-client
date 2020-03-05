@@ -103,4 +103,13 @@
         <item name="android:layout_marginBottom">24dp</item>
     </style>
 
+
+    <style name="text_blurb_secondary_blue" parent="text_font_medium">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">22dp</item>
+    </style>
+    <style name="rental_fragment_constraint">
+        <item name="android:layout_margin">24dp</item>
+    </style>
+
 </resources>

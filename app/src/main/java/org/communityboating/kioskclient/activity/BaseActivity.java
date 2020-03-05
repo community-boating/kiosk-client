@@ -308,9 +308,6 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     private static final String MESSAGE_PROGRESS = "cbiapp.progress.current";
 
-    /*
-    This one checks to see if this is the right activity for the given progress state
-     */
     public boolean nextProgress(){
         if(this.progress.checkPreviousProgressStates() == -1){
             this.progress.nextState();
@@ -322,6 +319,10 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
             return false;
         }
     }
+
+    /*
+   This one checks to see if this is the right activity for the given progress state
+    */
 
     public boolean isActivityCorrect(Progress progress){
         return progress.getCurrentProgressState().getActivityClass().equals(this.getClass());
