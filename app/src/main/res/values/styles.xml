@@ -62,7 +62,7 @@
         <item name="android:background">@drawable/text_user_input</item>
     </style>
     <style name="text_user_input_small" parent="text_user_input">
-        <item name="android:textSize">80sp</item>
+        <item name="android:textSize">80sp</item>r
     </style>
     <style name="button_nav" parent="text_font_medium">
         <item name="android:textSize">42sp</item>

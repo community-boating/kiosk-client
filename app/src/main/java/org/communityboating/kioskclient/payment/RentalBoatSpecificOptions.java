@@ -27,4 +27,36 @@ public enum RentalBoatSpecificOptions {
         this.restriction = restriction;
         this.priceInDollars = priceInDollars;
     }
+
+    public RentalBoatTypeOptions getType() {
+        return type;
+    }
+
+    public int getTitle_str_res_id() {
+        return title_str_res_id;
+    }
+
+    public int getDesc_str_res_id() {
+        return desc_str_res_id;
+    }
+
+    public int getDesc_secondary_str_res_id() {
+        return desc_secondary_str_res_id;
+    }
+
+    public int getMinNumberOfGuests() {
+        return minNumberOfGuests;
+    }
+
+    public int getMaxNumberOfGuests() {
+        return maxNumberOfGuests;
+    }
+
+    public SunsetRestriction getRestriction() {
+        return restriction;
+    }
+
+    public int getPriceInDollars() {
+        return priceInDollars;
+    }
 }
