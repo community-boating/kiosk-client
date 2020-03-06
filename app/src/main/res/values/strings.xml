@@ -113,7 +113,8 @@ Seats 1-2</string>
 
         Seats 2-5</string>
     <string name="rental_boat_specific_option_rhodes19_desc_secondary">You must have sailing experience to rent.</string>
-
+    <string name="rental_boat_sunset_restriction_at_sunset">UNTIL SUNSET</string>
+    <string name="rental_boat_sunset_restriction_30_min_before_sunset">30 Min BEFORE SUNSET</string>
 
 
 
