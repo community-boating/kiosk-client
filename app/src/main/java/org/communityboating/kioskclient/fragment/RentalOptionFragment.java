@@ -55,25 +55,11 @@ public class RentalOptionFragment extends BaseActivityFragment {
         }
     }
 
-    private void populateView(View view, int titleTextRedId, int descriptionTextResId, int descriptionSecondaryTextResId, boolean showSunset,
+    private void populateView(View view, int titleTextRedId, int descriptionTextResId, int descriptionSecondaryTextResId,
                               int infoPersonCountTextResId, int infoSunsetTextResId, int infoPriceTextResId){
         TextView titleText = view.findViewById(R.id.rental_fragment_title_text);
         TextView descriptionText = view.findViewById(R.id.rental_fragment_description_text);
         TextView descriptionSecondaryText = view.findViewById(R.id.rental_fragment_description_text_secondary);
         ImageView clockIconImage = view.findViewById(R.id.rental_fragment_clock_icon_image);
         TextView infoPersonCountText = view.findViewById(R.id.rental_fragment_info_person_count_text);
-        TextView infoSunsetText = view.findViewById(R.id.rental_fragment_info_sunset_text);
-        TextView infoPriceText = view.findViewById(R.id.rental_fragment_info_price_text);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View inflated = inflater.inflate(R.layout.rental_option_fragment, container, false);
-        readBundle(getArguments());
-        switch (rentalType){
-            case RENTAL_TYPE_BOAT_TYPE:
-                populateView(inflated, rentalTypeOption.getTitle_str_res_id(), rentalTypeOption.getTitle_str_res_id(),);
-        }
-        return inflated;
-    }
-}
+      
