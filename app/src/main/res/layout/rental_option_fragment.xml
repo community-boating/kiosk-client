@@ -18,6 +18,7 @@
         android:layout_marginEnd="8dp"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,21 +27,26 @@
         style="@style/text_blurb_black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         android:text=""
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/rental_fragment_description_text_secondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rental_fragment_title_text" />
+        app:layout_constraintTop_toBottomOf="@+id/rental_fragment_title_text"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/rental_fragment_description_text_secondary"
         style="@style/text_blurb_secondary_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/rental_fragment_money_icon_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rental_fragment_description_text" />
@@ -48,21 +54,20 @@
     <ImageView
         android:id="@+id/rental_fragment_head_icon_image"
         style="@style/rental_fragment_head_icon_image"
-        android:src="@drawable/icon_rental_head_silh"
-        app:layout_constraintEnd_toStartOf="@+id/rental_fragment_clock_icon_image"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="8dp"
+        android:src="@drawable/icon_rental_head_silh"
         app:layout_constraintBottom_toTopOf="@+id/rental_fragment_info_price_text"
-        />
+        app:layout_constraintEnd_toStartOf="@+id/rental_fragment_clock_icon_image"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/rental_fragment_clock_icon_image"
         style="@style/rental_fragment_clock_icon_image"
+        android:src="@drawable/icon_rental_clock_silh"
         app:layout_constraintBottom_toBottomOf="@+id/rental_fragment_head_icon_image"
         app:layout_constraintEnd_toStartOf="@+id/rental_fragment_money_icon_text"
         app:layout_constraintStart_toEndOf="@+id/rental_fragment_head_icon_image"
-        app:layout_constraintTop_toTopOf="@+id/rental_fragment_head_icon_image"
-        android:src="@drawable/icon_rental_clock_silh" />
+        app:layout_constraintTop_toTopOf="@+id/rental_fragment_head_icon_image" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/rental_fragment_money_icon_text"
@@ -78,6 +83,7 @@
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/rental_fragment_info_person_count_text"
         style="@style/rental_fragment_info_text_large"
+        android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -88,6 +94,7 @@
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/rental_fragment_info_sunset_text"
         style="@style/rental_fragment_info_text_small"
+        android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -98,12 +105,12 @@
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/rental_fragment_info_price_text"
         style="@style/rental_fragment_info_text_large"
+        android:textAlignment="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/rental_fragment_money_icon_text"
-        app:layout_constraintHorizontal_bias="0.608"
         app:layout_constraintStart_toStartOf="@+id/rental_fragment_money_icon_text" />
 </android.support.constraint.ConstraintLayout>

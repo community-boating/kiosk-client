@@ -21,13 +21,6 @@ public class NewGuestRegistrationTypeActivity extends BaseActivity<ProgressState
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_newguest_registration_type);
-        /*WebView webView = findViewById(R.id.webviewid);
-        webView.addJavascriptInterface(new StripeTerminalJSInterface(this), "stripeInterface");
-        webView.loadUrl("file:///android_asset/stripe_terminal_script");
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        Log.d("derpderp", "hello world : " + webView.getTitle());*/
-        //webView.addJavascriptInterface();
     }
 
     public void handleExploreMembershipClick(View v){
@@ -50,13 +43,13 @@ public class NewGuestRegistrationTypeActivity extends BaseActivity<ProgressState
             getProgressState().setRegistrationType(newType);
             switch(newType){
                 case EXPLORE_MEMBERSHIP:
-                    progress.states.add(new ProgressStateNewGuestDOB());
+                    progress.add(new ProgressStateNewGuestDOB());
                     break;
                 case RENTAL_OPTIONS:
-                    progress.states.add(new ProgressStateRentalBoatTypeChoose());
+                    progress.add(new ProgressStateRentalBoatTypeChoose());
                     break;
                 case NEW_GUEST:
-                    progress.states.add(new ProgressStateNewGuestReturning());
+                    progress.add(new ProgressStateNewGuestReturning());
                     break;
             }
         }

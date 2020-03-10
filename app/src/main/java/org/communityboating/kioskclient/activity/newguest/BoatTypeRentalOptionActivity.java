@@ -7,6 +7,7 @@ import android.view.View;
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
 import org.communityboating.kioskclient.fragment.RentalOptionFragment;
+import org.communityboating.kioskclient.payment.RentalBoatSpecificOptions;
 import org.communityboating.kioskclient.payment.RentalBoatTypeOptions;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateRentalBoatTypeChoose;
 
@@ -21,5 +22,10 @@ public class BoatTypeRentalOptionActivity extends BaseActivity<ProgressStateRent
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().add(R.id.rental_options_holder, fragmentPaddle).commit();
         manager.beginTransaction().add(R.id.rental_options_holder, fragmentSail).commit();
+    }
+    public void handleOptionClick(RentalBoatTypeOptions optionClicked){
+        ProgressStateRentalBoatTypeChoose progressState = getProgressState();
+        progressState.setChosenRentalOption(optionClicked);
+        nextProgress();
     }
 }

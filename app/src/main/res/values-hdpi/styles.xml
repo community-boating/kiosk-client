@@ -88,7 +88,7 @@
 
     <style name="text_blurb_black" parent="text_font_light">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">30dp</item>
     </style>
     <style name="registration_type_container">
         <item name="android:layout_width">450dp</item>
@@ -106,12 +106,13 @@
 
     <style name="text_blurb_secondary_blue" parent="text_font_medium">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">22dp</item>
+        <item name="android:textSize">30dp</item>
     </style>
     <style name="rental_fragment_constraint">
         <item name="android:layout_margin">24dp</item>
     </style>
     <style name="rental_fragment_head_icon_image">
+        <item name="android:layout_marginEnd">80dp</item>
         <item name="android:layout_width">160dp</item>
         <item name="android:layout_height">160dp</item>
     </style>
@@ -124,6 +125,7 @@
         <item name="android:fontFamily">@font/roboto_black</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">160dp</item>
+        <item name="android:layout_marginStart">80dp</item>
     </style>
     <style name="rental_fragment_info_text_large" parent="text_font_regular">
         <item name="android:textSize">96dp</item>

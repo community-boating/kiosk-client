@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.communityboating.kioskclient.R;
+import org.communityboating.kioskclient.activity.newguest.BoatSpecificRentalOptionActivity;
+import org.communityboating.kioskclient.activity.newguest.BoatTypeRentalOptionActivity;
 import org.communityboating.kioskclient.payment.RentalBoatSpecificOptions;
 import org.communityboating.kioskclient.payment.RentalBoatTypeOptions;
 
-public class RentalOptionFragment extends BaseActivityFragment {
+public class RentalOptionFragment extends BaseActivityFragment implements View.OnClickListener {
 
     RentalBoatTypeOptions rentalTypeOption;
     RentalBoatSpecificOptions rentalBoatSpecificOption;
@@ -57,6 +59,7 @@ public class RentalOptionFragment extends BaseActivityFragment {
 
     private void populateView(View view, boolean showSunset, boolean showDescriptionSecondary, int titleTextRedId, int descriptionTextResId, int descriptionSecondaryTextResId,
                               int infoPersonCountMin, int infoPersonCountMax, int infoSunsetTextResId, int minPriceDollars, int maxPriceDollars){
+        view.setOnClickListener(this);
         TextView titleText = view.findViewById(R.id.rental_fragment_title_text);
         TextView descriptionText = view.findViewById(R.id.rental_fragment_description_text);
         TextView descriptionSecondaryText = view.findViewById(R.id.rental_fragment_description_text_secondary);
@@ -67,11 +70,11 @@ public class RentalOptionFragment extends BaseActivityFragment {
         titleText.setText(titleTextRedId);
         descriptionText.setText(descriptionTextResId);
         descriptionSecondaryText.setVisibility(showDescriptionSecondary ? View.VISIBLE : View.GONE);
-        descriptionSecondaryText.setText(descriptionSecondaryTextResId);
+        if(showDescriptionSecondary)descriptionSecondaryText.setText(descriptionSecondaryTextResId);
         infoPersonCountText.setText(infoPersonCountMin == infoPersonCountMax ? Integer.toString(infoPersonCountMin) : (infoPersonCountMin + "-" + infoPersonCountMax));
         clockIconImage.setVisibility(showSunset ? View.VISIBLE : View.GONE);
         infoSunsetText.setVisibility(showSunset ? View.VISIBLE : View.GONE);
-        infoSunsetText.setText(infoSunsetTextResId);
+        if(showSunset)infoSunsetText.setText(infoSunsetTextResId);
         infoPriceText.setText(minPriceDollars == maxPriceDollars ? Integer.toString(minPriceDollars) : (minPriceDollars + "-" + maxPriceDollars));
     }
 
@@ -81,7 +84,7 @@ public class RentalOptionFragment extends BaseActivityFragment {
         readBundle(getArguments());
         switch (rentalType){
             case RENTAL_TYPE_BOAT_TYPE:
-                populateView(inflated, false, false, rentalTypeOption.getTitle_str_res_id(), rentalTypeOption.getTitle_str_res_id(), -1,
+                populateView(inflated, false, false, rentalTypeOption.getTitle_str_res_id(), rentalTypeOption.getDesc_str_res_id(), -1,
                         rentalTypeOption.getMinPersons(), rentalTypeOption.getMaxPersons(), -1, rentalTypeOption.getMinPrice(), rentalTypeOption.getMaxPrice());
                 break;
             case RENTAL_TYPE_BOAT_SPECIFIC:
@@ -90,4 +93,18 @@ public class RentalOptionFragment extends BaseActivityFragment {
         }
         return inflated;
     }
+
+    @Override
+    public void onClick(View v){
+        switch(rentalType){
+            case RENTAL_TYPE_BOAT_TYPE:
+                BoatTypeRentalOptionActivity activity = (BoatTypeRentalOptionActivity) getBaseActivity();
+                activity.handleOptionClick(rentalTypeOption);
+                break;
+            case RENTAL_TYPE_BOAT_SPECIFIC:
+                BoatSpecificRentalOptionActivity activitySpecific = (BoatSpecificRentalOptionActivity) getBaseActivity();
+                activitySpecific.handleOptionClick(rentalBoatSpecificOption);
+        }
+    }
+
 }

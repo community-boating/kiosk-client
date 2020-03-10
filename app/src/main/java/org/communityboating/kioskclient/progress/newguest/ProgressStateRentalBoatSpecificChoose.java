@@ -2,6 +2,8 @@ package org.communityboating.kioskclient.progress.newguest;
 
 import android.app.Activity;
 
+import org.communityboating.kioskclient.activity.newguest.BoatSpecificRentalOptionActivity;
+import org.communityboating.kioskclient.activity.newguest.NewGuestNameActivity;
 import org.communityboating.kioskclient.activity.newguest.NewGuestWaiverActivity;
 import org.communityboating.kioskclient.payment.RentalBoatSpecificOptions;
 import org.communityboating.kioskclient.payment.RentalBoatTypeOptions;
@@ -29,10 +31,10 @@ public class ProgressStateRentalBoatSpecificChoose extends ProgressState {
     }
 
     @Override
-    public Class<? extends Activity> getActivityClass(){ return NewGuestWaiverActivity.class; }
+    public Class<? extends Activity> getActivityClass(){ return BoatSpecificRentalOptionActivity.class; }
 
     @Override
     public ProgressState createNextProgressState(Progress progress) {
-        return null;//new ProgressStateNewGuestSignature();
+        return new ProgressStateNewGuestName();//new ProgressStateNewGuestSignature();
     }
 }

@@ -8,26 +8,34 @@ import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestB
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestFinish;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestRegistrationType;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateRentalBoatTypeChoose;
+import org.communityboating.kioskclient.progress.newguest.ProgressStateStripeTerminalPayment;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class Progress implements Parcelable {
-    public List<ProgressState> states;
-    int currentState;
+    private List<ProgressState> states;
+    private int currentState;
 
     int totalCompletionCount;
     float previousCompletionPercentage;
+    static int flagTestStatic = 0;
 
     public static Creator<Progress> CREATOR = new Creator<Progress>(){
         @Override
         public Progress createFromParcel(Parcel source) {
+            Log.d("derpderpderpderp", "creating from parcel" + (flagTestStatic++));
             int currentState = source.readInt();
             int totalCompletionCount = source.readInt();
             float previousCompletionPercentage = source.readFloat();
-            List<ProgressState> progressStates = new LinkedList<>();
+            List<ProgressState> progressStates = new ArrayList<>();
+            //progressStateSet
             source.readTypedList(progressStates, ProgressState.CREATOR);
             Progress progress = new Progress(progressStates, currentState, totalCompletionCount, previousCompletionPercentage);
             return progress;
@@ -56,6 +64,12 @@ public class Progress implements Parcelable {
         states = new LinkedList<>();
         currentState = 0;
         states.add(firstState);
+    }
+
+    public boolean add(ProgressState progressState){
+        boolean add = states.add(progressState);
+
+        return add;
     }
 
     public void setTotalCompletionCount(int totalCompletionCount){
@@ -136,6 +150,23 @@ public class Progress implements Parcelable {
         return -1;
     }
 
+    public List<ProgressState>[] findByProgressStateTypes(Class<ProgressState>[] requestedTypes){
+        Map<Class<ProgressState>, Integer> posMap = new TreeMap<>();
+        List<ProgressState>[] progressStatesFound = new List[requestedTypes.length];
+        for(int i = 0; i < requestedTypes.length; i++){
+            posMap.put(requestedTypes[i], i);
+            progressStatesFound[i] = new ArrayList<>(1);
+        }
+        for(int i = 0; i < this.states.size(); i++){
+            ProgressState state = this.states.get(i);
+            Integer pos;
+            if((pos=posMap.get(state.getClass()))!=null){
+                progressStatesFound[pos].add(state);
+            }
+        }
+        return progressStatesFound;
+    }
+
     public <T extends ProgressState> T findByProgressStateType(Class<T> progressStateType, int offset){
         int count = 0;
         for(int i = 0; i < this.states.size(); i++){
@@ -159,7 +190,7 @@ public class Progress implements Parcelable {
     }
 
     public static Progress createNewGuestProgress(){
-        return new Progress(new ProgressStateRentalBoatTypeChoose());
+        return new Progress(new ProgressStateStripeTerminalPayment());
         //return new Progress(new ProgressStateNewGuestBegin());
     }
 
@@ -170,6 +201,7 @@ public class Progress implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        Log.d("derpderpderpderp", "writing to parcel");
         dest.writeInt(this.currentState);
         dest.writeInt(this.totalCompletionCount);
         dest.writeFloat(this.previousCompletionPercentage);
