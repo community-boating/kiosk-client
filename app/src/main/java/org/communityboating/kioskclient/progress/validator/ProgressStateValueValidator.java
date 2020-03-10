@@ -1,7 +1,9 @@
 package org.communityboating.kioskclient.progress.validator;
 
-public interface ProgressStateValueValidator {
+import org.communityboating.kioskclient.progress.ProgressState;
 
-    public String isValueValid(String value);
+public abstract class ProgressStateValueValidator implements ProgressStateValueValidatorBase{
+
+    public abstract String isValueValid(String value);
 
 }

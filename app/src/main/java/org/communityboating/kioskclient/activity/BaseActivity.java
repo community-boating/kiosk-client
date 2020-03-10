@@ -158,7 +158,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         eventConfiguration();
         //hideStatusNavBar();
         this.checkProgress();
-        CustomInputManager.setActiveProgressState(progress.getCurrentProgressState());
+        CustomInputManager.setActiveProgressState(progress.getCurrentProgressState(), progress);
         CustomInputManager.clearCustomInputs();
         Log.d("nullupdate", "has nav fragment " + this.hasNavFragment());
         //this.cbiAdminDeviceSample = CBIDeviceAdmin.getComponentName(this);
@@ -310,11 +310,13 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     public boolean nextProgress(){
         if(this.progress.checkPreviousProgressStates() == -1){
+            Log.d("derpderpherp", "progress nexted 1");
             this.progress.nextState();
             this.runActivityFromProgress(this.progress);
             return true;
         }
         else{
+            Log.d("derpderpherp", "progress nexted 0");
             CustomInputManager.updateShowInputErrors(false);
             return false;
         }

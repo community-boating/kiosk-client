@@ -1,6 +1,7 @@
 package org.communityboating.kioskclient.progress.newguest;
 
 import android.app.Activity;
+import android.util.Log;
 
 import org.communityboating.kioskclient.activity.newguest.BoatSpecificRentalOptionActivity;
 import org.communityboating.kioskclient.activity.newguest.NewGuestNameActivity;
@@ -13,21 +14,21 @@ import org.communityboating.kioskclient.progress.validator.ProgressStateNotBlank
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
 public class ProgressStateRentalBoatSpecificChoose extends ProgressState {
-    public static final String KEY_RENTAL_CHOOSE="rental_choose";
+    public static final String KEY_RENTAL_CHOOSE_SPECIFIC="rental_choose_specific";
 
     static {
-        ProgressStateValidatorManager.addValueValidator(ProgressStateNewGuestWaiver.class, KEY_RENTAL_CHOOSE, new ProgressStateNotBlankValueValidator("Choose option"));
+        ProgressStateValidatorManager.addValueValidator(ProgressStateRentalBoatSpecificChoose.class, KEY_RENTAL_CHOOSE_SPECIFIC, new ProgressStateNotBlankValueValidator("Choose option a"));
     }
 
     public ProgressStateRentalBoatSpecificChoose(){
     }
 
     public RentalBoatSpecificOptions getChosenRentalOption(){
-        return RentalBoatSpecificOptions.valueOf(get(KEY_RENTAL_CHOOSE));
+        return RentalBoatSpecificOptions.valueOf(get(KEY_RENTAL_CHOOSE_SPECIFIC));
     }
 
     public void setChosenRentalOption(RentalBoatSpecificOptions option){
-        put(KEY_RENTAL_CHOOSE, option.name());
+        put(KEY_RENTAL_CHOOSE_SPECIFIC, option.name());
     }
 
     @Override
@@ -35,6 +36,6 @@ public class ProgressStateRentalBoatSpecificChoose extends ProgressState {
 
     @Override
     public ProgressState createNextProgressState(Progress progress) {
-        return new ProgressStateNewGuestName();//new ProgressStateNewGuestSignature();
+        return new ProgressStateRentalGuestCount();//new ProgressStateNewGuestSignature();
     }
 }

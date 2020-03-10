@@ -21,11 +21,18 @@ public class ProgressStateNewGuestDOB extends ProgressState {
     public static final String KEY_DOB_MONTH="dob_month";
     public static final String KEY_DOB_YEAR="dob_year";
 
-    static{
+    public static void addValidators(){
         Class<ProgressStateNewGuestDOB> clazz = ProgressStateNewGuestDOB.class;
         ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_DAY, new ProgressStateDOBDayValueValidator());
         ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_MONTH, new ProgressStateDOBMonthValueValidator());
         ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_YEAR, new ProgressStateDOBYearValueValidator());
+    }
+
+    static{
+        /*Class<ProgressStateNewGuestDOB> clazz = ProgressStateNewGuestDOB.class;
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_DAY, new ProgressStateDOBDayValueValidator());
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_MONTH, new ProgressStateDOBMonthValueValidator());
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_YEAR, new ProgressStateDOBYearValueValidator());*/
     }
 
     public ProgressStateNewGuestDOB() {

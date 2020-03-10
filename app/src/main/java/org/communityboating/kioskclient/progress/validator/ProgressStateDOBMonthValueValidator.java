@@ -2,7 +2,7 @@ package org.communityboating.kioskclient.progress.validator;
 
 import android.inputmethodservice.InputMethodService;
 
-public class ProgressStateDOBMonthValueValidator implements ProgressStateValueValidator {
+public class ProgressStateDOBMonthValueValidator extends ProgressStateValueValidator {
     @Override
     public String isValueValid(String value) {
         Integer monthValue;

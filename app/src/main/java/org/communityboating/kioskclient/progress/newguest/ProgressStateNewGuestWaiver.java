@@ -1,6 +1,7 @@
 package org.communityboating.kioskclient.progress.newguest;
 
 import android.app.Activity;
+import android.util.Log;
 
 import org.communityboating.kioskclient.activity.newguest.NewGuestWaiverActivity;
 import org.communityboating.kioskclient.progress.Progress;
@@ -24,6 +25,7 @@ public class ProgressStateNewGuestWaiver extends ProgressState {
     }
 
     public void setWaiverAccept(Boolean accept){
+        Log.d("derpderpherp", "waiverset " + accept);
         if(accept==null||!accept)
             this.remove(KEY_WAIVER_ACCEPT);
         this.put(KEY_WAIVER_ACCEPT, "true");

@@ -33,7 +33,10 @@ public class ProgressStateNewGuestEmail extends ProgressState {
 
     @Override
     public ProgressState createNextProgressState(Progress progress) {
-        return new ProgressStateEmergencyContactName();
+        if(progress.countProgressStates(ProgressStateNewGuestName.class) >= 1)
+            return new ProgressStateNewGuestWaiver();
+        else
+            return new ProgressStateEmergencyContactName();
     }
 
 }

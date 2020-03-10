@@ -1,6 +1,7 @@
 package org.communityboating.kioskclient.progress.newguest;
 
 import android.app.Activity;
+import android.util.Log;
 
 import org.communityboating.kioskclient.activity.newguest.BoatTypeRentalOptionActivity;
 import org.communityboating.kioskclient.activity.newguest.NewGuestWaiverActivity;
@@ -15,7 +16,7 @@ public class ProgressStateRentalBoatTypeChoose extends ProgressState {
     public static final String KEY_RENTAL_CHOOSE="rental_choose";
 
     static {
-        ProgressStateValidatorManager.addValueValidator(ProgressStateNewGuestWaiver.class, KEY_RENTAL_CHOOSE, new ProgressStateNotBlankValueValidator("Choose option"));
+        ProgressStateValidatorManager.addValueValidator(ProgressStateRentalBoatTypeChoose.class, KEY_RENTAL_CHOOSE, new ProgressStateNotBlankValueValidator("Choose option boat"));
     }
 
     public ProgressStateRentalBoatTypeChoose(){

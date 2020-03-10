@@ -112,7 +112,7 @@ public class Progress implements Parcelable {
     public int checkPreviousProgressStates(){
         for(int i = 0; i <= this.currentState && i < this.states.size(); i++){
             ProgressState progressState = this.states.get(i);
-            if(!ProgressStateValidatorManager.isProgressStateValid(progressState)){
+            if(!ProgressStateValidatorManager.isProgressStateValid(progressState, this)){
                 return i;
             }
         }
@@ -127,7 +127,7 @@ public class Progress implements Parcelable {
         int completionCount = 0;
         for(int i = 0; i < this.states.size() && i < this.currentState; i++){
             ProgressState progressState = this.states.get(i);
-            if(ProgressStateValidatorManager.isProgressStateValid(progressState)){
+            if(ProgressStateValidatorManager.isProgressStateValid(progressState, this)){
                 completionCount += progressState.getCompletionCount();
             }
         }
@@ -143,7 +143,7 @@ public class Progress implements Parcelable {
     public int checkAllProgressStates(){
         for(int i = 0; i < this.states.size(); i++){
             ProgressState progressState = this.states.get(i);
-            if(!ProgressStateValidatorManager.isProgressStateValid(progressState)){
+            if(!ProgressStateValidatorManager.isProgressStateValid(progressState, this)){
                 return i;
             }
         }
@@ -167,8 +167,29 @@ public class Progress implements Parcelable {
         return progressStatesFound;
     }
 
+    public int countProgressStates(Class<? extends ProgressState> type){
+        int count = 0;
+        for(int i = 0; i < this.states.size(); i++){
+            if(this.states.get(i).getClass().equals(type))
+                count++;
+        }
+        return count;
+    }
+
     public <T extends ProgressState> T findByProgressStateType(Class<T> progressStateType, int offset){
         int count = 0;
+        if(offset <= -1){
+            offset += 1;
+            offset *= -1;
+            for(int i = this.states.size() - 1; i >= 0; i--){
+                ProgressState progressState = this.states.get(i);
+                if(progressState.getClass().equals(progressStateType))
+                    if(count >= offset)
+                        return (T)progressState;
+                    else
+                        count++;
+            }
+        }
         for(int i = 0; i < this.states.size(); i++){
             ProgressState progressState = this.states.get(i);
             if(progressState.getClass().equals(progressStateType))
@@ -190,8 +211,8 @@ public class Progress implements Parcelable {
     }
 
     public static Progress createNewGuestProgress(){
-        return new Progress(new ProgressStateStripeTerminalPayment());
-        //return new Progress(new ProgressStateNewGuestBegin());
+        //return new Progress(new ProgressStateStripeTerminalPayment());
+        return new Progress(new ProgressStateNewGuestBegin());
     }
 
     @Override

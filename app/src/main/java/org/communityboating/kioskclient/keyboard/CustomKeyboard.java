@@ -206,7 +206,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
                 if(focusCurrent!=null) {
                     if(focusCurrent instanceof EditText){
                         EditText editText = (EditText)focusCurrent;
-                        Log.d("derp", "derpime : " + editText.getImeOptions());
                     }
                     int id = focusCurrent.getNextFocusForwardId();
                     if(id >= 0){

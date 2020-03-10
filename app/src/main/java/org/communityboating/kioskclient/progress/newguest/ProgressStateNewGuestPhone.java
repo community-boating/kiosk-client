@@ -25,7 +25,7 @@ public class ProgressStateNewGuestPhone extends ProgressStateGenericPhone {
     @Override
     public ProgressState createNextProgressState(Progress progress){
         ProgressStateNewGuestReturning progressStateNewGuestReturning = progress.findByProgressStateType(ProgressStateNewGuestReturning.class);
-        if(progressStateNewGuestReturning.getReturningMember())
+        if(progressStateNewGuestReturning != null && progressStateNewGuestReturning.getReturningMember())
             return new ProgressStateNewGuestFinish();
         return new ProgressStateNewGuestEmail();
     }

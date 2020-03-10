@@ -8,6 +8,8 @@ import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateNotBlankValueValidator;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
+import java.util.List;
+
 public class ProgressStateNewGuestSignature extends ProgressState {
 
     public static final String KEY_SIGNATURE_VALID="signature_valid";
@@ -32,6 +34,17 @@ public class ProgressStateNewGuestSignature extends ProgressState {
 
     @Override
     public ProgressState createNextProgressState(Progress progress) {
-        return new ProgressStateNewGuestFinish();
+        ProgressStateNewGuestRegistrationType registrationType = progress.findByProgressStateType(ProgressStateNewGuestRegistrationType.class);
+        if(registrationType.getRegistrationType().equals(ProgressStateNewGuestRegistrationType.RegistrationType.NEW_GUEST))
+            return new ProgressStateNewGuestFinish();
+        if(registrationType.getRegistrationType().equals(ProgressStateNewGuestRegistrationType.RegistrationType.RENTAL_OPTIONS)){
+            ProgressStateRentalGuestCount guestCount = progress.findByProgressStateType(ProgressStateRentalGuestCount.class);
+            int guests = guestCount.getRentalGuestCount();
+            if(progress.countProgressStates(ProgressStateNewGuestName.class) >= guests)
+                return new ProgressStateStripeTerminalPayment();
+            else
+                return new ProgressStateNewGuestName();
+        }
+        return null;
     }
 }
