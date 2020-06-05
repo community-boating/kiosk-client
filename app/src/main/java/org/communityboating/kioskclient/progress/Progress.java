@@ -213,6 +213,7 @@ public class Progress implements Parcelable {
     public static Progress createNewGuestProgress(){
         //return new Progress(new ProgressStateStripeTerminalPayment());
         return new Progress(new ProgressStateNewGuestBegin());
+
     }
 
     @Override
