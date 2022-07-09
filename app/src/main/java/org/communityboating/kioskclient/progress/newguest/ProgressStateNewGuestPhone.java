@@ -2,7 +2,6 @@ package org.communityboating.kioskclient.progress.newguest;
 
 import android.app.Activity;
 
-import org.communityboating.kioskclient.activity.newguest.EmergencyContactPhoneActivity;
 import org.communityboating.kioskclient.activity.newguest.NewGuestPhoneActivity;
 import org.communityboating.kioskclient.progress.ProgressState;
 

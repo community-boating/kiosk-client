@@ -1,13 +1,12 @@
 package org.communityboating.kioskclient.print;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.RippleDrawable;
+
+import com.starmicronics.starioextension.ICommandBuilder;
 
 import org.communityboating.kioskclient.R;
-import com.starmicronics.starioextension.ICommandBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

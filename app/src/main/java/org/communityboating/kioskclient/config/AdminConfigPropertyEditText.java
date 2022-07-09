@@ -2,22 +2,17 @@ package org.communityboating.kioskclient.config;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.AdminGUIActivity;
 
-public class AdminConfigPropertyEditText extends android.support.v7.widget.AppCompatEditText {
+public class AdminConfigPropertyEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     private String adminConfigPropertyName;
 

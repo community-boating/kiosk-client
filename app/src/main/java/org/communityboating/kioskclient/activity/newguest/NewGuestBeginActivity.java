@@ -6,11 +6,7 @@ import android.view.View;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
-import org.communityboating.kioskclient.activity.DialogFragmentUnder18;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestBegin;
-
-import java.io.File;
-import java.util.Scanner;
 
 public class NewGuestBeginActivity extends BaseActivity<ProgressStateNewGuestBegin> {
 

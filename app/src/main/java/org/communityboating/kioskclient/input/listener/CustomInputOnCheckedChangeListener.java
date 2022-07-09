@@ -1,7 +1,6 @@
 package org.communityboating.kioskclient.input.listener;
 
 import android.util.Log;
-import android.view.View;
 import android.view.ViewParent;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;

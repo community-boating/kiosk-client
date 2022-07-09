@@ -11,9 +11,6 @@ import org.communityboating.kioskclient.progress.validator.ProgressStateValidato
 
 import java.util.Calendar;
 
-import java.util.Calendar;
-import java.util.Date;
-
 public class ProgressStateNewGuestDOB extends ProgressState {
 
     public static final String KEY_DOB_DAY="dob_day";

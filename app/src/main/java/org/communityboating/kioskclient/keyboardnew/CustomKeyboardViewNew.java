@@ -2,13 +2,9 @@ package org.communityboating.kioskclient.keyboardnew;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.Dimension;
-import android.support.constraint.solver.widgets.ConstraintWidget;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 
 import org.communityboating.kioskclient.R;
 

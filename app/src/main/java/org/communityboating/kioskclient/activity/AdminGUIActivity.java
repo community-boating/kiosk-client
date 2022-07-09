@@ -1,18 +1,12 @@
 package org.communityboating.kioskclient.activity;
 
 import android.app.Activity;
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.graphics.Color;
-import android.media.MediaMuxer;
-import android.media.tv.TvView;
 import android.os.Bundle;
-import android.support.v4.content.res.TypedArrayUtils;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,9 +16,7 @@ import org.communityboating.kioskclient.admin.CBIDeviceAdmin;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.config.AdminConfigProperties;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
-import org.communityboating.kioskclient.keyboard.CustomKeyboardView;
 
-import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,9 +24,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Scanner;
 
-import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 

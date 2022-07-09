@@ -3,7 +3,7 @@ package com.starmicronics.starprntsdk;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 
 import com.starmicronics.stario.StarIOPort;
 import com.starmicronics.stario.StarIOPortException;

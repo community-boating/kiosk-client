@@ -2,23 +2,15 @@ package org.communityboating.kioskclient.input;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatEditText;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.EditText;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.input.listener.CustomInputTextWatcherListener;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
-import org.communityboating.kioskclient.keyboard.CustomKeyboardView;
-import org.communityboating.kioskclient.progress.ProgressState;
 
-import java.lang.annotation.Retention;
-
-public class EditTextCustomInput extends AppCompatEditText{
+public class EditTextCustomInput extends AppCompatEditText {
 
     public static final int INPUT_TYPE_INTEGER=0;
     public static final int INPUT_TYPE_FLOAT=1;

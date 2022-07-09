@@ -1,22 +1,17 @@
 package org.communityboating.kioskclient.api;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.android.volley.Cache;
-import com.android.volley.Network;
+import androidx.annotation.Nullable;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import org.communityboating.kioskclient.activity.AdminGUIActivity;
+
 import org.communityboating.kioskclient.config.AdminConfigProperties;
 import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateEmergencyContactName;
@@ -26,21 +21,12 @@ import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestE
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestName;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestPhone;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestReturning;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 

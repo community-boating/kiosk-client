@@ -1,6 +1,6 @@
 package com.starmicronics.starprntsdk;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class PrinterSettings {
     private int     mModelIndex;

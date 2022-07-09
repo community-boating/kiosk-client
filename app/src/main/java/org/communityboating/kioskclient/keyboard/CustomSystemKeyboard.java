@@ -1,15 +1,8 @@
 package org.communityboating.kioskclient.keyboard;
 
-import android.app.Dialog;
 import android.inputmethodservice.InputMethodService;
-import android.renderscript.ScriptGroup;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import org.communityboating.kioskclient.R;
 

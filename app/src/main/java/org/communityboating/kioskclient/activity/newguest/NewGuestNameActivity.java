@@ -1,27 +1,14 @@
 package org.communityboating.kioskclient.activity.newguest;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
-import org.communityboating.kioskclient.activity.TextWatcherDelegate;
-import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
-import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestName;
 
 public class NewGuestNameActivity extends BaseActivity<ProgressStateNewGuestName> {

@@ -1,22 +1,12 @@
 package org.communityboating.kioskclient.activity.newguest;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import org.communityboating.kioskclient.R;
-import org.communityboating.kioskclient.activity.BaseActivity;
-import org.communityboating.kioskclient.progress.ProgressState;
-import org.communityboating.kioskclient.progress.newguest.ProgressStateEmergencyContactName;
-import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestSignature;
 import org.communityboating.kioskclient.SignatureView;
+import org.communityboating.kioskclient.activity.BaseActivity;
+import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestSignature;
 
 public class NewGuestSignatureActivity extends BaseActivity<ProgressStateNewGuestSignature> implements SignatureView.SignatureViewEventListener {
 

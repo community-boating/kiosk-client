@@ -1,6 +1,5 @@
 package org.communityboating.kioskclient.input;
 
-import android.app.Activity;
 import android.util.Log;
 
 import org.communityboating.kioskclient.input.listener.CustomInputProgressStateListener;

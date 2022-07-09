@@ -5,9 +5,7 @@ import android.graphics.PixelFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 
 import java.lang.reflect.Field;

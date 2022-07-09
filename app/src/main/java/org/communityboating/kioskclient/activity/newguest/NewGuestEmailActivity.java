@@ -1,27 +1,19 @@
 package org.communityboating.kioskclient.activity.newguest;
 
 import android.content.Context;
-import android.hardware.input.InputManager;
-import android.inputmethodservice.InputMethodService;
 import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.view.inputmethod.InputMethodSession;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
-import org.communityboating.kioskclient.input.CustomInputManager;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
 import org.communityboating.kioskclient.keyboardnew.CustomKeyboardPopupWindow;
 import org.communityboating.kioskclient.keyboardnew.CustomKeyboardPreviewPopupWindow;

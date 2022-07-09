@@ -2,14 +2,11 @@ package org.communityboating.kioskclient.progress.validator;
 
 import android.util.Log;
 
-import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class ProgressStateValidatorManager {
 

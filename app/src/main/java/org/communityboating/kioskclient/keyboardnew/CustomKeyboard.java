@@ -1,6 +1,5 @@
 package org.communityboating.kioskclient.keyboardnew;
 
-import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 
 public class CustomKeyboard {

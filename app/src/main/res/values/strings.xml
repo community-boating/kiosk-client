@@ -18,7 +18,6 @@
     <string name="act_11_finish_detail">Your ticket will print below. Grab it and have a great time on the water!</string>
 
     <string name="act_title_ec">Emergency Contact</string>
-    <string name="act_ec_name_desc">Emergency Contact Type:</string>
     <array name="act_ec_contact_options">
         <item>Mother</item>
         <item>Father</item>

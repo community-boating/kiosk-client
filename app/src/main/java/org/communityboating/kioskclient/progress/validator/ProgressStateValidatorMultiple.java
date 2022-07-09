@@ -4,8 +4,6 @@ import org.communityboating.kioskclient.progress.ProgressState;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class ProgressStateValidatorMultiple implements ProgressStateValidator {
 

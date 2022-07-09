@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestBegin;
-import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestFinish;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
 import java.util.ArrayList;

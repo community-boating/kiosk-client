@@ -1,7 +1,5 @@
 package org.communityboating.kioskclient.progress.validator;
 
-import android.util.Log;
-
 import java.util.regex.Pattern;
 
 public class ProgressStateSizedNumberValueValidator implements ProgressStateValueValidator{

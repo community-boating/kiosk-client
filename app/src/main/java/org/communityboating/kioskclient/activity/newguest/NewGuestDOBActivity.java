@@ -1,16 +1,6 @@
 package org.communityboating.kioskclient.activity.newguest;
 
-import android.app.Activity;
-import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
@@ -18,8 +8,6 @@ import org.communityboating.kioskclient.activity.DialogFragmentUnder18;
 import org.communityboating.kioskclient.input.SpinnerCustomInput;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestDOB;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;

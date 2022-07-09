@@ -1,8 +1,5 @@
 package org.communityboating.kioskclient;
 
-import android.view.MotionEvent;
-import android.view.View;
-
 public class SignatureDrawableTouchListener {
 
     //private SignatureDrawable signatureDrawable;

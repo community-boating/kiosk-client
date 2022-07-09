@@ -1,22 +1,14 @@
 package org.communityboating.kioskclient.activity.newguest;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
-import org.communityboating.kioskclient.progress.newguest.ProgressStateEmergencyContactName;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestWaiver;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 public class NewGuestWaiverActivity extends BaseActivity<ProgressStateNewGuestWaiver> {
 

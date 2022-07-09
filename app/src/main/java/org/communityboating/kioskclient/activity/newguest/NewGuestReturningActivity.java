@@ -3,7 +3,6 @@ package org.communityboating.kioskclient.activity.newguest;
 import android.os.Bundle;
 import android.view.View;
 
-import org.communityboating.kioskclient.BasePackageClass;
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestReturning;

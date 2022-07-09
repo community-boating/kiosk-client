@@ -1,49 +1,34 @@
 package org.communityboating.kioskclient.activity.newguest;
 
-import android.arch.core.util.Function;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.starmicronics.starioextension.ICommandBuilder;
+import com.starmicronics.starioextension.StarIoExt;
+import com.starmicronics.starprntsdk.Communication;
+
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.BaseActivity;
 import org.communityboating.kioskclient.api.CBIAPIRequestManager;
-import org.communityboating.kioskclient.api.CBIAPIRequestResponseHandler;
 import org.communityboating.kioskclient.config.AdminConfigProperties;
 import org.communityboating.kioskclient.print.PrinterManager;
 import org.communityboating.kioskclient.print.ReciptCommandGenerator;
-import org.communityboating.kioskclient.progress.Progress;
-import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateEmergencyContactName;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateEmergencyContactPhone;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestDOB;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestEmail;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestName;
 import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestPhone;
-import com.starmicronics.stario.PortInfo;
-import com.starmicronics.stario.StarIOPort;
-import com.starmicronics.stario.StarIOPortException;
-import com.starmicronics.starioextension.ICommandBuilder;
-import com.starmicronics.starioextension.StarIoExt;
-import com.starmicronics.starprntsdk.Communication;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class NewGuestFinishActivity extends BaseActivity {
 

@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.PopupWindow;
 
 public class CustomKeyboardPreviewPopupWindow extends View {
 

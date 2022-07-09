@@ -2,10 +2,11 @@ package org.communityboating.kioskclient.input;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.input.listener.CustomInputOnItemSelectedListener;

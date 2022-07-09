@@ -1,12 +1,9 @@
 package org.communityboating.kioskclient.print;
 
 import android.content.Context;
-import android.util.Printer;
 
-import org.communityboating.kioskclient.config.AdminConfigProperties;
 import com.starmicronics.stario.PortInfo;
 import com.starmicronics.stario.StarIOPort;
-import com.starmicronics.stario.StarPrinterStatus;
 import com.starmicronics.starioextension.ICommandBuilder;
 import com.starmicronics.starioextension.StarIoExt;
 import com.starmicronics.starprntsdk.Communication;
