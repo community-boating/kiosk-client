@@ -4,9 +4,26 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1816123188405797" />
+        <entry key="app/src/main/res/layout-land/activity_test.xml" value="0.140652557319224" />
+        <entry key="app/src/main/res/layout-land/layout_newguest_begin.xml" value="0.140652557319224" />
+        <entry key="app/src/main/res/layout-land/layout_newguest_dob.xml" value="0.140652557319224" />
+        <entry key="app/src/main/res/layout-land/layout_newguest_email.xml" value="0.140652557319224" />
+        <entry key="app/src/main/res/layout-land/layout_newguest_name.xml" value="0.17416225749559083" />
+        <entry key="app/src/main/res/layout/layout_admin_gui.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/layout_admin_gui_main.xml" value="0.19894561767578126" />
+        <entry key="app/src/main/res/layout/layout_admin_gui_main_event.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/layout_admin_gui_main_property.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/layout_emergencycontact_name.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/layout_newguest_begin.xml" value="0.16032608695652173" />
+        <entry key="app/src/main/res/layout/layout_newguest_dob.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/layout_newguest_email.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/layout/layout_newguest_name.xml" value="0.20572916666666666" />
+        <entry key="app/src/main/res/layout/layout_newguest_registration_type.xml" value="0.16032608695652173" />
+        <entry key="app/src/main/res/layout/layout_newguest_returning.xml" value="0.20572916666666666" />
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />

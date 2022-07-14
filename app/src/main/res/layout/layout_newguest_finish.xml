@@ -8,7 +8,7 @@
     android:fitsSystemWindows="false">
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/header_title_text"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

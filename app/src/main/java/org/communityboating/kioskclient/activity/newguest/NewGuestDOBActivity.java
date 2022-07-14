@@ -62,6 +62,9 @@ public class NewGuestDOBActivity extends BaseActivity<ProgressStateNewGuestDOB> 
     public boolean nextProgress(){
         Calendar maxDOB = Calendar.getInstance();
         maxDOB.add(Calendar.YEAR, -18);
+        if(getProgressState().getCalendarDOB() == null) {
+            return false;
+        }
         if(getProgressState().getCalendarDOB().after(maxDOB)){
             if(getProgressState().contains(KEY_DOB_UNDERAGE_AGREE)) {
                 return super.nextProgress();

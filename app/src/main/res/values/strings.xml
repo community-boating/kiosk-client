@@ -3,7 +3,7 @@
     <string name="act1_title">Welcome To Community Boating</string>
     <string name="act1_subtitle">Sailing Here for All</string>
     <string name="act1_help">Touch To Begin</string>
-    <string name="act1_desc">Guest Registration</string>
+    <string name="act1_desc">Registration</string>
     <string name="act3_name_first">First Name</string>
     <string name="act3_name_last">Last Name</string>
     <string name="act3_desc">Tell us about yourself</string>
@@ -16,6 +16,8 @@
     <string name="act_10_signature_desc">Signature</string>
     <string name="act_11_finish_desc">Submitting...</string>
     <string name="act_11_finish_detail">Your ticket will print below. Grab it and have a great time on the water!</string>
+
+    <string name="dialog_fragment_button_close_tag">dialog_fragment_button_close_tag</string>
 
     <string name="act_title_ec">Emergency Contact</string>
     <array name="act_ec_contact_options">
@@ -55,4 +57,44 @@
     <string name="cbi_admin_description">Allows the CBI kiosk app to perform COSU functions.</string>
     <string name="cbi_admin_add_admin_extra_text">Allow CBI kiosk app to administrate this device. Required to allow the COSU policies for this kiosk to be established.</string>
     <string name="cbi_kiosk_profile_name">CBI Kiosk Profile</string>
+    <string name="cbi_kiosk_admin_enabled">Admin Achieved</string>
+
+    <string name="rental_boat_type_option_paddle_title">Paddle</string>
+    <string name="rental_boat_type_option_paddle_desc">Fun and easy way to enjoy time on the water with gorgeous views of Boston’s Back Bay\n\nKayaks and Stand Up Paddleboards\n\nPaddling is limited to the basin between the Mass Ave. bridge and the Longfellow bridge.\n\nLifejackets are provided and MUST be worn at all times\n\nAvailable options accomodate 1-2 people</string>
+    <string name="rental_boat_type_option_paddle_specific_page_header">Paddle Rental</string>
+    <string name="rental_boat_type_option_sailboat_title">Sail</string>
+    <string name="rental_boat_type_option_sailboat_desc">Your group leader must have sailing experience to rent a sailboat.\n\n16 and 19 foot keeled dinghy sailboats\n\nSailing is limited to the basin between the Mass Ave. bridge and the Longfellow bridge.\n\nLifejackets are provided and MUST be worn at all times\n\nAvailable options accomodate 1-5 people</string>
+    <string name="rental_boat_type_option_sailboat_specific_page_header">Sailboat Rental</string>
+    <string name="rental_boat_specific_option_kayak_title">Kayak</string>
+    <string name="rental_boat_specific_option_kayak_desc">Daily flat rate of $45 - No hourly rate\n\nDue back 1/2 hour before sunset.\n\nRental valid all day - come and go as you please\n\nSeats 1-2</string>
+    <string name="rental_boat_specific_option_kayak_desc_secondary">\nYou must return your rental 1/2 hour before sunset.</string>
+    <string name="rental_boat_specific_option_standuppaddleboard_title">Stand Up Paddleboard</string>
+    <string name="rental_boat_specific_option_standuppaddleboard_desc">Daily flat rate of $45 - No hourly rate\n\nDue back 1/2 hour before sunset.\n\nRental valid all day - come and go as you please\n\nSeats 1-2</string>
+    <string name="rental_boat_specific_option_standuppaddleboard_desc_secondary">\nYou must return your rental 1/2 hour before sunset.</string>
+    <string name="rental_boat_specific_option_mercury16_title">Mercury 16</string>
+    <string name="rental_boat_specific_option_mercury16_desc">16 foot keeled dinghy\n\nDue back at sunset\n\nSeats 1-4</string>
+    <string name="rental_boat_specific_option_mercury16_desc_secondary">\nYou must have sailing experience to rent.</string>
+    <string name="rental_boat_specific_option_rhodes19_title">Rhodes 19</string>
+    <string name="rental_boat_specific_option_rhodes19_desc">19 foot keeled daysailer\n\nDue back 1/2 hour before sunset.\n\nSeats 2-5</string>
+    <string name="rental_boat_specific_option_rhodes19_desc_secondary">\nYou must have sailing experience to rent.</string>
+    <string name="rental_boat_sunset_restriction_at_sunset">UNTIL SUNSET</string>
+    <string name="rental_boat_sunset_restriction_30_min_before_sunset">30 Min\nBEFORE\nSUNSET</string>
+
+
+
+
+    <string name="registration_type_member_title">Become a Member</string>
+    <string name="registration_type_rent_title">Rent a Boat</string>
+    <string name="registration_type_guest_title">Register a Guest</string>
+    <string name="registration_type_member_blurb">CBI’s Adult Program offers sailing, windsurfing, paddleboarding, and kayaking to adults 18 years and older. The Adult Program runs from April 1 to October 31, seven days per week. Membership includes instruction (formal classes and informal on-water instruction), access to the dock and boats, a ratings system, and unlimited use of boats during Adult Program hours.
+
+For Junior Program memberships;
+ see the Front Office</string>
+    <string name="registration_type_rent_blurb">Experience Boston from the scenic Charles River. Rentals are a daily flat rate so you can come and go as you please. Options for everyone, even if you’ve never been on the water before!</string>
+    <string name="registration_type_guest_blurb">To go out sailing with a member you must be registered as a guest. We do this for your safety, so we can account for everyone, on every boat, every time.
+
+If you have already registered as a guest online or on a previous visit you can print out the confirmation email and skip the kiosk, or click returning guest on the next page.</string>
+    <string name="registration_type_explore_memberships">Explore Memberships</string>
+    <string name="registration_type_rental_options">Rental Options</string>
+    <string name="registration_type_guest_registration">Guest Registration</string>
 </resources>

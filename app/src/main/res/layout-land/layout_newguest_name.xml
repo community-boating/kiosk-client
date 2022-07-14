@@ -10,7 +10,7 @@
     android:fitsSystemWindows="false">
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/header_title_text"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +22,10 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include layout="@layout/layout_header_progress_indicator">
+
+    </include>
 
     <org.communityboating.kioskclient.input.EditTextCustomInput
         android:id="@+id/new_guest_name_first"
@@ -65,16 +69,9 @@
         app:progressStateVariable="last_name"
         app:variableType="String" />
 
-    <FrameLayout
-        android:id="@+id/layout_newguest"
-        android:tag="nav_fragment"
-        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <include layout="@layout/layout_nav_fragment">
+
+    </include>
 
     <TextView
         android:id="@+id/textView6"
@@ -88,9 +85,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.253"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/header_title_text" />
 
     <org.communityboating.kioskclient.keyboard.CustomKeyboardView
+        android:id="@+id/customKeyboardView2"
         android:layout_width="match_parent"
         android:layout_height="378dp"
         android:layout_marginTop="8dp"

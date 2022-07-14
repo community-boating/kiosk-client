@@ -5,11 +5,13 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.communityboating.kioskclient.config.AdminConfigProperties;
@@ -34,6 +36,7 @@ public class CBIAPIRequestManager {
 
     public static final String CBI_API_URL_CREATE_USER = "/fo-kiosk/create-person";
     public static final String CBI_API_URL_CREATE_CARD = "/fo-kiosk/create-card";
+    public static final String CBI_APP_URL_STRIPE_TOKEN = "/fo-kiosk/stripe-token";
 
     private Context context;
     private RequestQueue requestQueue;
@@ -51,6 +54,11 @@ public class CBIAPIRequestManager {
         requestQueue = new RequestQueue(cache, network);
     }*/
 
+    public static synchronized CBIAPIRequestManager getExistingInstance() throws RuntimeException{
+        if(managerInstance == null) throw new RuntimeException("No existing instance currently");
+        return managerInstance;
+    }
+
     public static synchronized CBIAPIRequestManager getInstance(Context context){
         if(managerInstance == null)
             managerInstance = new CBIAPIRequestManager(context);
@@ -59,8 +67,7 @@ public class CBIAPIRequestManager {
 
     public RequestQueue getRequestQueue(){
         if(requestQueue == null) {
-            //TODO remove this
-            NukeSSLCerts.nuke();
+            //NukeSSLCerts.nuke();
             requestQueue = Volley.newRequestQueue(context.getApplicationContext());
         }
         return requestQueue;
@@ -79,11 +86,11 @@ public class CBIAPIRequestManager {
 
     public static JSONObject getCreateNewUserJSONObject(Progress completeUserProgress) throws JSONException {
         JSONObject requestObject = new JSONObject();
+        ProgressStateNewGuestReturning progressStateNewGuestReturning = completeUserProgress.findByProgressStateType(ProgressStateNewGuestReturning.class);
+        requestObject.put("previousMember", progressStateNewGuestReturning.getReturningMember().booleanValue());
         ProgressStateNewGuestName progressStateNewGuestName = completeUserProgress.findByProgressStateType(ProgressStateNewGuestName.class);
         requestObject.put("firstName", progressStateNewGuestName.getFirstName());
         requestObject.put("lastName", progressStateNewGuestName.getLastName());
-        ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
-        requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
         ProgressStateNewGuestDOB progressStateNewGuestDOB = completeUserProgress.findByProgressStateType(ProgressStateNewGuestDOB.class);
 
         Calendar calendar = progressStateNewGuestDOB.getCalendarDOB();
@@ -95,21 +102,28 @@ public class CBIAPIRequestManager {
         ProgressStateNewGuestPhone progressStateNewGuestPhone = completeUserProgress.findByProgressStateType(ProgressStateNewGuestPhone.class);
         String phoneString = progressStateNewGuestPhone.getPhoneNumber();
         requestObject.put("phonePrimary", phoneString);
-        ProgressStateEmergencyContactName progressStateEmergencyContactName = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactName.class);
-        String emerg1NameString = progressStateEmergencyContactName.getECFirstName() + " " + progressStateNewGuestName.getLastName();
-        requestObject.put("emerg1Name", emerg1NameString);
-        ProgressStateEmergencyContactPhone progressStateEmergencyContactPhone = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
-        String emerg1PhoneString = progressStateEmergencyContactPhone.getPhoneNumber();
-        requestObject.put("emerg1PhonePrimary", emerg1PhoneString);
+        final String returningFillString="N/A";
+        if(progressStateNewGuestReturning.getReturningMember()){
+            requestObject.put("emailAddress", returningFillString);
+            requestObject.put("emerg1Name", returningFillString);
+            requestObject.put("emerg1PhonePrimary", returningFillString);
+        }else {
+            ProgressStateNewGuestEmail progressStateNewGuestEmail = completeUserProgress.findByProgressStateType(ProgressStateNewGuestEmail.class);
+            requestObject.put("emailAddress", progressStateNewGuestEmail.getEmail());
+            ProgressStateEmergencyContactName progressStateEmergencyContactName = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactName.class);
+            String emerg1NameString = progressStateEmergencyContactName.getECFirstName() + " " + progressStateNewGuestName.getLastName();
+            requestObject.put("emerg1Name", emerg1NameString);
+            ProgressStateEmergencyContactPhone progressStateEmergencyContactPhone = completeUserProgress.findByProgressStateType(ProgressStateEmergencyContactPhone.class);
+            String emerg1PhoneString = progressStateEmergencyContactPhone.getPhoneNumber();
+            requestObject.put("emerg1PhonePrimary", emerg1PhoneString);
+        }
         //String ecType = progressStateEmergencyContactName.getECType();
         //requestObject.put("emerg1Relation", ecType == null ? JSONObject.NULL : ecType);
-        ProgressStateNewGuestReturning progressStateNewGuestReturning = completeUserProgress.findByProgressStateType(ProgressStateNewGuestReturning.class);
-        requestObject.put("previousMember", progressStateNewGuestReturning.getReturningMember().booleanValue());
         return requestObject;
     }
 
     public void callCreateNewUserAndCard(Progress completeUserProgress, final Response.Listener<JSONObject> responseListener, final Response.ErrorListener errorListener) throws JSONException{
-        AdminConfigProperties.loadProperties(context);
+        AdminConfigProperties.loadPropertiesIfRequired(context);
         JSONObject requestObject = getCreateNewUserJSONObject(completeUserProgress);
         final Response.ErrorListener cardCreateErrorListener = new Response.ErrorListener(){
 
@@ -147,6 +161,44 @@ public class CBIAPIRequestManager {
         getRequestQueue().add(jsonObjectRequest);
     }
 
+    public void callRetrieveStripeToken(final Response.Listener<String> responseListener, final Response.ErrorListener errorListener) throws JSONException{
+        AdminConfigProperties.loadPropertiesIfRequired(context);
+        StringRequest request = new CBIAPIStringRequest(Request.Method.POST, AdminConfigProperties.getPropertyCbiApiUrl() + CBI_APP_URL_STRIPE_TOKEN, responseListener, errorListener);
+        getRequestQueue().add(request);
+    }
+
+    private Map<String, String> getCBIAuthHeaders(boolean json){
+        Map<String, String> cbiAPIRequestHeaders = new TreeMap<String, String>();
+        if(json)
+            cbiAPIRequestHeaders.put("Content-Type", "application/json");
+        //put("Accept", "application/json");
+        if(AdminConfigProperties.hasCBIAPIKey()){
+            cbiAPIRequestHeaders.put("Am-CBI-Kiosk", AdminConfigProperties.getCBIAPIKey());
+        }else{
+            Log.w("cbiadmin", "cbi kiosk key not set, doing dev mode");
+            cbiAPIRequestHeaders.put("Am-CBI-Kiosk", "true");
+        }
+        return cbiAPIRequestHeaders;
+    }
+
+    public class CBIAPIStringRequest extends StringRequest {
+
+        public CBIAPIStringRequest(int method, String url, Response.Listener<String> listener, @Nullable Response.ErrorListener errorListener) {
+            super(method, url, listener, errorListener);
+        }
+
+        public CBIAPIStringRequest(String url, Response.Listener<String> listener, @Nullable Response.ErrorListener errorListener) {
+            super(url, listener, errorListener);
+        }
+
+        @Override
+        public Map<String, String> getHeaders() throws AuthFailureError {
+            Map<String, String> headers = super.getHeaders();
+            headers.putAll(getCBIAuthHeaders(false));
+            return headers;
+        }
+    }
+
     public class CBIAPIJsonObjectRequest extends JsonObjectRequest{
 
         public CBIAPIJsonObjectRequest(int method, String url, @Nullable JSONObject jsonRequest, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
@@ -159,16 +211,7 @@ public class CBIAPIRequestManager {
 
         @Override
         public Map<String, String> getHeaders(){
-            Map<String, String> cbiAPIRequestHeaders = new TreeMap<String, String>();
-            cbiAPIRequestHeaders.put("Content-Type", "application/json");
-            //put("Accept", "application/json");
-            if(AdminConfigProperties.hasCBIAPIKey()){
-                cbiAPIRequestHeaders.put("Am-CBI-Kiosk", AdminConfigProperties.getCBIAPIKey());
-            }else{
-                Log.w("cbiadmin", "cbi kiosk key not set, doing dev mode");
-                cbiAPIRequestHeaders.put("Am-CBI-Kiosk", "true");
-            }
-            return cbiAPIRequestHeaders;
+            return getCBIAuthHeaders(true);
         }
     }
 

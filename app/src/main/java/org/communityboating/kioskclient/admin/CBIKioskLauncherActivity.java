@@ -11,11 +11,14 @@ import android.os.Bundle;
 import android.os.UserManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 
 import org.communityboating.kioskclient.R;
+import org.communityboating.kioskclient.activity.admingui.AdminGUIActivity;
 import org.communityboating.kioskclient.activity.BaseActivity;
 import org.communityboating.kioskclient.progress.Progress;
+import org.communityboating.kioskclient.util.ToastUtil;
 
 public class CBIKioskLauncherActivity extends Activity {
 
@@ -31,16 +34,33 @@ public class CBIKioskLauncherActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.lock_screen_gui_test);
         Log.d("derpaderpderp", "what : " + getDPM().isDeviceOwnerApp("com.amazon.parentalcontrols"));
         if(isDeviceOwner()){
             setKioskPolicies(true);
         }else{
             //Warn that the program will not run properly until provisioning of the device is complete
-            Toast toast = Toast.makeText(this, R.string.cbi_admin_provision_warning, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.TOP, 0, 0);
-            toast.show();
+            ToastUtil.makeToast(this, R.string.cbi_admin_provision_warning);
         }
+        //Intent adminIntent = new Intent(this, AdminGUIActivity.class);
+        //this.startActivity(adminIntent);
         startKioskActivity();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        //this.startLockTask();
+    }
+
+    public void enableLockScreen(View v){
+        //setKioskPolicies(true);
+        this.startLockTask();
+    }
+
+    public void disableLockScreen(View v){
+        //setKioskPolicies(false);
+        this.stopLockTask();
     }
 
     public boolean isDeviceOwner(){
@@ -60,15 +80,19 @@ public class CBIKioskLauncherActivity extends Activity {
         //dpm.setStatusBarDisabled(admin, enabled);
 
         dpm.setLockTaskPackages(admin, enabled?new String[]{context.getPackageName()}:new String[0]);
+        //dpm.setLockTaskFeatures(admin, DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD);
 
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MAIN);
-        intentFilter.addCategory(Intent.CATEGORY_HOME);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_MAIN);
+        filter.addCategory(Intent.CATEGORY_HOME);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
 
-        if(enabled)
-            dpm.addPersistentPreferredActivity(admin, intentFilter, new ComponentName(context.getPackageName(), BaseActivity.class.getName()));
-        else
-            dpm.clearPackagePersistentPreferredActivities(admin, context.getPackageName());
+// Set the activity as the preferred option for the device.
+        ComponentName activity = new ComponentName(context, CBIKioskLauncherActivity.class);
+        //if(enabled)
+        //    dpm.addPersistentPreferredActivity(admin, filter, activity);//else
+        //else
+        //dpm.clearPackagePersistentPreferredActivities(amazonComponentName, context.getPackageName());
+        //    dpm.clearPackagePersistentPreferredActivities(admin, context.getPackageName());
 
     }
 

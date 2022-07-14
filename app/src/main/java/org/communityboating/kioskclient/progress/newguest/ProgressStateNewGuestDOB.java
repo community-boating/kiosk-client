@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress.newguest;
 import android.app.Activity;
 
 import org.communityboating.kioskclient.activity.newguest.NewGuestDOBActivity;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateDOBDayValueValidator;
 import org.communityboating.kioskclient.progress.validator.ProgressStateDOBMonthValueValidator;
@@ -17,17 +18,27 @@ public class ProgressStateNewGuestDOB extends ProgressState {
     public static final String KEY_DOB_MONTH="dob_month";
     public static final String KEY_DOB_YEAR="dob_year";
 
-    static{
+    public static void addValidators(){
         Class<ProgressStateNewGuestDOB> clazz = ProgressStateNewGuestDOB.class;
         ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_DAY, new ProgressStateDOBDayValueValidator());
         ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_MONTH, new ProgressStateDOBMonthValueValidator());
         ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_YEAR, new ProgressStateDOBYearValueValidator());
     }
 
+    static{
+        /*Class<ProgressStateNewGuestDOB> clazz = ProgressStateNewGuestDOB.class;
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_DAY, new ProgressStateDOBDayValueValidator());
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_MONTH, new ProgressStateDOBMonthValueValidator());
+        ProgressStateValidatorManager.addValueValidator(clazz, KEY_DOB_YEAR, new ProgressStateDOBYearValueValidator());*/
+    }
+
     public ProgressStateNewGuestDOB() {
     }
 
     public Calendar getCalendarDOB() {
+        if(getDOBDay() == null || getDOBMonth() == null || getDOBYear() == null){
+            return null;
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.set(getDOBYear(), getDOBMonth() - 1, getDOBDay());
         return calendar;
@@ -73,7 +84,7 @@ public class ProgressStateNewGuestDOB extends ProgressState {
     public Class<? extends Activity> getActivityClass(){ return NewGuestDOBActivity.class; }
 
     @Override
-    public ProgressState createNextProgressState() {
+    public ProgressState createNextProgressState(Progress progress) {
         return new ProgressStateNewGuestPhone();
     }
 

@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -15,12 +16,148 @@
             android:layout_height="wrap_content"
             android:minHeight="900dp">
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout4"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                <Button
+                    android:id="@+id/button8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="handleEnableAdminClick"
+                    android:text="Enable Admin" />
+
+                <TextView
+                    android:id="@+id/admin_gui_device_owner_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/admin_gui_active_admin_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="handleClickAddEvent"
+                    android:text="Add event" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight=".1" />
+
+                <Button
+                    android:id="@+id/dobutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="handleClickUp"
+                    android:text="UpButton" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/admin_gui_event_list"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/admin_gui_event_list">
+
+                <Button
+                    android:id="@+id/button6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="onCloseClick"
+                    android:text="Back" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight=".1" />
+
+                <Button
+                    android:id="@+id/button16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="handleExitAppClick"
+                    android:text="Exit Kiosk" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight=".1" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_test_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="handlePrintClick"
+                    android:text="Test Print" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteY="722dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal">
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                </TableRow>
+
+            </TableLayout>
+
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
                 android:text="Admin Panel - Main"
                 android:textSize="32sp"
@@ -29,142 +166,339 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/admin_gui_properties_list"
+                android:layout_width="700dp"
+                android:layout_height="250dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12">
 
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="500dp"
+                android:layout_height="250dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/admin_gui_properties_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/admin_gui_properties_list"
+                app:layout_constraintTop_toTopOf="@+id/admin_gui_properties_list">
+
                 <TextView
+                    android:id="@+id/admin_gui_properties_editor_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="CBI API key management"
-                    android:textSize="16sp"></TextView>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_editor_name" />
 
-                    <EditText
-                        android:id="@+id/admin_gui_cbi_api_key_edit_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="448sp"/>
-                    <Button
-                        android:id="@+id/button7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="handleCBIAPIKeySetClick"
-                        android:text="Set Key" />
+                <TextView
+                    android:id="@+id/admin_gui_properties_editor_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <Button
-                        android:id="@+id/button8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="handleCBIAPIKeyGetClick"
-                        android:text="Get Key" />
-                    <Button
-                        android:id="@+id/button9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="handleCBIAPIKeySetRandomClick"
-                        android:text="Set Random Key" />
-                    <TextView
-                        android:id="@+id/admin_gui_cbi_api_key_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text=""
-                        android:textSize="16sp"
-                        android:visibility="invisible"></TextView>
-                </LinearLayout>
-                <LinearLayout
+                <Button
+                    android:id="@+id/admin_gui_properties_editor_button_set"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:orientation="horizontal">
-                    <org.communityboating.kioskclient.config.AdminConfigPropertyEditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="448sp"
-                        app:adminConfigPropertyName="cbi.api.url"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:orientation="horizontal">
-                    <org.communityboating.kioskclient.config.AdminConfigPropertyEditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="448sp"
-                        app:adminConfigPropertyName="cbi.printer.bluetooth.address"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/textView17"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Device Owner Status : "
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:id="@+id/admin_gui_device_owner_status_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:id="@+id/textView18"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Command : "
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:id="@+id/admin_gui_device_owner_command_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-            </LinearLayout>
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Set"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_properties_editor_button_get"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_properties_editor_button_get"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_properties_editor_button_get" />
 
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="216dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:onClick="onCloseClick"
-                android:text="Back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.08"
+                <Button
+                    android:id="@+id/admin_gui_properties_editor_button_get"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Get"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_properties_editor_button_default"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_properties_editor_button_set" />
+
+                <Button
+                    android:id="@+id/admin_gui_properties_editor_button_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Default"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_properties_editor_button_get"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_properties_editor_button_clear"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_properties_editor_button_get"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_properties_editor_button_get" />
+
+                <EditText
+                    android:id="@+id/admin_gui_properties_editor_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:inputType="none|textPersonName"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_editor_value" />
+
+                <Button
+                    android:id="@+id/admin_gui_properties_editor_button_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Clear"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_properties_editor_button_default"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_properties_editor_button_default"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_properties_editor_button_default" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/admin_gui_event_list"
+                android:layout_width="700dp"
+                android:layout_height="300dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-            <Button
-                android:id="@+id/button12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:onClick="handleExitAppClick"
-                android:text="Exit Kiosk"
-                app:layout_constraintBottom_toBottomOf="@+id/button6"
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="500dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/admin_gui_event_list"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.216"
-                app:layout_constraintStart_toEndOf="@+id/button6"
-                app:layout_constraintTop_toTopOf="@+id/button6"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toEndOf="@+id/admin_gui_event_list"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout3">
+
+                <Spinner
+                    android:id="@+id/admin_gui_spinner_event_type"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_edit_text_date_start"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_spinner_sort_type"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/admin_gui_spinner_sort_type"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_spinner_event_type"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_spinner_event_type"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_spinner_event_type" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_date_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:ems="10"
+                    android:hint="Start Date"
+                    android:inputType="date"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_edit_text_date_end"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_edit_text_time_start"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_spinner_event_type" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_time_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="Start Time"
+                    android:inputType="time"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_edit_text_date_start"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_edit_text_date_start"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_edit_text_date_start" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_date_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:ems="10"
+                    android:hint="End Date"
+                    android:inputType="date"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_button_event_time_1hr"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_edit_text_time_end"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_edit_text_date_start" />
+
+                <EditText
+                    android:id="@+id/admin_gui_edit_text_time_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="End Time"
+                    android:inputType="time"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_edit_text_date_end"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_edit_text_date_end"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_edit_text_date_end" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_1hr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="1 Hr"
+                    app:layout_constraintBottom_toTopOf="@+id/admin_gui_checkbox_autoscroll"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_time_5hr"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_edit_text_date_end" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_5hr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="5 Hr"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_1hr"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_time_1day"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_1hr"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_1hr" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_1day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="1 Day"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_5hr"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_time_5day"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_5hr"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_5hr" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_time_5day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="5 Day"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_1day"
+                    app:layout_constraintEnd_toStartOf="@+id/admin_gui_button_event_search"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_1day"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_1day" />
+
+                <Button
+                    android:id="@+id/admin_gui_button_event_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Search"
+                    app:layout_constraintBottom_toBottomOf="@+id/admin_gui_button_event_time_5day"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/admin_gui_button_event_time_5day"
+                    app:layout_constraintTop_toTopOf="@+id/admin_gui_button_event_time_5day" />
+
+                <CheckBox
+                    android:id="@+id/admin_gui_checkbox_autoscroll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:text="Auto Scroll"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/admin_gui_button_event_time_1hr" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="700dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="3dp"
+                app:layout_constraintBottom_toTopOf="@+id/admin_gui_event_list"
+                app:layout_constraintEnd_toEndOf="@+id/admin_gui_event_list"
+                app:layout_constraintStart_toStartOf="@+id/admin_gui_event_list"
+                app:layout_constraintTop_toBottomOf="@+id/admin_gui_properties_list">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Event Type"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView18"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Event Timestamp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/textView22"
+                    app:layout_constraintStart_toEndOf="@+id/textView17"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Event Title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </LinearLayout>

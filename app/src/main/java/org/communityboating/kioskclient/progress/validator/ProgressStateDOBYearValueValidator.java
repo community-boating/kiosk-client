@@ -1,7 +1,7 @@
 package org.communityboating.kioskclient.progress.validator;
 
 
-public class ProgressStateDOBYearValueValidator implements ProgressStateValueValidator {
+public class ProgressStateDOBYearValueValidator extends ProgressStateValueValidator {
 
     @Override
     public String isValueValid(String value) {

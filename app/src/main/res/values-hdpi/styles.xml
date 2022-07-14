@@ -1,0 +1,139 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+    <style name="text_font_normal">
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+    <style name="text_font_medium">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+    <style name="text_font_light">
+        <item name="android:fontFamily">@font/roboto_light</item>
+    </style>
+    <style name="text_font_regular">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+    <style name="text_font_thin">
+        <item name="android:fontFamily">@font/roboto_thin</item>
+    </style>
+    <style name="button_background_large" parent="text_font_normal">
+        <item name="android:textSize">50sp</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:background">@drawable/button_background_large</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:paddingTop">40dp</item>
+        <item name="android:paddingBottom">40dp</item>
+        <item name="android:textColor">@color/shadowGray</item>
+    </style>
+    <style name="text_title_primary" parent="text_font_normal">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">80dp</item>
+    </style>
+    <style name="text_title_primary_regular" parent="text_font_regular">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">80sp</item>
+    </style>
+    <style name="text_title_primary_medium" parent="text_font_medium">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">64sp</item>
+    </style>
+    <style name="text_title_secondary" parent="text_font_thin">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">64dp</item>
+    </style>
+    <style name="text_title_secondary_black" parent="text_font_thin">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">64dp</item>
+    </style>
+    <style name="text_user_input" parent="@android:style/Widget.EditText">
+        <item name="android:fontFamily">@font/roboto_thin</item>
+        <item name="android:textSize">108sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/text_user_input</item>
+    </style>
+    <style name="text_user_input_small" parent="text_user_input">
+        <item name="android:textSize">64sp</item>
+    </style>
+    <style name="button_nav" parent="text_font_medium">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/button_nav</item>
+    </style>
+    <style name="custom_keypad">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:keyTextColor">@color/colorPrimaryDark</item>
+        <item name="android:keyTextSize">32sp</item>
+        <item name="android:keyBackground">@drawable/custom_keypad_button</item>
+        <item name="android:shadowColor">@android:color/transparent</item>
+    </style>
+
+    <style name="community_boating_logo">
+        <item name="android:layout_width">240dp</item>
+        <item name="android:layout_height">220dp</item>
+    </style>
+    <style name="drc_logo">
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">240dp</item>
+    </style>
+
+    <style name="text_blurb_black" parent="text_font_light">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">30dp</item>
+    </style>
+    <style name="registration_type_container">
+        <item name="android:layout_width">450dp</item>
+        <item name="android:layout_height">750dp</item>
+    </style>
+    <style name="registration_type_button" parent="button_background_small">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">24dp</item>
+    </style>
+
+
+    <style name="text_blurb_secondary_blue" parent="text_font_medium">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">30dp</item>
+    </style>
+    <style name="rental_fragment_constraint">
+        <item name="android:layout_margin">24dp</item>
+    </style>
+    <style name="rental_fragment_head_icon_image">
+        <item name="android:layout_marginEnd">80dp</item>
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_height">160dp</item>
+    </style>
+    <style name="rental_fragment_clock_icon_image">
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_height">160dp</item>
+    </style>
+    <style name="rental_fragment_money_icon_text">
+        <item name="android:layout_width">160dp</item>
+        <item name="android:fontFamily">@font/roboto_black</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">160dp</item>
+        <item name="android:layout_marginStart">80dp</item>
+    </style>
+    <style name="rental_fragment_info_text_large" parent="text_font_regular">
+        <item name="android:textSize">96dp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="rental_fragment_info_text_small" parent="text_font_light">
+        <item name="android:textSize">36dp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+</resources>

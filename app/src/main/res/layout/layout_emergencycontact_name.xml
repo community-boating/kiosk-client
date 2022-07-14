@@ -22,7 +22,7 @@
         android:inputType="textPersonName"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/header_title_text"
         app:progressStateVariable="ec_name_first"
         app:variableType="String">
         <requestFocus></requestFocus>
@@ -62,18 +62,9 @@
         app:progressStateVariable="ec_name_last"
         app:variableType="String" />
 
-    <FrameLayout
-        android:id="@+id/layout_newguest"
-        android:tag="nav_fragment"
-        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <include layout="@layout/layout_nav_fragment">
+
+    </include>
 
     <org.communityboating.kioskclient.keyboard.CustomKeyboardView
         android:id="@+id/customKeyboardView"
@@ -104,7 +95,7 @@
         app:layout_constraintVertical_bias="0.75"></android.inputmethodservice.KeyboardView>
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/header_title_text"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -116,4 +107,7 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <include layout="@layout/layout_header_progress_indicator">
+
+    </include>
 </androidx.constraintlayout.widget.ConstraintLayout>

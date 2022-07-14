@@ -1,21 +1,34 @@
 package org.communityboating.kioskclient.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.admin.CBIKioskLauncherActivity;
+import org.communityboating.kioskclient.event.events.CBIAPPEvent;
+import org.communityboating.kioskclient.event.events.CBIAPPEventManager;
+import org.communityboating.kioskclient.event.events.CBIAPPEventType;
+import org.communityboating.kioskclient.event.events.printermanager.PrinterManagerPrinterStatusUpdateEvent;
+import org.communityboating.kioskclient.event.handler.CBIAPPEventHandler;
+import org.communityboating.kioskclient.fragment.NavButtonGroupFragment;
 import org.communityboating.kioskclient.input.CustomInputManager;
+import org.communityboating.kioskclient.print.PrintServiceHolder;
 import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 
@@ -31,6 +44,8 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     public static final long PAGE_TIMEOUT_DURATION=20000;
     public static final long PAGE_TIMEOUT_DIALOG_DURATION=10000;
+
+    public PrintServiceHolder printService = new PrintServiceHolder();
 
     private Timer pageTimeout = new Timer();
     private final TimerTask taskTimeoutPrompt = new TimerTask(){
@@ -50,55 +65,6 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     //public DevicePolicyManager dpm;
     //public ComponentName cbiAdminDeviceSample;
-
-    //public static final int REQUEST_CODE_ENABLE_ADMIN = 1;
-    //public static final int REQUEST_CODE_ENABLE_DPC = 2;
-
-    /*private void enableAdmin(){
-        Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, this.cbiAdminDeviceSample);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, this.getString(R.string.cbi_admin_add_admin_extra_text));
-        startActivityForResult(intent, BaseActivity.REQUEST_CODE_ENABLE_ADMIN);
-    }
-
-    public boolean isDPCEnabled(){
-        dpm=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
-        Log.d("llll", "aaaa" + getApplicationContext().getPackageName() + ":" + dpm.isDeviceOwnerApp(getApplicationContext().getPackageName()));
-        return dpm.isProfileOwnerApp(getApplicationContext().getPackageName());
-    }
-
-    private void enableDPC(){
-        PackageManager pm = getPackageManager();
-        if(!pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS)){
-            Log.e("error", "device does not support work profiles");
-        }
-        Intent intent = new Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE);
-        intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME, this.getApplicationContext().getPackageName());
-        if(intent.resolveActivity(this.getPackageManager()) == null){
-            Log.e("error", "no intent handler");
-        }else{
-            Log.d("h", "ffff: what?");
-            startActivityForResult(intent, BaseActivity.REQUEST_CODE_ENABLE_DPC);
-            this.finish();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int responseCode, Intent data){
-        if(requestCode == BaseActivity.REQUEST_CODE_ENABLE_ADMIN){
-            Log.d("h", "aaaa: admin stuff done");
-        }
-        else if(requestCode == BaseActivity.REQUEST_CODE_ENABLE_DPC){
-            if(responseCode == Activity.RESULT_OK){
-                Log.i("info", "profile created");
-            }else{
-                Log.e("error", "profile creation failed");
-            }
-        }
-        else{
-            super.onActivityResult(requestCode, responseCode, data);
-        }
-    }*/
 
     public void showNotifyInputError(){
 
@@ -124,14 +90,28 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CBIAPPEventManager.initiateIfRequired(this);
+        CBIAPPEventManager.addEventHandler(CBIAPPEventType.EVENT_TYPE_PRINTER, new CBIAPPEventHandler() {
+            @Override
+            public void handleEvent(CBIAPPEvent event) {
+                if(event instanceof PrinterManagerPrinterStatusUpdateEvent){
+                    PrinterManagerPrinterStatusUpdateEvent updateEvent = (PrinterManagerPrinterStatusUpdateEvent)event;
+                    if(updateEvent.getEventStatusType() == PrinterManagerPrinterStatusUpdateEvent.PrinterStatusUpdateEventType.PRINTER_PAPER_EMPTY){
+
+                    }
+                }
+            }
+        });
+        //checkLocationPermission();
+        printService.createPrintService(this);
         PackageManager pm = getPackageManager();
-        Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
+        //Log.d("h", "cccc: " + pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS));
         //this.dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
         //Log.d("bbbb", ""  + dpm.isProfileOwnerApp(getApplicationContext().getPackageName()));
         eventConfiguration();
         //hideStatusNavBar();
         this.checkProgress();
-        CustomInputManager.setActiveProgressState(progress.getCurrentProgressState());
+        CustomInputManager.setActiveProgressState(progress.getCurrentProgressState(), progress);
         CustomInputManager.clearCustomInputs();
         Log.d("nullupdate", "has nav fragment " + this.hasNavFragment());
         //this.cbiAdminDeviceSample = CBIDeviceAdmin.getComponentName(this);
@@ -147,12 +127,31 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         //Log.d("h", "xxxx: " + dpm.isAdminActive(this.cbiAdminDeviceSample));
     }
 
+    private static final int REQUEST_CODE_LOCATION=10;
+
+    private void checkLocationPermission(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CODE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_CODE_LOCATION && grantResults.length > 0
+                && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            throw new RuntimeException("Location services are not granted");
+        }
+    }
+
     @Override
     public void onStart(){
         super.onStart();
     }
 
     public void displayFragment(Fragment fragment){
+
         //ViewGroup group = (ViewGroup)getWindow().getDecorView().getRootView();
         if(findViewById(R.id.root_layout) != null) {
             getSupportFragmentManager().beginTransaction().add(R.id.root_layout, fragment).commit();
@@ -183,6 +182,12 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
                 BaseActivity.this.handleTimeoutExpire();
             }
         }, PAGE_TIMEOUT_DIALOG_DURATION);
+    }
+
+    public void lockDevice(){
+        this.stopLockTask();
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+        devicePolicyManager.lockNow();
     }
 
     public void handleTimeoutExpire(){
@@ -218,6 +223,13 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     @Override
+    public void onDestroy(){
+        super.onDestroy();
+        printService.destroyPrintService(this);
+        CBIAPPEventManager.onClose();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         //displayPopup(new DialogFragmentTimeout());
@@ -227,7 +239,6 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         //dpm.setLockTaskPackages(cbiAdminDeviceSample, new String[]{"com.example.alexbanks.cbiapp"});
         //Log.d("bbbb", "aff" + dpm.isDeviceOwnerApp(getApplicationContext().getPackageName()));
         hideStatusNavBar();
-        //dpm.setLockTaskFeatures(cbiAdminDeviceSample, DevicePolicyManager.LOCK_TASK_FEATURE_KEYGUARD);
         this.checkProgress();
         ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         if(CBIKioskLauncherActivity.getDPM(this).isLockTaskPermitted(getApplicationContext().getPackageName()) && !manager.isInLockTaskMode()){
@@ -250,20 +261,23 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
 
     private static final String MESSAGE_PROGRESS = "cbiapp.progress.current";
 
-    /*
-    This one checks to see if this is the right activity for the given progress state
-     */
     public boolean nextProgress(){
         if(this.progress.checkPreviousProgressStates() == -1){
+            Log.d("derpderpherp", "progress nexted 1");
             this.progress.nextState();
             this.runActivityFromProgress(this.progress);
             return true;
         }
         else{
+            Log.d("derpderpherp", "progress nexted 0");
             CustomInputManager.updateShowInputErrors(false);
             return false;
         }
     }
+
+    /*
+   This one checks to see if this is the right activity for the given progress state
+    */
 
     public boolean isActivityCorrect(Progress progress){
         return progress.getCurrentProgressState().getActivityClass().equals(this.getClass());
@@ -328,12 +342,12 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }
 
     private boolean hasNavFragment(){
-        return findViewById(R.id.layout_newguest) != null;
+        return findViewById(R.id.layout_nav_fragment) != null;
     }
 
     private void startNavFragment(){
         NavButtonGroupFragment navFragment = new NavButtonGroupFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_newguest, navFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_nav_fragment, navFragment).commit();
     }
 
     /* Setup some event callbacks here */
@@ -352,6 +366,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
         View v = this.getWindow().getDecorView();
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN |
         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     private void changeFragment(Fragment targetFragment){
@@ -369,7 +384,7 @@ public class BaseActivity<ps extends ProgressState> extends FragmentActivity {
     }*/
 
     public ps getProgressState(){
-        Log.d("aaaa", "activityType " + this.getClass().getName());
+        //Log.d("aaaa", "activityType " + this.getClass().getName());
         return (ps)this.progress.getCurrentProgressState();
 
     }

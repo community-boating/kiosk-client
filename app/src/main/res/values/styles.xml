@@ -10,46 +10,69 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
-    <style name="button_background_large" parent="@android:style/Widget.TextView">
+    <style name="text_font_normal">
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+    <style name="text_font_medium">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+    </style>
+    <style name="text_font_light">
+        <item name="android:fontFamily">@font/roboto_light</item>
+    </style>
+    <style name="text_font_regular">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+    <style name="text_font_thin">
+        <item name="android:fontFamily">@font/roboto_thin</item>
+    </style>
+    <style name="button_background_large" parent="text_font_normal">
+        <item name="android:textSize">70sp</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:background">@drawable/button_background_large</item>
+        <item name="android:textColor">@color/shadowGray</item>
+        <item name="android:padding">64dp</item>
+    </style>
+    <style name="button_background_small" parent="text_font_normal">
         <item name="android:textSize">50sp</item>
         <item name="android:fontFamily">@font/roboto_light</item>
         <item name="android:background">@drawable/button_background_large</item>
         <item name="android:textColor">@color/shadowGray</item>
+        <item name="android:padding">20dp</item>
     </style>
-    <style name="text_title_primary" parent="@android:style/Widget.TextView">
+    <style name="text_title_primary" parent="text_font_normal">
         <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">150sp</item>
     </style>
-    <style name="text_title_primary_regular" parent="text_title_primary">
-        <item name="android:textSize">64sp</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-    </style>
-    <style name="text_title_primary_medium" parent="text_title_primary">
-        <item name="android:textSize">64sp</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
-    </style>
-    <style name="text_title_secondary" parent="text_title_primary">
+    <style name="text_title_primary_regular" parent="text_font_regular">
         <item name="android:textColor">@color/colorPrimaryDark</item>
-        <item name="android:fontFamily">@font/roboto_thin</item>
+        <item name="android:textSize">150sp</item>
+    </style>
+    <style name="text_title_primary_medium" parent="text_font_medium">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">120sp</item>
+    </style>
+    <style name="text_title_secondary" parent="text_font_thin">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">120dp</item>
     </style>
     <style name="text_user_input" parent="@android:style/Widget.EditText">
         <item name="android:fontFamily">@font/roboto_thin</item>
-        <item name="android:textSize">108sp</item>
+        <item name="android:textSize">120sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:background">@drawable/text_user_input</item>
     </style>
     <style name="text_user_input_small" parent="text_user_input">
-        <item name="android:textSize">64sp</item>
+        <item name="android:textSize">80sp</item>r
     </style>
-    <style name="button_nav" parent="@android:style/Widget.Button">
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="android:textSize">32sp</item>
+    <style name="button_nav" parent="text_font_medium">
+        <item name="android:textSize">42sp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
         <item name="android:background">@drawable/button_nav</item>
     </style>
     <style name="custom_keypad">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:keyTextColor">@color/colorPrimaryDark</item>
-        <item name="android:keyTextSize">32sp</item>
+        <item name="android:keyTextSize">42sp</item>
         <item name="android:keyBackground">@drawable/custom_keypad_button</item>
         <item name="android:shadowColor">@android:color/transparent</item>
     </style>

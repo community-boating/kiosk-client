@@ -4,6 +4,8 @@ import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateSizedNumberValueValidator;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
+import java.util.Formatter;
+
 public class ProgressStateGenericPhone extends ProgressState {
 
     private static final String KEY_PHONE_1="phone_1";
@@ -30,7 +32,7 @@ public class ProgressStateGenericPhone extends ProgressState {
     }
 
     public String getPhoneNumber(){
-        return getPhone1().toString() + getPhone2().toString() + getPhone3().toString();
+        return String.format("%03d%03d%04d", getPhone1(), getPhone2(), getPhone3());
     }
 
     public void setPhone1(Integer v){

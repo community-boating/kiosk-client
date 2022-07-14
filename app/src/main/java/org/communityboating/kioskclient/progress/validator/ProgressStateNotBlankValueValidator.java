@@ -1,6 +1,8 @@
 package org.communityboating.kioskclient.progress.validator;
 
-public class ProgressStateNotBlankValueValidator implements ProgressStateValueValidator {
+import android.util.Log;
+
+public class ProgressStateNotBlankValueValidator extends ProgressStateValueValidator {
 
     private String invalidText;
 
@@ -10,6 +12,7 @@ public class ProgressStateNotBlankValueValidator implements ProgressStateValueVa
 
     @Override
     public String isValueValid(String value) {
+        Log.d("derpderpherp", "valuevaluevalue " + value + " : " + invalidText +(value == null || value.isEmpty() ? invalidText : null));
         return (value == null || value.isEmpty() ? invalidText : null);
     }
 }

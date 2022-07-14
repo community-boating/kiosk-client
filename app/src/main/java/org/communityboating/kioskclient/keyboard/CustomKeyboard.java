@@ -2,7 +2,6 @@ package org.communityboating.kioskclient.keyboard;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -18,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import org.communityboating.kioskclient.R;
-import org.communityboating.kioskclient.activity.AdminGUIActivity;
 import org.communityboating.kioskclient.activity.BaseActivity;
 import org.communityboating.kioskclient.input.CustomInputManager;
 import org.communityboating.kioskclient.input.listener.CustomInputProgressStateListener;
@@ -70,6 +68,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         initializeKeys();
     }
     public void updatePreventSoftwareKeyboard(boolean preventSoftwareKeyboard){
+        KeyboardView view;
         if(preventSoftwareKeyboard)
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         else
@@ -87,6 +86,7 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         keyboardView.setShifted(shiftStatus);
     }
     private void initializeKeys(){
+        Keyboard keyboard;
         StringBuffer buffer = new StringBuffer(2);
         for(Key k : this.getKeys()){
             if(k.codes == null)
@@ -191,8 +191,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             keyboardView.setPreviewEnabled(true);
     }
 
-    private int hashtags=0;
-
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -208,7 +206,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
                 if(focusCurrent!=null) {
                     if(focusCurrent instanceof EditText){
                         EditText editText = (EditText)focusCurrent;
-                        Log.d("derp", "derpime : " + editText.getImeOptions());
                     }
                     int id = focusCurrent.getNextFocusForwardId();
                     if(id >= 0){
@@ -228,7 +225,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
         EditText edittext = (EditText) focusCurrent;
         Editable editable = edittext.getText();
         int start = edittext.getSelectionStart();
-        boolean wasHashtag=false;
         if(primaryCode == KEY_CODE_DELETE){
             if(start > 0)
                 editable.delete(start - 1, start);
@@ -237,16 +233,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             updateShiftStatus();
         }else{
             char c = (char)primaryCode;
-            //TODO janky code for admin panel access
-            if(c == '#'){
-                hashtags++;
-                wasHashtag=true;
-                if(hashtags>=5){
-                    hashtags=0;
-                    Intent adminIntent = new Intent(activity, AdminGUIActivity.class);
-                    activity.startActivity(adminIntent);
-                }
-            }
             if((c >= 'a') && (c <= 'z') && shiftStatus) {
                 c = Character.toUpperCase(c);
                 shiftStatus=false;
@@ -254,8 +240,6 @@ public class CustomKeyboard extends Keyboard implements KeyboardView.OnKeyboardA
             }
             editable.insert(start, "" + c);
         }
-        if(!wasHashtag)
-            hashtags=0;
     }
 
     @Override

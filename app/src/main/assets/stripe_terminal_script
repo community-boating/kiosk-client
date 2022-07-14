@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <body>
+		<script src="https://js.stripe.com/terminal/v1/"></script>
+		<script type="text/javascript">
+		        window.onerror = function(message, source, lineno, colno, error) {
+		            stripeInterface.helloWorld("javascript error : " + message);
+		        };
+		        stripeInterface.helloWorld("start");
+                function fetchConnectionToken() {
+                  var jsonRequest = { action : 'new_terminal_token' };
+                  return cbiPaymentAPIRequest(jsonRequest)
+                    .then(data => data.secret);
+                };
+                function createPaymentIntent() {
+                    var jsonRequest2 = { action: 'new_payment_intent', amount : 1000 };
+                    return cbiPaymentAPIRequest(jsonRequest2);
+                };
+                function cbiPaymentAPIRequest(requestJSON){
+                    return fetch('http://192.168.1.231:3000/', { method: "POST", body: JSON.stringify(requestJSON)})
+                        .then(response => response.json());
+                }
+                function unexpectedDisconnect(){
+                    stripeInterface.helloWorld("unexpectedD");
+                };
+                stripeInterface.helloWorld("middle");
+                var terminal = StripeTerminal.create({
+                  onFetchConnectionToken: fetchConnectionToken,
+                  onUnexpectedReaderDisconnect: unexpectedDisconnect,
+                });
+                stripeInterface.helloWorld("end");
+                function connectReaderHandler() {
+                  const config = {simulated: false};
+                  terminal.discoverReaders(config).then(function(discoverResult) {
+                    stripeInterface.helloWorld("something");
+                    if (discoverResult.error) {
+                      stripeInterface.helloWorld("bad, error");
+                    } else if (discoverResult.discoveredReaders.length === 0) {
+                        stripeInterface.helloWorld("bad, no readers");
+                    } else {
+                      856-*var selectedReader = discoverResult.discoveredReaders[0];
+                      stripeInterface.helloWorld("no issue yet");
+                      stripeInterface.helloWorld("gerp " + discoverResult.discoveredReaders.length);
+                      terminal.connectReader(selectedReader).then(function(connectResult) {
+                        stripeInterface.helloWorld("more progress");
+                        if (connectResult.error) {
+                          stripeInterface.helloWorld('Failed to connect: ');
+                        } else {
+                          stripeInterface.helloWorld('Connected to reader: ');
+                          createPaymentIntent().then(response => {
+                            checkout(response.client_secret);
+                          });
+                        }
+                      });
+                    }
+                  });
+                };
+                function checkout(clientSecret) {
+                  stripeInterface.helloWorld("starting some checkout");
+                  terminal.collectPaymentMethod(clientSecret).then(function(result) {
+                    if (result.error) {
+                        stripeInterface.helloWorld("result error bad");
+                    } else {
+                        stripeInterface.helloWorld("payment has been collected!");
+                        processPayment(result.paymentIntent);
+                    }
+                 });
+                };
+                function processPayment(paymentIntent){
+                    terminal.processPayment(paymentIntent).then(function(result) {
+                      if (result.error) {
+                        stripeInterface.helloWorld("error processing payment");
+                      } else if (result.paymentIntent) {
+                        stripeInterface.helloWorld("done processing payment");
+                        capturePayment(result.paymentIntent);
+                      }
+                    });
+                };
+                function capturePayment(paymentIntent){
+                    var jsonRequest = { action: 'capture_payment_intent', payment_intent_id: paymentIntent.id };
+                    cbiPaymentAPIRequest(jsonRequest).then(response => {
+                    stripeInterface.helloWorld("payment intent capture status : " + response.capture_successful);
+                    });
+                };
+                stripeInterface.helloWorld("endend");
+                connectReaderHandler();
+        </script>
+    </body>
+</html>

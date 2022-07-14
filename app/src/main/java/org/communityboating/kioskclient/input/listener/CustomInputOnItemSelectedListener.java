@@ -21,7 +21,7 @@ public class CustomInputOnItemSelectedListener extends CustomInputProgressStateL
     @Override
     public void updateProgressStateValidatorError(boolean hidden) {
         TextView view = (TextView)inputRef.getSelectedView();
-        String error = ProgressStateValidatorManager.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), progressStateVariableName);
+        String error = ProgressStateValidatorManager.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), CustomInputManager.getActiveProgress(), progressStateVariableName);
         if(error != null && !hidden)
             view.setError(error);
         else

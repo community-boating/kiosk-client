@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.communityboating.kioskclient.R;
-import org.communityboating.kioskclient.activity.AdminGUIActivity;
+import org.communityboating.kioskclient.activity.admingui.AdminGUIActivity;
 
 public class AdminConfigPropertyEditText extends androidx.appcompat.widget.AppCompatEditText {
 
@@ -84,7 +84,7 @@ public class AdminConfigPropertyEditText extends androidx.appcompat.widget.AppCo
 
     private void handleGetClick(){
         activity.checkAdminReady();
-        String propertyValue = AdminConfigProperties.getAdminConfigPropertyValue(adminConfigPropertyName);
+        String propertyValue = AdminConfigProperties.get(adminConfigPropertyName);
         setText(propertyValue);
         nameText.setText("Got value of " + adminConfigPropertyName);
     }

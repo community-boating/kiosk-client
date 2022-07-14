@@ -1,5 +1,6 @@
 package org.communityboating.kioskclient.progress.validator;
 
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 
 import java.util.LinkedList;
@@ -21,9 +22,9 @@ public class ProgressStateValidatorMultiple implements ProgressStateValidator {
     }
 
     @Override
-    public String isProgressStateValueValid(String key, String value) {
+    public String isProgressStateValueValid(String key, String value, ProgressState progressState, Progress progress) {
         for(ProgressStateValidator validator : Validators){
-            String isProgressStateValueValid = validator.isProgressStateValueValid(key, value);
+            String isProgressStateValueValid = validator.isProgressStateValueValid(key, value, progressState, progress);
             if(isProgressStateValueValid != null)
                 return isProgressStateValueValid;
         }
@@ -31,9 +32,9 @@ public class ProgressStateValidatorMultiple implements ProgressStateValidator {
     }
 
     @Override
-    public boolean isProgressStateValid(ProgressState progressState){
+    public boolean isProgressStateValid(ProgressState progressState, Progress progress){
         for(ProgressStateValidator validator : Validators){
-            if(!validator.isProgressStateValid(progressState))
+            if(!validator.isProgressStateValid(progressState, progress))
                 return false;
         }
         return true;

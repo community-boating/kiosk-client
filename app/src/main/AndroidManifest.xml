@@ -20,6 +20,7 @@
         "android.permission.BLUETOOTH"/>
     <uses-permission android:name=
         "android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -28,19 +29,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="org.communityboating.kioskclient.activity.AdminGUIActivity" android:windowSoftInputMode="adjustNothing">
+        <service android:name="org.communityboating.kioskclient.print.PrintService" />
+        <activity android:name="org.communityboating.kioskclient.activity.admingui.AdminGUIActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
-        <activity android:name="org.communityboating.kioskclient.admin.CBIKioskLauncherActivity">
+        <activity android:name="org.communityboating.kioskclient.admin.CBIKioskLauncherActivity"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.HOME"/>
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestBeginActivity" android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.HOME" />
-            </intent-filter>
+        </activity>
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestRegistrationTypeActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestReturningActivity" android:windowSoftInputMode="adjustNothing">
         </activity>
@@ -55,6 +59,14 @@
         <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestSignatureActivity" android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestFinishActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.BoatTypeRentalOptionActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.BoatSpecificRentalOptionActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name="org.communityboating.kioskclient.activity.newguest.RentalGuestCountActivity" android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name="org.communityboating.kioskclient.activity.payment.StripeTerminalPaymentProcessorActivity" android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name="org.communityboating.kioskclient.activity.newguest.NewGuestDOBActivity" android:windowSoftInputMode="adjustResize|stateHidden">
 
@@ -75,6 +87,9 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
                 <action android:name="android.intent.action.PROFILE_PROVISIONING_COMPLETE"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
 

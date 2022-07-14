@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <body>
+		<script src="https://js.stripe.com/terminal/v1/"></script>
+		<script type="text/javascript">
+		        stripeInterface.helloWorld("start");
+                function fetchConnectionToken() {
+                  var jsonRequest = { action : 'new_terminal_token' };
+                  return fetch('http://192.168.148.140:3000/', { method: "POST", body: JSON.stringify(jsonRequest)})
+                    .then(response => response.json())
+                    .then(data => data.secret);
+                };
+                function createPaymentIntent() {
+                    var jsonRequest2 = { action: 'new_payment_intent', amount : 1000 };
+                    return fetch('http://192.168.148.140:3000/', { method: "POST", body: JSON.stringify(jsonRequest2)})
+                        .then(response => response.json());
+                    };
+                };
+                function unexpectedDisconnect(){
+                    stripeInterface.helloWorld("unexpectedD");
+                };
+                stripeInterface.helloWorld("middle");
+                var terminal = StripeTerminal.create({
+                  onFetchConnectionToken: fetchConnectionToken,
+                  onUnexpectedReaderDisconnect: unexpectedDisconnect,
+                });
+                stripeInterface.helloWorld("end");
+                function connectReaderHandler() {
+                  const config = {simulated: true};
+                  terminal.discoverReaders(config).then(function(discoverResult) {
+                    stripeInterface.helloWorld("something");
+                    if (discoverResult.error) {
+                      stripeInterface.helloWorld("bad, error");
+                    } else if (discoverResult.discoveredReaders.length === 0) {
+                        stripeInterface.helloWorld("bad, no readers");
+                    } else {
+                      var selectedReader = discoverResult.discoveredReaders[0];
+                      stripeInterface.helloWorld("no issue yet");
+                      terminal.connectReader(selectedReader).then(function(connectResult) {
+                        stripeInterface.helloWorld("more progress");
+                        if (connectResult.error) {
+                          stripeInterface.helloWorld('Failed to connect: ');
+                        } else {
+                          stripeInterface.helloWorld('Connected to reader: ');
+
+                        }
+                      });
+                    }
+                  });
+                };
+                stripeInterface.helloWorld("endend");
+                connectReaderHandler();
+        </script>
+    </body>
+</html>

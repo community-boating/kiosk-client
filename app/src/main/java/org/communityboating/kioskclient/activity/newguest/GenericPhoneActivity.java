@@ -32,7 +32,7 @@ public class GenericPhoneActivity<T extends ProgressState> extends BaseActivity<
     }
 
     private void setTitleString(){
-        TextView textView = (TextView)findViewById(R.id.act_ng_phone_title);
+        TextView textView = (TextView)findViewById(R.id.header_title_text);
         textView.setText(this.getTitleTextID());
     }
 

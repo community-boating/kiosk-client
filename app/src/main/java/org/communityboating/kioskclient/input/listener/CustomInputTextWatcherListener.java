@@ -4,11 +4,13 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import org.communityboating.kioskclient.input.CustomInputManager;
 import org.communityboating.kioskclient.input.EditTextCustomInput;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 import org.communityboating.kioskclient.progress.validator.ProgressStateValidatorManager;
 
@@ -23,7 +25,7 @@ public class CustomInputTextWatcherListener extends CustomInputProgressStateList
 
     @Override
     public void updateProgressStateValidatorError(boolean hidden) {
-        String error = ProgressStateValidatorManager.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), progressStateVariableName);
+        String error = ProgressStateValidatorManager.isProgressStateValueValid(CustomInputManager.getActiveProgressState(), CustomInputManager.getActiveProgress(), progressStateVariableName);
         if(error != null && !hidden){
             inputRef.setError(error);
         }else{
@@ -57,8 +59,9 @@ public class CustomInputTextWatcherListener extends CustomInputProgressStateList
             if(max > -1 && len == max){
                 String variableName = inputRef.progressStateVariableName;
                 ProgressState active = CustomInputManager.getActiveProgressState();
+                Progress activeProgress = CustomInputManager.getActiveProgress();
                 View view = inputRef.focusSearch(View.FOCUS_RIGHT);
-                if(view != null && ProgressStateValidatorManager.isProgressStateValueValid(active, variableName) == null)
+                if(view != null && ProgressStateValidatorManager.isProgressStateValueValid(active, activeProgress, variableName) == null)
                     view.requestFocus();
             }
         }

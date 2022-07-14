@@ -1,6 +1,6 @@
 package org.communityboating.kioskclient.progress.validator;
 
-public class ProgressStateDOBMonthValueValidator implements ProgressStateValueValidator {
+public class ProgressStateDOBMonthValueValidator extends ProgressStateValueValidator {
     @Override
     public String isValueValid(String value) {
         Integer monthValue;

@@ -7,9 +7,9 @@ import org.communityboating.kioskclient.progress.newguest.ProgressStateNewGuestD
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class ProgressStateDOBDayValueValidator implements ProgressStateValueValidator {
+public class ProgressStateDOBDayValueValidator extends ProgressStateValueValidatorProgressStateContext {
     @Override
-    public String isValueValid(String value) {
+    public String isValueValid(String value, ProgressState progressState) {
         Integer dayValue;
         try{
             dayValue=Integer.parseInt(value);
@@ -18,10 +18,8 @@ public class ProgressStateDOBDayValueValidator implements ProgressStateValueVali
         }
         if(dayValue <= 0)
             return "Enter a valid day (starting at 1)";
-        //TODO this is also pretty janky, make it better at some point
-        ProgressState active = CustomInputManager.getActiveProgressState();
-        String year = active.get(ProgressStateNewGuestDOB.KEY_DOB_YEAR);
-        String month = active.get(ProgressStateNewGuestDOB.KEY_DOB_MONTH);
+        String year = progressState.get(ProgressStateNewGuestDOB.KEY_DOB_YEAR);
+        String month = progressState.get(ProgressStateNewGuestDOB.KEY_DOB_MONTH);
         Integer yearValue;
         Integer monthValue;
         try{

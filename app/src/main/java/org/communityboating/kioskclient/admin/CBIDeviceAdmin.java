@@ -6,10 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.communityboating.kioskclient.R;
+import org.communityboating.kioskclient.util.ToastUtil;
+
 public class CBIDeviceAdmin extends DeviceAdminReceiver {
 
     public static ComponentName getComponentName(Context context){
         return new ComponentName(context.getApplicationContext(), CBIDeviceAdmin.class);
+    }
+
+    @Override
+    public void onEnabled(Context context, Intent intent){
+        ToastUtil.makeToast(context, R.string.cbi_kiosk_admin_enabled);
     }
 
     @Override

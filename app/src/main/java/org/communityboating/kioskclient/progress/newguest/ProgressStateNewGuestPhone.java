@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress.newguest;
 import android.app.Activity;
 
 import org.communityboating.kioskclient.activity.newguest.NewGuestPhoneActivity;
+import org.communityboating.kioskclient.progress.Progress;
 import org.communityboating.kioskclient.progress.ProgressState;
 
 public class ProgressStateNewGuestPhone extends ProgressStateGenericPhone {
@@ -21,7 +22,10 @@ public class ProgressStateNewGuestPhone extends ProgressStateGenericPhone {
     }
 
     @Override
-    public ProgressState createNextProgressState(){
+    public ProgressState createNextProgressState(Progress progress){
+        ProgressStateNewGuestReturning progressStateNewGuestReturning = progress.findByProgressStateType(ProgressStateNewGuestReturning.class);
+        if(progressStateNewGuestReturning != null && progressStateNewGuestReturning.getReturningMember())
+            return new ProgressStateNewGuestFinish();
         return new ProgressStateNewGuestEmail();
     }
 }

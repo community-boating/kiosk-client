@@ -2,7 +2,7 @@ package org.communityboating.kioskclient.progress.validator;
 
 import java.util.regex.Pattern;
 
-public class ProgressStateSizedNumberValueValidator implements ProgressStateValueValidator{
+public class ProgressStateSizedNumberValueValidator extends ProgressStateValueValidator{
 
     public static final String VALID_NUMBER_REGEX="[0-9]+";
 

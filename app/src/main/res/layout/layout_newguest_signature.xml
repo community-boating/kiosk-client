@@ -9,7 +9,7 @@
     android:fitsSystemWindows="false">
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/header_title_text"
         style="@style/text_title_primary_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,6 +25,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.347" />
 
+    <include layout="@layout/layout_header_progress_indicator">
+
+    </include>
+
     <org.communityboating.kioskclient.SignatureView
         android:id="@+id/new_guest_signature_box"
         android:layout_width="1200dp"
@@ -39,16 +43,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.39" />
 
-    <FrameLayout
-        android:id="@+id/layout_newguest"
-        class="org.communityboating.kioskclient.activity.NavButtonGroupFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:tag="nav_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <include layout="@layout/layout_nav_fragment">
+
+    </include>
 
     <Button
         android:id="@+id/button4"

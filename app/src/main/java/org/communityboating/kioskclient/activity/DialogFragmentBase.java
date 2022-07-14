@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import org.communityboating.kioskclient.R;
 
-public class DialogFragmentBase extends Fragment implements View.OnClickListener {
+public abstract class DialogFragmentBase extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle savedInstanceState){
@@ -22,6 +22,7 @@ public class DialogFragmentBase extends Fragment implements View.OnClickListener
         layout.setClickable(true);
         layout.setLayoutParams(new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         View dialogView = inflater.inflate(getLayoutResID(), layout, false);
+        handleDialogViewCreation(dialogView);
         //Automatically set all buttons to use this as their click listeners
         for(View touchable : dialogView.getTouchables()){
             if(touchable instanceof Button)
@@ -29,6 +30,9 @@ public class DialogFragmentBase extends Fragment implements View.OnClickListener
         }
         layout.addView(dialogView);
         return layout;
+    }
+
+    public void handleDialogViewCreation(View dialogView){
     }
 
     public int getLayoutResID(){
@@ -47,6 +51,8 @@ public class DialogFragmentBase extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-
+        if(v.getTag() != null && v.getTag().equals(getContext().getString(R.string.dialog_fragment_button_close_tag))){
+            this.removeDialog();
+        }
     }
 }

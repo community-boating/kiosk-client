@@ -3,6 +3,7 @@ package org.communityboating.kioskclient.progress;
 import android.app.Activity;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -42,7 +43,7 @@ public class ProgressState implements Parcelable {
             return progressStateClass.cast(newState);
         }
     };
-
+    //TODO not safe to call
     public Character getCharacter(String key){
         if(contains(key))
             return get(key).charAt(0);
@@ -51,24 +52,36 @@ public class ProgressState implements Parcelable {
     }
 
     public Float getFloat(String key){
-        if(contains(key))
-            return Float.parseFloat(get(key));
-        else
+        try {
+            if (contains(key))
+                return Float.parseFloat(get(key));
+            else
+                return null;
+        }catch (NumberFormatException e){
             return null;
+        }
     }
 
     public Double getDouble(String key){
-        if(contains(key))
-            return Double.parseDouble(get(key));
-        else
+        try {
+            if (contains(key))
+                return Double.parseDouble(get(key));
+            else
+                return null;
+        }catch(NumberFormatException e){
             return null;
+        }
     }
 
     public Integer getInteger(String key){
-        if(contains(key))
-            return Integer.parseInt(get(key));
-        else
+        try {
+            if (contains(key))
+                return Integer.parseInt(get(key));
+            else
+                return null;
+        }catch(NumberFormatException e){
             return null;
+        }
     }
 
     public Boolean getBoolean(String key){
@@ -82,6 +95,8 @@ public class ProgressState implements Parcelable {
     }
 
     public String put(String key, String value){
+        Log.d("putvalue", key);
+        Log.d("what", value);
         return this.valueMap.put(key, value);
     }
 
@@ -143,7 +158,11 @@ public class ProgressState implements Parcelable {
         return null;
     }
 
-    public ProgressState createNextProgressState(){
+    public int getCompletionCount(){
+        return 1;
+    }
+
+    public ProgressState createNextProgressState(Progress progress){
         return null;
     }
 
