@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ import org.communityboating.kioskclient.event.sqlite.SQLiteEvent;
 import org.communityboating.kioskclient.keyboard.CustomKeyboard;
 import org.communityboating.kioskclient.print.PrintServiceHolder;
 import org.communityboating.kioskclient.print.PrinterManager;
+import org.communityboating.kioskclient.print.TestCommandGenerator;
+import org.communityboating.kioskclient.util.ToastUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -66,12 +69,14 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterListener, View.OnClickListener {
 
-    public static final String adminPasswordFileName="apwhat";
+    public static final String adminPasswordFileName="CBI_KIOSK_ADMIN_PASSWORD";
 
-    private byte[] adminPassword=null;
-    private byte[] passwordSalt = new byte[16];
+    private static final int SALT_LENGTH = 64;
+
+    private byte[] adminPassword = null;
+    private byte[] passwordSalt = new byte[SALT_LENGTH];
     private boolean hasPasswordSet = false;
-    private boolean hasValidPassword=true;//false;
+    private boolean hasValidPassword = false;
 
     PrintServiceHolder printService = new PrintServiceHolder();
 
@@ -130,25 +135,17 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        dpm=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
         CBIAPPEventManager.initiateIfRequired(this);
         AdminConfigProperties.loadProperties(this);
         this.setContentView(R.layout.layout_admin_gui);
         printService.createPrintService(this);
         //this.setContentView(R.layout.layout_admin_gui_main);
-        //if(true)return;
 
         loadAdminPassword();
 
         passwordInput=findViewById(R.id.admin_gui_password_input);
         passwordText=findViewById(R.id.admin_gui_password_input_text);
-
-        hasValidPassword=true;
-        setContentView(R.layout.layout_admin_gui_main);
-        getMainComponents();
-        initMainComponents();
-
-        if(true)
-            return;
 
         if(!hasPasswordSet){
             setPasswordText("No Admin password set, enter one now to complete");
@@ -165,7 +162,28 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         customKeyboard.setTextViewFocuses();
 
         customKeyboard.updatePreventSoftwareKeyboard(true);
-        dpm=(DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+
+        passwordInput.setOnKeyListener((view, keyCode, keyEvent) -> {
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN)
+            {
+                switch (keyCode)
+                {
+                    case KeyEvent.KEYCODE_DPAD_CENTER:
+                    case KeyEvent.KEYCODE_ENTER:
+                        handleEnter();
+                        return true;
+                    default:
+                        break;
+                }
+            }
+            return false;
+        });
+
+        if(!hasValidPassword)return;
+
+        setContentView(R.layout.layout_admin_gui_main);
+        getMainComponents();
+        initMainComponents();
     }
 
     public static final int REQUEST_CODE_ENABLE_ADMIN = 1;
@@ -174,18 +192,18 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         enableAdmin();
     }
     public void enableAdmin(){
+        Log.d("enabling admin", "admin");
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, CBIDeviceAdmin.getComponentName(this));
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, this.getString(R.string.cbi_admin_add_admin_extra_text));
         startActivityForResult(intent, REQUEST_CODE_ENABLE_ADMIN);
     }
 
-    public boolean isDPCEnabled(){
-        Log.d("llll", "aaaa" + getApplicationContext().getPackageName() + ":" + dpm.isDeviceOwnerApp(getApplicationContext().getPackageName()));
-        return dpm.isProfileOwnerApp(getApplicationContext().getPackageName());
+    public void handleEnableDPCClick(View v){
+        enableDPC();
     }
 
-    private void enableDPC(){
+    public void enableDPC(){
         PackageManager pm = getPackageManager();
         if(!pm.hasSystemFeature(PackageManager.FEATURE_MANAGED_USERS)){
             Log.e("error", "device does not support work profiles");
@@ -204,6 +222,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     @Override
     public void onActivityResult(int requestCode, int responseCode, Intent data){
         if(requestCode == REQUEST_CODE_ENABLE_ADMIN){
+            updateDeviceOwnerStatus();
             Log.d("h", "aaaa: admin stuff done");
         }
         else if(requestCode == REQUEST_CODE_ENABLE_DPC){
@@ -221,41 +240,15 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     @Override
     public void onDestroy(){
         super.onDestroy();
+        printService.destroyPrintService(this);
         CBIAPPEventManager.onClose();
     }
 
     int presses=0;
-    int responses=0;
 
     public void handlePrintClick(View v){
         presses++;
-        ICommandBuilder builder = StarIoExt.createCommandBuilder(ModelCapability.getEmulation(ModelCapability.SM_S230I));
-        builder.beginDocument();
-        builder.append("Test print here".getBytes());
-        builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
-        builder.endDocument();
-        try {
-            printService.getPrinterService().sendCommands(builder.getCommands(), new PrinterManager.SendCommandsCallback() {
-                @Override
-                public void handleSuccess() {
-                    Log.d("printer", "done printing");
-                    responses++;
-                    Log.d("printer", "presses : " + presses + " responses : " + responses);
-                }
-
-                @Override
-                public void handleError(Exception e) {
-                    Log.d("printer", "printer error : " + e.getMessage());
-                    e.printStackTrace();
-                    responses++;
-                    Log.d("printer", "presses : " + presses + " responses : " + responses);
-                }
-
-            });
-        }catch(Throwable t){
-            t.printStackTrace();
-        }
-        Log.d("printer", "already done with the touch event");
+        TestCommandGenerator.sendTestCommands(this, printService);
     }
 
     @Override
@@ -526,12 +519,8 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
     }
 
     private void initMainComponents(){
-        String rootPackage = BasePackageClass.class.getPackage().getName();
-        String fullClassName = CBIDeviceAdmin.class.getName();
-        String commandText="adb shell dpm set-device-owner " + rootPackage + "/" + fullClassName;
         updateDeviceOwnerStatus();
         AdminConfigProperties.loadPropertiesIfRequired(this);
-        Log.d("adapter set", "adapter set");
         propertiesList.setHasFixedSize(true);
         propertiesList.setLayoutManager(new LinearLayoutManager(this));
         List<String> propertiesKeyList = new LinkedList<>(AdminConfigProperties.getDefaultProperties().keySet());
@@ -547,19 +536,11 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
         eventCollection = CBIAPPEventManager.getDBHelper().getCollection();
         eventSelection = new CBIAPPEventSelection();
         eventAdapter=new EventCollectionAdapter(eventCollection);
-        eventCollection.setCollectionUpdateHandler(new CBIAPPEventCollectionUpdateHandler() {
-            @Override
-            public void handleCollectionUpdate() {
-                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        eventAdapter.notifyDataSetChanged();
-                        if(eventAutoscroll.isChecked())
-                            eventList.scrollToPosition(eventAdapter.getItemCount() - 1);
-                    }
-                });
-            }
-        });
+        eventCollection.setCollectionUpdateHandler(() -> new Handler(Looper.getMainLooper()).post(() -> {
+            eventAdapter.notifyDataSetChanged();
+            if(eventAutoscroll.isChecked())
+                eventList.scrollToPosition(eventAdapter.getItemCount() - 1);
+        }));
         eventList.setAdapter(eventAdapter);
         EventTypeAdapterItem[] eventTypeItems = new EventTypeAdapterItem[CBIAPPEventType.values().length + 1];
         eventTypeItems[0] = new EventTypeAdapterItem(null);
@@ -639,7 +620,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
             deviceOwnerStatusText.setText("App is currently device owner");
             deviceOwnerStatusText.setTextColor(Color.GREEN);
         }else{
-            String setDeviceOwnerCommand = "adb shell dpm set-device-owner " + CBIDeviceAdmin.getComponentName(this);
+            String setDeviceOwnerCommand = "adb shell dpm set-device-owner " + CBIDeviceAdmin.getComponentName(this).flattenToString();
             deviceOwnerStatusText.setText("App is not device owner" + setDeviceOwnerCommand);
             deviceOwnerStatusText.setTextColor(Color.RED);
         }
@@ -811,7 +792,7 @@ public class AdminGUIActivity extends Activity implements CustomKeyboard.EnterLi
 
     private byte[] getSalt(){
         SecureRandom saltRandom = new SecureRandom();
-        byte[] bytes = new byte[16];
+        byte[] bytes = new byte[SALT_LENGTH];
         saltRandom.nextBytes(bytes);
         return bytes;
     }

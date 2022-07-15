@@ -239,8 +239,12 @@ public class PrinterManager implements IConnectionCallback {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(!printTaskLooper.isAlive())
-            startPrintTaskLooper();
+        try {
+            if (!printTaskLooper.isAlive())
+                startPrintTaskLooper();
+        }catch(Exception e){
+            callback.handleError(e);
+        }
         //Communication.sendCommands(context, builder.getCommands(), bluetoothPort, printerSettings.getPortSettings(), 10000, context, callback);     // 10000mS!!!
     }
 
@@ -454,6 +458,7 @@ public class PrinterManager implements IConnectionCallback {
                             Thread.sleep(500);
                         } catch (InterruptedException e1) {
                             e1.printStackTrace();
+                            callback.handleError(e1);
                         }
                     }
                 }
@@ -512,7 +517,9 @@ public class PrinterManager implements IConnectionCallback {
     }
 
     public void destroy(){
-        extManager.disconnect(this);
+        if(extManager != null) {
+            extManager.disconnect(this);
+        }
     }
 
     public static final int CONNECTION_ATTEMPT_STATUS_CONNECTED=0,
@@ -582,6 +589,12 @@ public class PrinterManager implements IConnectionCallback {
                     task = pendingCommands.take();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    continue;
+                }
+                if(connectionAttempt == null){
+                    FatalPrintException exception = new FatalPrintException("Printer connection failure");
+                    task.callback.handleError(exception);
+                    task.notifyError(exception, true, 1);
                     continue;
                 }
                 if(connectionAttempt.isPrinterFailed()){

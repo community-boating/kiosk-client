@@ -12,6 +12,7 @@ import com.starmicronics.starprntsdk.ModelCapability;
 import org.communityboating.kioskclient.R;
 import org.communityboating.kioskclient.activity.admingui.AdminGUIActivity;
 import org.communityboating.kioskclient.print.PrinterManager;
+import org.communityboating.kioskclient.print.TestCommandGenerator;
 
 public class DialogFragmentAdminTooltip extends DialogFragmentBase {
 
@@ -41,30 +42,8 @@ public class DialogFragmentAdminTooltip extends DialogFragmentBase {
         this.getActivity().startActivity(adminIntent);
     }
 
-    long testPrintCount = 0;
-
     private void testPrint(){
-        BaseActivity baseActivity = this.getBaseActivity();
-        ICommandBuilder builder = StarIoExt.createCommandBuilder(ModelCapability.getEmulation(ModelCapability.SM_S230I));
-        builder.beginDocument();
-        for(int i = 0; i < 30; i++) {
-            builder.append(("Test print here" + testPrintCount).getBytes());
-        }
-        testPrintCount++;
-        builder.appendCutPaper(ICommandBuilder.CutPaperAction.PartialCutWithFeed);
-        builder.endDocument();
-        baseActivity.printService.getPrinterService().sendCommands(builder.getCommands(), new PrinterManager.SendCommandsCallback() {
-            @Override
-            public void handleSuccess() {
-                Log.d("printer", "done printing");
-            }
-
-            @Override
-            public void handleError(Exception e) {
-                Log.d("printer", "printer error : ", e);
-                e.printStackTrace();
-            }
-        });
+        TestCommandGenerator.sendTestCommands(getBaseActivity(), getBaseActivity().printService);
     }
 
     private void lockDevice(){
